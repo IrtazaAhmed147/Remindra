@@ -22,14 +22,14 @@ const pages = [
     name: 'Home',
     url: '/'
   },
-  {
-    name: 'Login',
-    url: '/login'
-  },
-  {
-    name: 'signup',
-    url: '/signup'
-  },
+  // {
+  //   name: 'Login',
+  //   url: '/login'
+  // },
+  // {
+  //   name: 'signup',
+  //   url: '/signup'
+  // },
 ]
 const settings = [{
   name: 'Profile',
@@ -90,7 +90,7 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: 'var(--bg-color)',position:'relative',zIndex:1 }}>
+    <AppBar position="static" sx={{ backgroundColor: 'var(--primary-color)',position:'fixed',zIndex:1 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
 
@@ -103,11 +103,11 @@ function Navbar() {
               display: { xs: 'none', md: 'flex' },
 
               fontWeight: 700,
-              color: 'var(--text-color)',
+              color: '#fff',
               textDecoration: 'none',
             }}
           >
-            <Link to={'/'} style={{color: 'var(--text-color)'}}>
+            <Link to={'/'} style={{color: '#fff'}}>
               My App
             </Link>
           </Typography>
@@ -161,11 +161,11 @@ function Navbar() {
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
               fontWeight: 700,
-              color: 'var(--text-color)',
+              color: '#fff',
               textDecoration: 'none',
             }}
           >
-            <Link to={'/'} style={{color: 'var(--text-color)'}}>
+            <Link to={'/'} style={{color: '#fff'}}>
               My App
             </Link>
           </Typography>
@@ -179,7 +179,7 @@ function Navbar() {
                 <Link key={page.name} to={page.url}>
                   <Button
                     onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'var(--text-color)', display: 'block' }}
+                    sx={{ my: 2, color: '#fff', display: 'block' }}
                   >
                     {page.name}
                   </Button>
@@ -190,7 +190,7 @@ function Navbar() {
             {/* profile image */}
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar src="/broken-image.jpg" />
+                <Avatar src="https://media.licdn.com/dms/image/v2/D5603AQHzB2MM4hjZyA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1721399984734?e=2147483647&v=beta&t=GexUxYdCQ6dihCZYDE16KmokvHOslYZ7OeeepyR8br0" />
               </IconButton>
             </Tooltip>
             <Menu

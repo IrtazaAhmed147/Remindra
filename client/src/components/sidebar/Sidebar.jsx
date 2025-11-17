@@ -11,8 +11,8 @@ import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import { Link } from 'react-router-dom';
 
-function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
+function Sidebar({collapsed,setCollapsed}) {
+ 
 
   const listItems = [
     { name: "Dashboard", icon: <DashboardOutlinedIcon />, path: "/dashboard" },
@@ -26,10 +26,12 @@ function Sidebar() {
   return (
     <Box
       sx={{
-        width: collapsed ? '80px' : '350px',
-        minHeight: '91vh',
-        position: 'relative',
-        zIndex: 2,
+        width: collapsed ? '80px' : '260px',
+        height: '91vh',
+        backgroundColor:"#fff",
+        position: 'fixed',
+        zIndex: 0,
+        marginTop:'68px',
         boxShadow: "6px 11px 20px rgba(0,0,0,0.15)",
         display: 'flex',
         flexDirection: 'column',
