@@ -18,10 +18,10 @@ import { userReset } from '../../redux/slices/authSlice';
 import { notify } from '../../utils/HelperFunctions';
 
 const pages = [
-  {
-    name: 'Home',
-    url: '/'
-  },
+  // {
+  //   name: 'Home',
+  //   url: '/'
+  // },
   // {
   //   name: 'Login',
   //   url: '/login'

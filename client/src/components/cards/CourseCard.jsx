@@ -2,12 +2,11 @@ import { Box, Typography, IconButton, Menu, MenuItem } from "@mui/material";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const menuOptions = [
   "Edit Course",
-  "Duplicate",
   "Share",
-  "Archive",
   "Delete",
 ];
 
@@ -41,6 +40,7 @@ const handleClose = () => {
         },
       }}
     >
+      <Link to={`/course/123`}>
 
       {/* Title */}
       <Typography
@@ -72,6 +72,7 @@ const handleClose = () => {
         </Typography>
       </Box>
 
+      </Link>
       {/* Bottom Bar */}
       <Box
         sx={{
@@ -82,7 +83,7 @@ const handleClose = () => {
           paddingTop: "10px",
           borderTop: "1px solid #e5e5e5",
         }}
-      >
+        >
         {/* Left Icon */}
         <BookmarkBorderOutlinedIcon sx={{ color: "#666", cursor: "pointer" }} />
 
@@ -94,7 +95,7 @@ const handleClose = () => {
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
           onClick={handleClick}
-        >
+          >
           <MoreVertIcon />
         </IconButton>
 
@@ -111,7 +112,7 @@ const handleClose = () => {
               },
             },
           }}
-        >
+          >
           {menuOptions.map((option) => (
             <MenuItem key={option} onClick={handleClose}>
               {option}

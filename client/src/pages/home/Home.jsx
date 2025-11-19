@@ -10,6 +10,7 @@ import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import { Divider } from "@mui/material";
 import CourseCard from "../../components/cards/CourseCard";
+import TaskTable from "../../components/tables/TaskTable";
 
 
 function Home() {
@@ -22,7 +23,7 @@ function Home() {
         { label: "Last Course", value: "HTML Basics" },
       ],
     },
-    
+
     {
       title: "Friends",
       icon: <GroupOutlinedIcon sx={{ color: "var(--primary-color)", fontSize: 35 }} />,
@@ -54,76 +55,93 @@ function Home() {
   return (
     <>
       {/* <Box sx={{ display: "flex" }}> */}
-      
 
-        <Box sx={{ width: "100%", backgroundColor: "var(--bg-color)", padding: "20px", }}>
-          {/* Heading */}
-          <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
-            Dashboard
-          </Typography>
 
-          {/* Overview Cards */}
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "20px",
-            }}
-          >
-            {overviewCards.map((card, index) => (
-              <Box
-                key={index}
-                sx={{
-                  width: { xs: "100%", sm: "48%", md: "23%" },
-                  backgroundColor: "#fff",
-                  borderRadius: "12px",
-                  padding: "15px",
-                  boxShadow: "0px 4px 15px rgba(0,0,0,0.12)",
-                  transition: "0.3s",
-                  "&:hover": {
-                    boxShadow: "0px 6px 20px rgba(0,0,0,0.18)",
-                    transform: "translateY(-3px)",
-                  },
-                }}
-              >
-                {/* Title + Icon */}
-                <Box sx={{ display: "flex", alignItems: "center", gap: "10px", mb: 1 }}>
-                  {card.icon}
-                  <Typography variant="h6" fontWeight="bold" color="var(--text-color)">
-                    {card.title}
-                  </Typography>
-                </Box>
+      <Box sx={{ width: "100%", backgroundColor: "var(--bg-color)", padding: "20px", }}>
+        {/* Heading */}
+        <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
+          Dashboard
+        </Typography>
 
-                {/* Stats */}
-                {card.stats.map((stat, i) => (
-                  <Typography key={i} fontSize="13px" color="var(--text-color)">
-                    {stat.label}: <b>{stat.value}</b>
-                  </Typography>
-                ))}
+        {/* Overview Cards */}
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "20px",
+          }}
+        >
+          {overviewCards.map((card, index) => (
+            <Box
+              key={index}
+              sx={{
+                width: { xs: "100%", sm: "48%", md: "23%" },
+                backgroundColor: "#fff",
+                borderRadius: "12px",
+                padding: "15px",
+                boxShadow: "0px 4px 15px rgba(0,0,0,0.12)",
+                transition: "0.3s",
+                "&:hover": {
+                  boxShadow: "0px 6px 20px rgba(0,0,0,0.18)",
+                  transform: "translateY(-3px)",
+                },
+              }}
+            >
+              {/* Title + Icon */}
+              <Box sx={{ display: "flex", alignItems: "center", gap: "10px", mb: 1 }}>
+                {card.icon}
+                <Typography variant="h6" fontWeight="bold" color="var(--text-color)">
+                  {card.title}
+                </Typography>
               </Box>
-            ))}
-          </Box>
 
-          <Divider sx={{margin:"20px 0px"}}/>
-
-              <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
-                        Courses
-                      </Typography>
-           <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "20px",
-            }}
-          >
-
-            <CourseCard />
-            <CourseCard />
-            <CourseCard />
-
-
-          </Box>
+              {/* Stats */}
+              {card.stats.map((stat, i) => (
+                <Typography key={i} fontSize="13px" color="var(--text-color)">
+                  {stat.label}: <b>{stat.value}</b>
+                </Typography>
+              ))}
+            </Box>
+          ))}
         </Box>
+
+        <Divider sx={{ margin: "20px 0px" }} />
+
+        <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
+          Courses
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "20px",
+          }}
+        >
+
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+
+
+        </Box>
+
+        <Typography mt={2} variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
+          Tasks
+        </Typography>
+
+<Box sx={{display:"flex", flexDirection:"column",gap:'5px'}}>
+
+        {/* <Box sx={{width:'90%', bgcolor:"#fff", border:"1px solid #ddd", borderRadius:'5px', height:'40px'}}>
+
+        </Box> */}
+
+        <TaskTable />
+        
+</Box>
+
+
+
+      </Box>
       {/* </Box> */}
     </>
   );

@@ -15,12 +15,12 @@ function Sidebar({collapsed,setCollapsed}) {
  
 
   const listItems = [
-    { name: "Dashboard", icon: <DashboardOutlinedIcon />, path: "/dashboard" },
+    { name: "Dashboard", icon: <DashboardOutlinedIcon />, path: "/" },
     { name: "Courses", icon: <FolderCopyOutlinedIcon />, path: "/courses" },
     { name: "Shared Courses", icon: <ShareOutlinedIcon />, path: "/shared-courses" },
     { name: "Friends", icon: <GroupOutlinedIcon />, path: "/friends" },
     { name: "Assignments", icon: <AssignmentOutlinedIcon />, path: "/assignments" },
-    { name: "Settings", icon: <SettingsOutlinedIcon />, path: "/settings" },
+    { name: "Settings", icon: <SettingsOutlinedIcon />, path: "/setting" },
   ];
 
   return (
