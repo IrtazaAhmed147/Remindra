@@ -1,9 +1,20 @@
 import { Box, Typography, Tabs, Tab, Card, CardContent, Avatar, Button } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import { Dialog } from "@mui/material";
+// import img1 from "/images/1.jpg"
+// import img2 from "/images/2.jpg"
+// import img3 from "/images/3.jpg"
+
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TaskTable from "../../components/tables/TaskTable";
 
 function SingleCourse() {
-  const [tab, setTab] = React.useState(0);
+  const [tab, setTab] = useState(0);
+  const [openImage, setOpenImage] = React.useState(false);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+
+
 
   const images = [
     "https://www.researchgate.net/publication/324485726/figure/fig1/AS:732731210207236@1551708142406/Entity-Relationship-Diagram-ERD-of-the-database.png",
@@ -16,10 +27,18 @@ function SingleCourse() {
     "https://www.researchgate.net/publication/324485726/figure/fig1/AS:732731210207236@1551708142406/Entity-Relationship-Diagram-ERD-of-the-database.png",
     "https://www.researchgate.net/publication/324485726/figure/fig1/AS:732731210207236@1551708142406/Entity-Relationship-Diagram-ERD-of-the-database.png",
     "https://www.researchgate.net/publication/324485726/figure/fig1/AS:732731210207236@1551708142406/Entity-Relationship-Diagram-ERD-of-the-database.png",
-    "https://www.researchgate.net/publication/324485726/figure/fig1/AS:732731210207236@1551708142406/Entity-Relationship-Diagram-ERD-of-the-database.png",
-    "https://www.researchgate.net/publication/324485726/figure/fig1/AS:732731210207236@1551708142406/Entity-Relationship-Diagram-ERD-of-the-database.png",
-    "https://www.researchgate.net/publication/324485726/figure/fig1/AS:732731210207236@1551708142406/Entity-Relationship-Diagram-ERD-of-the-database.png",
-    
+    "https://www.shutterstock.com/image-vector/hand-written-scribble-illustration-mathematical-260nw-76768936.jpg",
+    "https://www.shutterstock.com/image-vector/hand-written-scribble-illustration-mathematical-260nw-76768936.jpg",
+    "https://www.shutterstock.com/image-vector/hand-written-scribble-illustration-mathematical-260nw-76768936.jpg",
+    "https://www.shutterstock.com/image-vector/hand-written-scribble-illustration-mathematical-260nw-76768936.jpg",
+    "https://www.shutterstock.com/image-vector/hand-written-scribble-illustration-mathematical-260nw-76768936.jpg",
+    "https://www.shutterstock.com/image-vector/hand-written-scribble-illustration-mathematical-260nw-76768936.jpg",
+    "https://www.shutterstock.com/image-vector/hand-written-scribble-illustration-mathematical-260nw-76768936.jpg",
+    "https://www.shutterstock.com/image-vector/hand-written-scribble-illustration-mathematical-260nw-76768936.jpg",
+    // img1,
+    // img2,
+    // img3,
+
   ];
 
   const pdfs = [
@@ -44,127 +63,136 @@ function SingleCourse() {
   ];
 
   return (
-    <Box sx={{ width: "100%", minHeight: "100vh", backgroundColor: "var(--bg-color)", padding: "20px" }}>
 
-      {/* Header */}
-      <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 1 }}>
-        HTML Course
-      </Typography>
+    <>
 
-      <Typography fontSize="14px" color="#475569" sx={{ mb: 2 }}>
-        Learn the basics of HTML structure, tags, and web page layout.
-      </Typography>
+      <Box sx={{ width: "100%", minHeight: "100vh", backgroundColor: "var(--bg-color)", padding: "20px" }}>
 
-      <Typography fontSize="13px" color="var(--text-color)" sx={{ mb: 4 }}>
-        Owner: <b>Irtaza Ahmed Khatri</b> &nbsp;|&nbsp; Total Materials: <b>23</b> &nbsp;|&nbsp; Shared With: <b>5</b>
-      </Typography>
+        {/* Header */}
+        <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 1 }}>
+          HTML Course
+        </Typography>
 
-      {/* Stats Cards */}
-      <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mb: 4 }}>
-        <StatCard label="Assignments" value={assignments.length} />
-        <StatCard label="Quizzes" value={quizzes.length} />
-        <StatCard label="Materials" value={images.length + pdfs.length} />
-        <StatCard label="Shared Friends" value={friends.length} />
-      </Box>
+        <Typography fontSize="14px" color="#475569" sx={{ mb: 2 }}>
+          Learn the basics of HTML structure, tags, and web page layout.
+        </Typography>
 
-      <TaskTable />
+        <Typography fontSize="13px" color="var(--text-color)" sx={{ mb: 4 }}>
+          Owner: <b>Irtaza Ahmed Khatri</b> &nbsp;|&nbsp; Total Materials: <b>23</b> &nbsp;|&nbsp; Shared With: <b>5</b>
+        </Typography>
 
-      {/* Tabs */}
-      <Tabs
-        value={tab}
-        onChange={(e, v) => setTab(v)}
-        sx={{
-          mb: 3,
-          "& .MuiTab-root": { fontWeight: "600" },
-          "& .Mui-selected": { color: "var(--primary-color)" },
-          "& .MuiTabs-indicator": { backgroundColor: "var(--primary-color)" },
-        }}
-      >
-        <Tab label="Images" />
-        <Tab label="PDFs" />
-        <Tab label="All" />
-      </Tabs>
-
-      {/* Tab Content */}
-      {tab === 0 && (
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-          {images.map((img, index) => (
-            <Box
-              key={index}
-              component={'img'}
-              src={img}
-              sx={{
-                width: "200px",
-                height: "140px",
-                backgroundColor: "#fff",
-                
-                borderRadius: "10px",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-              }}
-            />
-          ))}
+        {/* Stats Cards */}
+        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mb: 4 }}>
+          <StatCard label="Assignments" value={assignments.length} />
+          <StatCard label="Quizzes" value={quizzes.length} />
+          <StatCard label="Materials" value={images.length + pdfs.length} />
+          <StatCard label="Shared Friends" value={friends.length} />
         </Box>
-      )}
 
-      {tab === 1 && (
-        <Box>
-          {pdfs.map((pdf, index) => (
-            <Box
-              key={index}
-              sx={{
-                backgroundColor: "#fff",
-                padding: "12px",
-                borderRadius: "8px",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                mb: 1,
-              }}
-            >
-              📄 {pdf.name}
-            </Box>
-          ))}
-        </Box>
-      )}
+        <TaskTable />
 
-      {tab === 2 && (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          {/* Images */}
-          <Typography fontWeight="bold" color="var(--text-color)">Images</Typography>
+        {/* Tabs */}
+        <Tabs
+          value={tab}
+          onChange={(e, v) => setTab(v)}
+          sx={{
+            mb: 3,
+            "& .MuiTab-root": { fontWeight: "600" },
+            "& .Mui-selected": { color: "var(--primary-color)" },
+            "& .MuiTabs-indicator": { backgroundColor: "var(--primary-color)" },
+          }}
+        >
+          <Tab label="Images" />
+          <Tab label="PDFs" />
+          <Tab label="All" />
+        </Tabs>
+
+        {/* Tab Content */}
+        {tab === 0 && (
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
             {images.map((img, index) => (
               <Box
                 key={index}
+                component="img"
+                src={img}
+                onClick={() => {
+                  setCurrentIndex(index);
+                  setOpenImage(true);
+                }}
+                style={{ cursor: "pointer" }}
                 sx={{
                   width: "200px",
                   height: "140px",
-                  backgroundColor: "#fff",
                   borderRadius: "10px",
                   boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  objectFit: "cover",
                 }}
               />
+
             ))}
           </Box>
+        )}
 
-          {/* PDFs */}
-          <Typography fontWeight="bold" color="var(--text-color)" sx={{ mt: 2 }}>
-            PDFs
-          </Typography>
-          {pdfs.map((pdf, index) => (
-            <Box
-              key={index}
-              sx={{
-                backgroundColor: "#fff",
-                padding: "12px",
-                borderRadius: "8px",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                mb: 1,
-              }}
-            >
-              📄 {pdf.name}
+        {tab === 1 && (
+          <Box>
+            {pdfs.map((pdf, index) => (
+              <Box
+                key={index}
+                sx={{
+                  backgroundColor: "#fff",
+                  padding: "12px",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  mb: 1,
+                }}
+              >
+                📄 {pdf.name}
+              </Box>
+            ))}
+          </Box>
+        )}
+
+        {tab === 2 && (
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            {/* Images */}
+            <Typography fontWeight="bold" color="var(--text-color)">Images</Typography>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+              {images.map((img, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    width: "200px",
+                    height: "140px",
+                    backgroundColor: "#fff",
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  }}
+                />
+              ))}
             </Box>
-          ))}
-        </Box>
-      )}
 
+            {/* PDFs */}
+            <Typography fontWeight="bold" color="var(--text-color)" sx={{ mt: 2 }}>
+              PDFs
+            </Typography>
+            {pdfs.map((pdf, index) => (
+              <Box
+                key={index}
+                sx={{
+                  backgroundColor: "#fff",
+                  padding: "12px",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  mb: 1,
+                }}
+              >
+                📄 {pdf.name}
+              </Box>
+            ))}
+          </Box>
+        )}
+
+      </Box>
       {/* Assignments */}
       {/* <SectionTitle title="Assignments" />
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 3 }}>
@@ -178,8 +206,8 @@ function SingleCourse() {
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 3 }}>
         {quizzes.map((q, i) => (
           <ListCard key={i} title={q.title} subtitle={`Marks: ${q.marks}`} status={q.status} />
-        ))}
-      </Box> */}
+          ))}
+          </Box> */}
 
       {/* Friends */}
       {/* <SectionTitle title="Shared Friends" />
@@ -189,7 +217,93 @@ function SingleCourse() {
         ))}
       </Box> */}
 
-    </Box>
+      {/* Fullscreen Image Viewer */}
+      <Dialog
+        open={openImage}
+        onClose={() => { }}   // ❌ Disable outside click close
+        maxWidth="lg"
+        PaperProps={{
+          sx: { background: "transparent", boxShadow: "none", overflow: "hidden" ,position:"static"}
+        }}
+      >
+        <Box
+          sx={{
+            // position: "relative",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            // background: "rgba(0,0,0,0.9)",
+            // p: "40px",
+            borderRadius: "10px"
+          }}
+        >
+          {/* LEFT BUTTON */}
+         {currentIndex > 0 && <Button
+            onClick={() =>
+              setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
+            }
+            sx={{
+              position: "absolute",
+              left: -2,
+              color:"#fff",
+              fontSize: "30px",
+              minWidth: "40px",
+            }}
+          >
+            <KeyboardArrowLeftIcon fontSize="large"/>
+          </Button>}
+
+          {/* IMAGE */}
+          <img
+            src={images[currentIndex]}
+            style={{
+              maxWidth: "80vw",
+              maxHeight: "85vh",
+              borderRadius: "10px"
+            }}
+          />
+
+          {/* RIGHT BUTTON */}
+        {currentIndex !== (images.length - 1) &&  <Button
+            onClick={() =>
+              setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
+            }
+            sx={{
+              position: "absolute",
+              right: 2,
+              color: "white",
+              fontSize: "30px",
+              minWidth: "40px",
+            }}
+          >
+            <ChevronRightIcon  fontSize="large"/>
+          </Button>}
+
+          {/* CLOSE BUTTON */}
+          <Button
+            onClick={() => setOpenImage(false)}
+            sx={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              background: "white",
+              color: "black",
+              borderRadius: "50%",
+              width: "35px",
+              height: "35px",
+              minWidth: "35px",
+              boxShadow: "0 4px 12px rgba(255,255,255,0.3)"
+            }}
+          >
+            ✕
+          </Button>
+        </Box>
+      </Dialog>
+
+
+
+
+    </>
   );
 }
 

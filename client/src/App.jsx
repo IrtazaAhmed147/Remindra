@@ -10,6 +10,8 @@ import SingleCourse from './pages/courses/SingleCourse.jsx';
 import Setting from './pages/settings/Setting.jsx';
 import CoursePage from './pages/courses/CoursePage.jsx';
 import AddCoursePage from './pages/courses/AddCoursePage.jsx';
+import ProfilePage from './pages/profile/ProfilePage.jsx';
+import Notification from './pages/Notification.jsx/Notification.jsx';
 
 function App() {
   return (
@@ -33,9 +35,11 @@ function App() {
 
         <Route element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path='/profile/:username' element={<ProfilePage />} />
           <Route path='/courses' element={<CoursePage />} />
           <Route path='/add/course' element={<AddCoursePage />} />
           <Route path='/course/:courseId' element={<SingleCourse />} />
+          <Route path='/notification/:userId' element={<Notification />} />
           <Route path='/setting' element={<Setting />} />
         </Route>
 

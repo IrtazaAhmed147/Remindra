@@ -8,11 +8,14 @@ const Layout = () => {
     const [collapsed, setCollapsed] = useState(false);
     return (
         <>
-            <Navbar />
             <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
+
 
                 <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-                <Box sx={{ width: "100%", backgroundColor: "var(--bg-color)",   transition: 'margin 0.3s ease-in-out', marginLeft: collapsed ? '80px' : '260px', marginTop: '68px' }}>
+            </Box>
+                <Box sx={{ width: "100%", backgroundColor: "var(--bg-color)",   transition: 'margin 0.3s ease-in-out', marginLeft: {xs:'0px',sm:'0px',md:collapsed ? '80px' : '260px'} }}>
+            <Navbar />
 
                     <Outlet />
                 </Box>

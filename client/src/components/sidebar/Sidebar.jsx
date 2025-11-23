@@ -9,9 +9,10 @@ import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import { Link } from 'react-router-dom';
 
-function Sidebar({collapsed,setCollapsed}) {
+function Sidebar({collapsed,setCollapsed,mobileSidebar}) {
  
 
   const listItems = [
@@ -20,18 +21,21 @@ function Sidebar({collapsed,setCollapsed}) {
     { name: "Shared Courses", icon: <ShareOutlinedIcon />, path: "/shared-courses" },
     { name: "Friends", icon: <GroupOutlinedIcon />, path: "/friends" },
     { name: "Assignments", icon: <AssignmentOutlinedIcon />, path: "/assignments" },
+    { name: "Quizzes", icon: <AssignmentOutlinedIcon />, path: "/quizzes" },
+    { name: "Notifications", icon: <NotificationsNoneOutlinedIcon />, path: "/notification/irtaza" },
     { name: "Settings", icon: <SettingsOutlinedIcon />, path: "/setting" },
   ];
 
   return (
     <Box
       sx={{
+        
         width: collapsed ? '80px' : '260px',
-        height: '91vh',
+        height: mobileSidebar ? '100vh':"100vh",
+        mt:0,
         backgroundColor:"#fff",
         position: 'fixed',
         zIndex: 0,
-        marginTop:'68px',
         boxShadow: "6px 11px 20px rgba(0,0,0,0.15)",
         display: 'flex',
         flexDirection: 'column',
@@ -40,7 +44,6 @@ function Sidebar({collapsed,setCollapsed}) {
         transition: 'width 0.3s ease-in-out',
       }}
     >
-      {/* -------- Collapse/Expand Button -------- */}
       <Box
         onClick={() => setCollapsed(!collapsed)}
         sx={{
@@ -52,7 +55,7 @@ function Sidebar({collapsed,setCollapsed}) {
           alignItems: 'center',
           justifyContent: 'center',
           right: collapsed ? '-20px' : 0,
-          top: '40%',
+          top: '50%',
           height: '40px',
           width: '20px',
           backgroundColor: '#bcbcbcdd',
@@ -100,6 +103,8 @@ function Sidebar({collapsed,setCollapsed}) {
       </List>
 
       {/* -------- User Info -------- */}
+
+      <Link to={`/profile/123`}>
       <Box
         sx={{
           border: '1px solid #ddd',
@@ -113,7 +118,7 @@ function Sidebar({collapsed,setCollapsed}) {
           height: collapsed ? '60px' : '70px',
           transition: 'all 0.3s ease-in-out'
         }}
-      >
+        >
         <img
           style={{ borderRadius: '50%', height: '100%' }}
           src="https://media.licdn.com/dms/image/v2/D5603AQHzB2MM4hjZyA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1721399984734?e=2147483647&v=beta&t=GexUxYdCQ6dihCZYDE16KmokvHOslYZ7OeeepyR8br0"
@@ -130,6 +135,7 @@ function Sidebar({collapsed,setCollapsed}) {
           </Box>
         )}
       </Box>
+        </Link>
     </Box>
   );
 }

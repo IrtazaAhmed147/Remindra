@@ -8,230 +8,121 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import Drawer from '@mui/material/Drawer';
 import { Link, useNavigate } from 'react-router-dom';
-import api from '../../utils/common.js'
 import { useDispatch, useSelector } from 'react-redux';
 import { userReset } from '../../redux/slices/authSlice';
 import { notify } from '../../utils/HelperFunctions';
-
-const pages = [
-  // {
-  //   name: 'Home',
-  //   url: '/'
-  // },
-  // {
-  //   name: 'Login',
-  //   url: '/login'
-  // },
-  // {
-  //   name: 'signup',
-  //   url: '/signup'
-  // },
-]
-const settings = [{
-  name: 'Profile',
-  url: '/profile'
-}, {
-  name: 'Account',
-  url: '/account'
-}, {
-  name: 'Dashboard',
-  url: '/dashboard'
-}, {
-  name: 'Logout',
-  url: '/logout'
-}];
+import Sidebar from '../sidebar/Sidebar.jsx';
 
 function Navbar() {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { user } = useSelector((state) => state.auth)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
-
-  const handleLogout = async () => {
-    try {
-      // const res = await api.get('/auth/logout', {
-      //   withCredentials: true
-      // })
-
-      localStorage.removeItem('user')
-      localStorage.removeItem('token')
-      dispatch(userReset())
-      navigate('/login')
-
-      notify('success', 'User logged out successfully')
-
-    } catch (error) {
-      console.log(error);
-      notify('error', error.message)
-
-    }
-
-  }
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [mobileSidebar, setMobileSidebar] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    dispatch(userReset());
+    navigate('/login');
+    notify('success', 'User logged out successfully');
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: 'var(--primary-color)',position:'fixed',zIndex:1 }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
+    <>
+      {/* NAVBAR */}
+      <AppBar position="fixed" sx={{right:"auto", backgroundColor: 'var(--primary-color)', zIndex: 10,height:"40px" }}>
+        <Container maxWidth="xl" sx={{height:"40px"}}>
+          <Toolbar disableGutters sx={{maxHeight:"40px !important",minHeight:"40px !important"}}>
 
-          <Typography
-            variant="h6"
-            noWrap
-
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-
-              fontWeight: 700,
-              color: '#fff',
-              textDecoration: 'none',
-            }}
-          >
-            <Link to={'/'} style={{color: '#fff'}}>
-              My App
-            </Link>
-          </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'block', md: 'none' } }}
-            >
-              {pages
-                .filter((page) => {
-                  if (user && (page.name === 'Login' || page.name === 'signup')) return false
-                  return true
-                })
-                .map((page) => (
-                  <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                    <Link to={page.url}>
-                      <Typography sx={{ textAlign: 'center' }}>{page.name}</Typography>
-                    </Link>
-                  </MenuItem>
-                ))}
-            </Menu>
-          </Box>
-          <Typography
-            variant="h5"
-            noWrap
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontWeight: 700,
-              color: '#fff',
-              textDecoration: 'none',
-            }}
-          >
-            <Link to={'/'} style={{color: '#fff'}}>
-              My App
-            </Link>
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages
-              .filter((page) => {
-                if (user && (page.name === 'Login' || page.name === 'signup')) return false
-                return true
-              })
-              .map((page) => (
-                <Link key={page.name} to={page.url}>
-                  <Button
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: '#fff', display: 'block' }}
-                  >
-                    {page.name}
-                  </Button>
-                </Link>
-              ))}
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            {/* profile image */}
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar src="https://media.licdn.com/dms/image/v2/D5603AQHzB2MM4hjZyA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1721399984734?e=2147483647&v=beta&t=GexUxYdCQ6dihCZYDE16KmokvHOslYZ7OeeepyR8br0" />
+            {/* Mobile menu */}
+            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+              <IconButton
+                size="large"
+                onClick={() => setMobileSidebar(true)}
+                color="inherit"
+              >
+                <MenuIcon />
               </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+            </Box>
+
+            {/* Logo Mobile */}
+            <Typography
+              variant="h5"
+              noWrap
+              sx={{
+                display: { xs: 'flex', md: 'none' },
+                flexGrow: 1,
+                fontWeight: 700,
+                color: '#fff',
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
             >
-              {settings.map((setting,i) => {
-                if (setting.name === 'Logout' && !user) return null; // hide Logout if no user
-                return (
-                  <MenuItem
-                    key={i}
-                    onClick={() => {
-                      if (setting.name === 'Logout') {
-                        handleLogout();
-                      } else {
-                        navigate(`/${setting.name.toLowerCase()}`);
-                        handleCloseUserMenu();
-                      }
-                    }}
-                  >
-                    <Typography sx={{ textAlign: 'center' }}>{setting.name}</Typography>
-                  </MenuItem>
-                );
-              })}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+              <Link to="/" style={{ color: '#fff' }}>My App</Link>
+            </Typography>
+
+            {/* Logo Desktop */}
+            <Typography
+              variant="h6"
+              noWrap
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontWeight: 700,
+                color: '#fff',
+              }}
+            >
+              <Link to="/" style={{ color: '#fff' }}>My App</Link>
+            </Typography>
+
+            {/* Profile Avatar */}
+            {/* <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={(e) => setAnchorElUser(e.currentTarget)} sx={{ p: 0 }}>
+                  <Avatar src="https://media.licdn.com/dms/image/v2/D5603AQHzB2MM4hjZyA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1721399984734?e=2147483647&v=beta&t=GexUxYdCQ6dihCZYDE16KmokvHOslYZ7OeeepyR8br0" />
+                </IconButton>
+              </Tooltip>
+
+              <Menu
+                sx={{ mt: '45px' }}
+                anchorEl={anchorElUser}
+                open={Boolean(anchorElUser)}
+                onClose={() => setAnchorElUser(null)}
+              >
+                <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
+                <MenuItem onClick={() => navigate('/account')}>Account</MenuItem>
+                <MenuItem onClick={() => navigate('/dashboard')}>Dashboard</MenuItem>
+
+                {user && (
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                )}
+              </Menu>
+            </Box> */}
+
+          </Toolbar>
+        </Container>
+      </AppBar>
+
+      {/* SPACING BELOW NAVBAR */}
+      <Toolbar sx={{maxHeight:"40px !important",minHeight:"40px !important"}}/>
+
+      {/* MOBILE SIDEBAR DRAWER */}
+      <Drawer
+        anchor="left"
+        open={mobileSidebar}
+        onClose={() => setMobileSidebar(false)}
+        sx={{ display: { xs: "block", md: "none" } }}
+      >
+        <Box sx={{ width: 260, height: "100vh", bgcolor: "var(--bg-color)" }}>
+          <Sidebar collapsed={false} mobileSidebar ={mobileSidebar}/>
+        </Box>
+      </Drawer>
+    </>
   );
 }
+
 export default Navbar;
