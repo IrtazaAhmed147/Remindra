@@ -12,6 +12,10 @@ import CoursePage from './pages/courses/CoursePage.jsx';
 import AddCoursePage from './pages/courses/AddCoursePage.jsx';
 import ProfilePage from './pages/profile/ProfilePage.jsx';
 import Notification from './pages/Notification.jsx/Notification.jsx';
+import FriendsPage from './pages/friends/FriendsPage.jsx';
+import AddAssignmentPage from './pages/tasks/AddAssignmentPage.jsx';
+import AddQuizPage from './pages/tasks/AddQuizPage.jsx';
+import TaskPage from './pages/tasks/TaskPage.jsx';
 
 function App() {
   return (
@@ -39,6 +43,10 @@ function App() {
           <Route path='/courses' element={<CoursePage />} />
           <Route path='/add/course' element={<AddCoursePage />} />
           <Route path='/course/:courseId' element={<SingleCourse />} />
+          <Route path='/task/:aId' element={<TaskPage />} />
+          <Route path='/create/assignment' element={<AddAssignmentPage />} />
+          <Route path='/create/quiz' element={<AddQuizPage />} />
+          <Route path='/friends/:friendId' element={<FriendsPage />} />
           <Route path='/notification/:userId' element={<Notification />} />
           <Route path='/setting' element={<Setting />} />
         </Route>

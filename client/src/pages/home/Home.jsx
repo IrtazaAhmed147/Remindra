@@ -21,7 +21,7 @@ function Home() {
   const overviewCards = [
     {
       title: "Courses",
-      icon: <FolderCopyOutlinedIcon sx={{ color: "var(--primary-color)", fontSize: 35 }} />,
+      icon: <FolderCopyOutlinedIcon sx={{ color: "var(--primary-color)", fontSize: 20 }} />,
       stats: [
         { label: "Total Courses", value: 20 },
         { label: "Last Course", value: "HTML Basics" },
@@ -30,7 +30,7 @@ function Home() {
 
     {
       title: "Friends",
-      icon: <GroupOutlinedIcon sx={{ color: "var(--primary-color)", fontSize: 35 }} />,
+      icon: <GroupOutlinedIcon sx={{ color: "var(--primary-color)", fontSize: 20 }} />,
       stats: [
         { label: "Total Friends", value: 20 },
         { label: "Pending Request", value: 5 },
@@ -38,7 +38,7 @@ function Home() {
     },
     {
       title: "Quiz",
-      icon: <AssignmentOutlinedIcon sx={{ color: "var(--notification-color)", fontSize: 35 }} />,
+      icon: <AssignmentOutlinedIcon sx={{ color: "var(--notification-color)", fontSize: 20 }} />,
       stats: [
         { label: "Completed", value: 20 },
         { label: "Pending", value: 14 },
@@ -47,7 +47,7 @@ function Home() {
     },
     {
       title: "Assignments",
-      icon: <AssignmentOutlinedIcon sx={{ color: "var(--notification-color)", fontSize: 35 }} />,
+      icon: <AssignmentOutlinedIcon sx={{ color: "var(--notification-color)", fontSize: 20 }} />,
       stats: [
         { label: "Completed", value: 20 },
         { label: "Pending", value: 5 },
@@ -61,7 +61,7 @@ function Home() {
       {/* <Box sx={{ display: "flex" }}> */}
 
 
-      <Box sx={{ width: "100%", backgroundColor: "var(--bg-color)", padding: "20px", }}>
+      <Box sx={{ width: "100%", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" }, }}>
         {/* Heading */}
         <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
           Dashboard
@@ -72,17 +72,17 @@ function Home() {
           sx={{
             display: "flex",
             flexWrap: "wrap",
-            gap: "20px",
+            gap: {xs:"10px",sm:"10px",md:"20px"},
           }}
         >
           {overviewCards.map((card, index) => (
             <Box
               key={index}
               sx={{
-                width: { xs: "100%", sm: "48%", md: "23%" },
+                width: { xs: "45%", sm: "48%", md: "23%" },
                 backgroundColor: "#fff",
                 borderRadius: "12px",
-                padding: "15px",
+                padding: { xs: "10px", sm: "15px", md: "15px" },
                 boxShadow: "0px 4px 15px rgba(0,0,0,0.12)",
                 transition: "0.3s",
                 "&:hover": {
@@ -94,7 +94,7 @@ function Home() {
               {/* Title + Icon */}
               <Box sx={{ display: "flex", alignItems: "center", gap: "10px", mb: 1 }}>
                 {card.icon}
-                <Typography variant="h6" fontWeight="bold" color="var(--text-color)">
+                <Typography sx={{fontSize:{xs:"16px",sm:"20px",md:"25px"}}} fontWeight="bold" color="var(--text-color)">
                   {card.title}
                 </Typography>
               </Box>
@@ -116,7 +116,7 @@ function Home() {
             display: "flex",
             flexWrap: "wrap",
             gap: "25px",
-            mb:3,
+            mb: 3,
           }}
         >
           {/* Quick Action Card Component */}
@@ -125,23 +125,23 @@ function Home() {
               title: "Create Course",
               icon: <FolderCopyOutlinedIcon sx={{ fontSize: 20, color: "#fff" }} />,
               gradient: "linear-gradient(135deg, #6a11cb, #2575fc)",
-              url:"/add/course"
+              url: "/add/course"
             },
             {
               title: "Add Assignment",
               icon: <AssignmentOutlinedIcon sx={{ fontSize: 20, color: "#fff" }} />,
               gradient: "linear-gradient(135deg, #ff9966, #ff5e62)",
-              url:"/create/assignment"
+              url: "/create/assignment"
             },
             {
               title: "Add Quiz",
               icon: <AssignmentOutlinedIcon sx={{ fontSize: 20, color: "#fff" }} />,
               gradient: "linear-gradient(135deg, #00c6ff, #0072ff)",
-              url:"/create/quiz"
+              url: "/create/quiz"
             },
           ].map((action, index) => (
             <Box
-            onClick={()=> navigate(action.url)}
+              onClick={() => navigate(action.url)}
               key={index}
               sx={{
                 width: { xs: "100%", sm: "48%", md: "30%" },
@@ -180,15 +180,20 @@ function Home() {
               </Box>
 
               {/* Title */}
-              <Typography  fontWeight="bold">
+              <Typography fontWeight="bold">
                 {action.title}
               </Typography>
             </Box>
           ))}
         </Box>
 
+        <Typography mt={2} variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
+          Tasks
+        </Typography>
 
-        <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
+        <TaskTable />
+
+        <Typography variant="h4" fontWeight="bold" mt={2} color="var(--text-color)" sx={{ mb: 2 }}>
           Courses
         </Typography>
         <Box
@@ -206,9 +211,7 @@ function Home() {
 
         </Box>
 
-        <Typography mt={2} variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
-          Tasks
-        </Typography>
+
 
         <Box sx={{ display: "flex", flexDirection: "column", gap: '5px' }}>
 
@@ -216,7 +219,7 @@ function Home() {
 
         </Box> */}
 
-          <TaskTable />
+
 
         </Box>
 

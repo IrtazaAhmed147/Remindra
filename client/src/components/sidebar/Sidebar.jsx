@@ -18,10 +18,8 @@ function Sidebar({collapsed,setCollapsed,mobileSidebar}) {
   const listItems = [
     { name: "Dashboard", icon: <DashboardOutlinedIcon />, path: "/" },
     { name: "Courses", icon: <FolderCopyOutlinedIcon />, path: "/courses" },
-    { name: "Shared Courses", icon: <ShareOutlinedIcon />, path: "/shared-courses" },
-    { name: "Friends", icon: <GroupOutlinedIcon />, path: "/friends" },
-    { name: "Assignments", icon: <AssignmentOutlinedIcon />, path: "/assignments" },
-    { name: "Quizzes", icon: <AssignmentOutlinedIcon />, path: "/quizzes" },
+    { name: "Friends", icon: <GroupOutlinedIcon />, path: "/friends/123" },
+    { name: "Tasks", icon: <AssignmentOutlinedIcon />, path: "/task/123" },
     { name: "Notifications", icon: <NotificationsNoneOutlinedIcon />, path: "/notification/irtaza" },
     { name: "Settings", icon: <SettingsOutlinedIcon />, path: "/setting" },
   ];
@@ -121,16 +119,16 @@ function Sidebar({collapsed,setCollapsed,mobileSidebar}) {
         >
         <img
           style={{ borderRadius: '50%', height: '100%' }}
-          src="https://media.licdn.com/dms/image/v2/D5603AQHzB2MM4hjZyA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1721399984734?e=2147483647&v=beta&t=GexUxYdCQ6dihCZYDE16KmokvHOslYZ7OeeepyR8br0"
+          src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
           alt=""
         />
         {!collapsed && (
           <Box sx={{ marginLeft: '8px',overflow:'hidden' }}>
             <Typography color='var(--text-color)' fontSize={'15px'} fontWeight={'bold'} >
-              Irtaza Ahmed
+              user example
             </Typography>
             <Typography color='#6d6d6dff' fontSize={'12px'}>
-              irtazaahmedk@gmail.com
+              example@gmail.com
             </Typography>
           </Box>
         )}

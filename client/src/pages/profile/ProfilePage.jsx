@@ -13,7 +13,7 @@ function ProfilePage() {
           <Box sx={{ borderTopLeftRadius: "10px", width: "40%", background: "#fff", padding: "10px", boxShadow: "0 4px 12px rgba(0,0,0,0.12)", flexDirection: "column", gap: '5px', alignItems: "center", display: "flex", justifyContent: "center" }}>
 
 
-            <Box sx={{ height: '58%', borderRadius: '50%' }} component={'img'} src='https://media.licdn.com/dms/image/v2/D5603AQHzB2MM4hjZyA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1721399984734?e=2147483647&v=beta&t=GexUxYdCQ6dihCZYDE16KmokvHOslYZ7OeeepyR8br0' />
+            <Box sx={{ height: '58%', borderRadius: '50%' }} component={'img'} src='https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg' />
             <Typography fontWeight={'bold'} fontSize={'18px'} color='var(--text-color)'>Irtaza Ahmed Khatri</Typography>
             <Typography fontSize={'12px'} color='#9f9f9f'>example@gmail.com</Typography>
 

@@ -62,7 +62,7 @@ function Navbar() {
                 color: '#fff',
               }}
             >
-              <Link to="/" style={{ color: '#fff' }}>My App</Link>
+              <Link to="/" style={{ color: '#fff' }}>My Idea</Link>
             </Typography>
 
             {/* Logo Desktop */}
@@ -76,7 +76,7 @@ function Navbar() {
                 color: '#fff',
               }}
             >
-              <Link to="/" style={{ color: '#fff' }}>My App</Link>
+              <Link to="/" style={{ color: '#fff' }}>My Idea</Link>
             </Typography>
 
             {/* Profile Avatar */}

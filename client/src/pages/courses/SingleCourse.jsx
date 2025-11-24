@@ -89,26 +89,38 @@ function SingleCourse() {
           <StatCard label="Shared Friends" value={friends.length} />
         </Box>
 
-        <TaskTable />
-
-        {/* Tabs */}
-        <Tabs
+        {/* <TaskTable /> */}
+     <Tabs
           value={tab}
           onChange={(e, v) => setTab(v)}
+          variant="scrollable"
+          scrollButtons
+          allowScrollButtonsMobile
           sx={{
-            mb: 3,
-            "& .MuiTab-root": { fontWeight: "600" },
+            mb: 2,
+            minHeight: 40,
+            "& .MuiTab-root": {
+              minHeight: 40,
+              fontSize: "13px",
+              fontWeight: 600,
+              textTransform: "none",
+              // padding: "6px 12px",
+            },
             "& .Mui-selected": { color: "var(--primary-color)" },
-            "& .MuiTabs-indicator": { backgroundColor: "var(--primary-color)" },
+            "& .MuiTabs-indicator": { backgroundColor: "var(--primary-color)", height: "3px" },
           }}
         >
-          <Tab label="Images" />
-          <Tab label="PDFs" />
-          <Tab label="All" />
+          <Tab label={`Assignments`} />
+          <Tab label={`Quizzes`} />
+          <Tab label={`Images`} />
+          <Tab label={`PDFs`} />
+          <Tab label={`Members`} />
         </Tabs>
 
-        {/* Tab Content */}
-        {tab === 0 && (
+          {tab === 0 && <TaskTable />}
+          {tab === 1 && <TaskTable />}
+
+        {tab === 2 && (
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
             {images.map((img, index) => (
               <Box
@@ -133,7 +145,7 @@ function SingleCourse() {
           </Box>
         )}
 
-        {tab === 1 && (
+        {tab === 3 && (
           <Box>
             {pdfs.map((pdf, index) => (
               <Box
@@ -152,70 +164,9 @@ function SingleCourse() {
           </Box>
         )}
 
-        {tab === 2 && (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            {/* Images */}
-            <Typography fontWeight="bold" color="var(--text-color)">Images</Typography>
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-              {images.map((img, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    width: "200px",
-                    height: "140px",
-                    backgroundColor: "#fff",
-                    borderRadius: "10px",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                  }}
-                />
-              ))}
-            </Box>
-
-            {/* PDFs */}
-            <Typography fontWeight="bold" color="var(--text-color)" sx={{ mt: 2 }}>
-              PDFs
-            </Typography>
-            {pdfs.map((pdf, index) => (
-              <Box
-                key={index}
-                sx={{
-                  backgroundColor: "#fff",
-                  padding: "12px",
-                  borderRadius: "8px",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                  mb: 1,
-                }}
-              >
-                📄 {pdf.name}
-              </Box>
-            ))}
-          </Box>
-        )}
 
       </Box>
-      {/* Assignments */}
-      {/* <SectionTitle title="Assignments" />
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 3 }}>
-        {assignments.map((a, i) => (
-          <ListCard key={i} title={a.title} subtitle={`Due: ${a.due}`} status={a.status} />
-        ))}
-      </Box> */}
-
-      {/* Quizzes */}
-      {/* <SectionTitle title="Quizzes" />
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 3 }}>
-        {quizzes.map((q, i) => (
-          <ListCard key={i} title={q.title} subtitle={`Marks: ${q.marks}`} status={q.status} />
-          ))}
-          </Box> */}
-
-      {/* Friends */}
-      {/* <SectionTitle title="Shared Friends" />
-      <Box sx={{ display: "flex", gap: 2 }}>
-        {friends.map((f, i) => (
-          <Avatar key={i} src={f.img} sx={{ width: 50, height: 50 }} />
-        ))}
-      </Box> */}
+     
 
       {/* Fullscreen Image Viewer */}
       <Dialog
@@ -307,15 +258,12 @@ function SingleCourse() {
   );
 }
 
-/* -----------------------------------------------------
-Reusable Components
------------------------------------------------------ */
 
 function StatCard({ label, value }) {
   return (
     <Card
       sx={{
-        width: { xs: "48%", md: "23%" },
+        width: { xs: "30%", md: "15%" },
         backgroundColor: "#fff",
         borderRadius: "10px",
         boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
@@ -331,31 +279,5 @@ function StatCard({ label, value }) {
   );
 }
 
-function SectionTitle({ title }) {
-  return (
-    <Typography variant="h6" fontWeight="bold" color="var(--text-color)" sx={{ mb: 1, mt: 3 }}>
-      {title}
-    </Typography>
-  );
-}
-
-function ListCard({ title, subtitle, status }) {
-  return (
-    <Box
-      sx={{
-        backgroundColor: "#fff",
-        padding: "15px",
-        borderRadius: "10px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-      }}
-    >
-      <Typography fontWeight="bold" color="var(--text-color)">{title}</Typography>
-      <Typography fontSize="13px" color="#555">{subtitle}</Typography>
-      <Typography fontSize="13px" color={status === "Completed" ? "green" : "red"}>
-        {status}
-      </Typography>
-    </Box>
-  );
-}
 
 export default SingleCourse;
