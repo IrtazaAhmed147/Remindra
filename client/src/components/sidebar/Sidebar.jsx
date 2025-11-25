@@ -10,13 +10,17 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-function Sidebar({collapsed,setCollapsed,mobileSidebar}) {
- 
+function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
+
+  const location = useLocation();
+
+  // console.log(location.pathname);
+
 
   const listItems = [
-    { name: "Dashboard", icon: <DashboardOutlinedIcon />, path: "/" },
+    { name: "Dashboard", icon: <DashboardOutlinedIcon />, path: "/dashboard" },
     { name: "Courses", icon: <FolderCopyOutlinedIcon />, path: "/courses" },
     { name: "Friends", icon: <GroupOutlinedIcon />, path: "/friends/123" },
     { name: "Tasks", icon: <AssignmentOutlinedIcon />, path: "/task/123" },
@@ -27,11 +31,11 @@ function Sidebar({collapsed,setCollapsed,mobileSidebar}) {
   return (
     <Box
       sx={{
-        
+
         width: collapsed ? '80px' : '260px',
-        height: mobileSidebar ? '100vh':"100vh",
-        mt:0,
-        backgroundColor:"#fff",
+        height: mobileSidebar ? '100vh' : "100vh",
+        mt: 0,
+        backgroundColor: "#fff",
         position: 'fixed',
         zIndex: 0,
         boxShadow: "6px 11px 20px rgba(0,0,0,0.15)",
@@ -71,7 +75,13 @@ function Sidebar({collapsed,setCollapsed,mobileSidebar}) {
             sx={{
               padding: '0px',
               transition: '0.3s all ease-in-out',
-              "&:hover": { backgroundColor: "var(--bg-color)" },
+              backgroundColor: location.pathname === item.path
+                ? "#f2f8ff"
+                : "#fff",
+              color: location.pathname === item.path ? "#fff" : "var(--text-color)",
+              "&:hover": {
+                backgroundColor:"var(--bg-color)",
+              },
             }}
           >
             <Link
@@ -103,37 +113,37 @@ function Sidebar({collapsed,setCollapsed,mobileSidebar}) {
       {/* -------- User Info -------- */}
 
       <Link to={`/profile/123`}>
-      <Box
-        sx={{
-          border: '1px solid #ddd',
-          borderRadius: '25px',
-          margin: "0px auto",
-          padding: '5px',
-          width: collapsed ? '60px' : '90%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: collapsed ? 'center' : 'flex-start',
-          height: collapsed ? '60px' : '70px',
-          transition: 'all 0.3s ease-in-out'
-        }}
+        <Box
+          sx={{
+            border: '1px solid #ddd',
+            borderRadius: '25px',
+            margin: "0px auto",
+            padding: '5px',
+            width: collapsed ? '60px' : '90%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: collapsed ? 'center' : 'flex-start',
+            height: collapsed ? '60px' : '70px',
+            transition: 'all 0.3s ease-in-out'
+          }}
         >
-        <img
-          style={{ borderRadius: '50%', height: '100%' }}
-          src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
-          alt=""
-        />
-        {!collapsed && (
-          <Box sx={{ marginLeft: '8px',overflow:'hidden' }}>
-            <Typography color='var(--text-color)' fontSize={'15px'} fontWeight={'bold'} >
-              user example
-            </Typography>
-            <Typography color='#6d6d6dff' fontSize={'12px'}>
-              example@gmail.com
-            </Typography>
-          </Box>
-        )}
-      </Box>
-        </Link>
+          <img
+            style={{ borderRadius: '50%', height: '100%' }}
+            src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+            alt=""
+          />
+          {!collapsed && (
+            <Box sx={{ marginLeft: '8px', overflow: 'hidden' }}>
+              <Typography color='var(--text-color)' fontSize={'15px'} fontWeight={'bold'} >
+                user example
+              </Typography>
+              <Typography color='#6d6d6dff' fontSize={'12px'}>
+                example@gmail.com
+              </Typography>
+            </Box>
+          )}
+        </Box>
+      </Link>
     </Box>
   );
 }

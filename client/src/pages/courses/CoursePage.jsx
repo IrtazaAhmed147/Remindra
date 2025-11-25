@@ -8,7 +8,7 @@ function CoursePage() {
     return (
         <>
 
-            <Box sx={{ width: "100%", minHeight: "100vh", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" } }}>
+            <Box sx={{ width: "100%", minHeight: "100vh", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" },pt:"5px !important", }}>
 
                 <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
 
@@ -46,22 +46,22 @@ function CoursePage() {
                         <input type="text" placeholder='Search your course' style={{
                             outline: "none",
                             background: "#fff",
-                            border: "2px solid var(--primary-color)",
+                            border: "2px solid #2A7DE1",
                             borderRadius: "5px 0px 0px 5px",
                             padding: "5px 10px",
                             width: "100%",
                             height: "34px"
                         }} />
-                        <button style={{ height: "34px", padding: "5px 10px", color: "#fff", backgroundColor: "var(--primary-color)", borderRadius: "0px 5px 5px 0px", border: "none", }}> <SearchIcon /> </button>
+                        <button style={{ height: "34px", padding: "5px 10px", color: "#fff", background: "var(--primary-color)", borderRadius: "0px 5px 5px 0px", border: "none", }}> <SearchIcon /> </button>
                     </Box>
                     <Box sx={{display:"flex",gap:1}}>
 
-                    <Select sx={{ bgcolor: "var(--primary-color)", px: "20px", border: "none", color: "#fff", height: "40px", fontSize: "14px" }} defaultValue={"Sort by Latest"}>
+                    <Select sx={{ background: "var(--primary-color)", px: "20px", border: "none", color: "#fff", height: "40px", fontSize: "14px" }} defaultValue={"Sort by Latest"}>
                         <MenuItem value="Sort by Latest">All Courses</MenuItem>
                         <MenuItem value="Sort by Ascending">My Courses</MenuItem>
                         <MenuItem value="Sort by Descending">Shared Courses</MenuItem>
                     </Select>
-                    <Select sx={{ bgcolor: "var(--primary-color)", px: "20px", border: "none", color: "#fff", height: "40px", fontSize: "14px" }} defaultValue={"Sort by Latest"}>
+                    <Select sx={{ background: "var(--primary-color)", px: "20px", border: "none", color: "#fff", height: "40px", fontSize: "14px" }} defaultValue={"Sort by Latest"}>
                         <MenuItem value="Sort by Latest">Sort by Latest</MenuItem>
                         <MenuItem value="Sort by Ascending">Sort by Ascending</MenuItem>
                         <MenuItem value="Sort by Descending">Sort by Descending</MenuItem>

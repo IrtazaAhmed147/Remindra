@@ -105,7 +105,7 @@ export default function AddCoursePage() {
 
             {/* ACTION BUTTONS */}
             <Box sx={{ mt: 4, display: "flex", gap: 2 }}>
-                <Button
+                {/* <Button
                     sx={{
                         px: 2,
                         width: "150px",
@@ -120,7 +120,7 @@ export default function AddCoursePage() {
                     }}
                 >
                     Save as Draft
-                </Button>
+                </Button> */}
 
                 <Button
                     sx={{
@@ -136,7 +136,7 @@ export default function AddCoursePage() {
                         ":hover": { backgroundColor: "#1258ad" },
                     }}
                 >
-                    Publish Course
+                    Create Course
                 </Button>
             </Box>
         </Box>

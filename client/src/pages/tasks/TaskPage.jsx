@@ -9,7 +9,7 @@ function TaskPage() {
         minHeight: '100vh',
         width: '100%',
         backgroundColor: 'var(--bg-color)',
-        padding: { xs: '10px', sm: '20px', md: '30px' },
+         padding: { xs: "10px", sm: "20px", md: "20px" }, pt:"5px !important",
       }}
     >
       {/* Page Title */}
@@ -34,7 +34,7 @@ function TaskPage() {
         {/* Task Type */}
         <Select
           sx={{
-            bgcolor: 'var(--primary-color)',
+            background: 'var(--primary-color)',
             color: '#fff',
             height: 40,
             fontSize: 14,
@@ -52,7 +52,7 @@ function TaskPage() {
         {/* Status */}
         <Select
           sx={{
-            bgcolor: 'var(--primary-color)',
+            background: 'var(--primary-color)',
             color: '#fff',
             height: 40,
             fontSize: 14,
@@ -70,7 +70,7 @@ function TaskPage() {
         {/* Course */}
         <Select
           sx={{
-            bgcolor: 'var(--primary-color)',
+            background: 'var(--primary-color)',
             color: '#fff',
             height: 40,
             fontSize: 14,

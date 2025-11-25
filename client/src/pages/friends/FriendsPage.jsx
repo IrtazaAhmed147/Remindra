@@ -49,7 +49,7 @@ export default function FriendsPage() {
   ];
 
   return (
-    <Box sx={{ width: "100%", p: 2, background: "#F1F5F9", minHeight: "100vh" }}>
+    <Box sx={{ width: "100%",  padding: { xs: "10px", sm: "20px", md: "20px" }, pt:"5px !important", background: "#F1F5F9", minHeight: "100vh" }}>
 
       <Typography sx={{ fontSize: "40px", fontWeight: 700, mb: 2 }}>
         Friends

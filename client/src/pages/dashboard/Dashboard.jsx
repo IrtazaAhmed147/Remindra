@@ -1,27 +1,22 @@
-// import React from "react";
 import Box from "@mui/material/Box";
-import * as React from 'react';
-import Sidebar from "../../components/sidebar/Sidebar";
 import Typography from "@mui/material/Typography";
-import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import FolderCopyOutlinedIcon from "@mui/icons-material/FolderCopyOutlined";
-import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import { Divider } from "@mui/material";
 import CourseCard from "../../components/cards/CourseCard";
 import TaskTable from "../../components/tables/TaskTable";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
-function Home() {
+function Dashboard() {
 
   const navigate = useNavigate()
 
   const overviewCards = [
     {
       title: "Courses",
-      icon: <FolderCopyOutlinedIcon sx={{ color: "var(--primary-color)", fontSize: 20 }} />,
+      icon: <FolderCopyOutlinedIcon sx={{ color: "#2A7DE1", fontSize: 20 }} />,
       stats: [
         { label: "Total Courses", value: 20 },
         { label: "Last Course", value: "HTML Basics" },
@@ -30,7 +25,7 @@ function Home() {
 
     {
       title: "Friends",
-      icon: <GroupOutlinedIcon sx={{ color: "var(--primary-color)", fontSize: 20 }} />,
+      icon: <GroupOutlinedIcon sx={{ color: "#2A7DE1", fontSize: 20 }} />,
       stats: [
         { label: "Total Friends", value: 20 },
         { label: "Pending Request", value: 5 },
@@ -58,11 +53,10 @@ function Home() {
 
   return (
     <>
-      {/* <Box sx={{ display: "flex" }}> */}
 
 
-      <Box sx={{ width: "100%", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" }, }}>
-        {/* Heading */}
+      <Box sx={{ width: "100%", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" }, pt: "5px !important", }}>
+
         <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
           Dashboard
         </Typography>
@@ -72,7 +66,7 @@ function Home() {
           sx={{
             display: "flex",
             flexWrap: "wrap",
-            gap: {xs:"10px",sm:"10px",md:"20px"},
+            gap: { xs: "10px", sm: "10px", md: "20px" },
           }}
         >
           {overviewCards.map((card, index) => (
@@ -94,7 +88,7 @@ function Home() {
               {/* Title + Icon */}
               <Box sx={{ display: "flex", alignItems: "center", gap: "10px", mb: 1 }}>
                 {card.icon}
-                <Typography sx={{fontSize:{xs:"16px",sm:"20px",md:"25px"}}} fontWeight="bold" color="var(--text-color)">
+                <Typography sx={{ fontSize: { xs: "16px", sm: "20px", md: "25px" } }} fontWeight="bold" color="var(--text-color)">
                   {card.title}
                 </Typography>
               </Box>
@@ -208,27 +202,12 @@ function Home() {
           <CourseCard />
           <CourseCard />
 
-
         </Box>
-
-
-
-        <Box sx={{ display: "flex", flexDirection: "column", gap: '5px' }}>
-
-          {/* <Box sx={{width:'90%', bgcolor:"#fff", border:"1px solid #ddd", borderRadius:'5px', height:'40px'}}>
-
-        </Box> */}
-
-
-
-        </Box>
-
 
 
       </Box>
-      {/* </Box> */}
     </>
   );
 }
 
-export default Home;
+export default Dashboard;

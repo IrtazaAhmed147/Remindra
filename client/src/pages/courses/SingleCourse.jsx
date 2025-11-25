@@ -1,10 +1,6 @@
 import { Box, Typography, Tabs, Tab, Card, CardContent, Avatar, Button } from "@mui/material";
 import React, { useState } from "react";
 import { Dialog } from "@mui/material";
-// import img1 from "/images/1.jpg"
-// import img2 from "/images/2.jpg"
-// import img3 from "/images/3.jpg"
-
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TaskTable from "../../components/tables/TaskTable";
@@ -106,8 +102,8 @@ function SingleCourse() {
               textTransform: "none",
               // padding: "6px 12px",
             },
-            "& .Mui-selected": { color: "var(--primary-color)" },
-            "& .MuiTabs-indicator": { backgroundColor: "var(--primary-color)", height: "3px" },
+            "& .Mui-selected": { color: "#2A7DE1" },
+            "& .MuiTabs-indicator": { background: "var(--primary-color)", height: "3px" },
           }}
         >
           <Tab label={`Assignments`} />
@@ -171,7 +167,7 @@ function SingleCourse() {
       {/* Fullscreen Image Viewer */}
       <Dialog
         open={openImage}
-        onClose={() => { }}   // ❌ Disable outside click close
+        onClose={() => { }}   
         maxWidth="lg"
         PaperProps={{
           sx: { background: "transparent", boxShadow: "none", overflow: "hidden" ,position:"static"}

@@ -5,24 +5,28 @@ function ProfilePage() {
   return (
     <Box
 
-      sx={{ width: "100%", height: "91vh", display: "flex", justifyContent: "space-between", backgroundColor: "var(--bg-color)", padding: "20px", }}
+      sx={{ width: "100%", height: "91vh", display: "flex", justifyContent: "space-between", backgroundColor: "var(--bg-color)",  padding: { xs: "10px", sm: "20px", md: "20px" }, pt:"0px !important", }}
     >
-      <Box sx={{ display: "flex", width: "74%", flexDirection: "column", justifyContent: "space-between" }}>
+      <Box sx={{ display: "flex", width: "100%", flexDirection: "column", justifyContent: "space-between" }}>
 
-        <Box sx={{ display: "flex", height: "48%", justifyContent: "space-between" }}>
-          <Box sx={{ borderTopLeftRadius: "10px", width: "40%", background: "#fff", padding: "10px", boxShadow: "0 4px 12px rgba(0,0,0,0.12)", flexDirection: "column", gap: '5px', alignItems: "center", display: "flex", justifyContent: "center" }}>
+        <Box sx={{ width:"100%", justifyContent: "space-between" }}>
+          <Box sx={{ borderTopLeftRadius: "10px", width: "100%", background: "#fff", padding: "10px", boxShadow: "0 4px 12px rgba(0,0,0,0.12)",  height:"150px",gap: '10px', alignItems: "center", display: "flex",  }}>
 
 
-            <Box sx={{ height: '58%', borderRadius: '50%' }} component={'img'} src='https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg' />
-            <Typography fontWeight={'bold'} fontSize={'18px'} color='var(--text-color)'>Irtaza Ahmed Khatri</Typography>
-            <Typography fontSize={'12px'} color='#9f9f9f'>example@gmail.com</Typography>
+            <Box sx={{ height: '90%', borderRadius: '50%' }} component={'img'} src='https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg' />
+            <Box>
+
+            <Typography fontWeight={'bold'} fontSize={'30px'} color='var(--text-color)'>Irtaza Ahmed Khatri</Typography>
+            <Typography fontSize={'14px'} color='#9f9f9f'>example@gmail.com</Typography>
+            </Box>
 
           </Box>
           <Box
             sx={{
               borderTopRightRadius: "10px",
-              width: "59%",
+              width: "100%",
               background: "#fff",
+              mt:3,
               padding: "10px",
               boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
             }}
@@ -66,15 +70,44 @@ function ProfilePage() {
 
             </List>
           </Box>
+
+
+                <Box
+                  onClick={() => navigate("/update-profile")}
+                  sx={{
+                    mt:2,
+                    p: 3,
+                    mb: 3,
+                    borderRadius: 2,
+                    bgcolor: "#fff",
+                    boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+                    cursor: "pointer",
+                    transition: "0.2s all",
+                    "&:hover": { boxShadow: "0 4px 20px rgba(0,0,0,0.12)" },
+                  }}
+                >
+                  <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ fontSize: { xs: 13, sm: 14, md: 15 } }}
+                  >
+                    Update Profile
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ fontSize: { xs: 11, sm: 12, md: 13 }, color: "#555", mt: 0.5 }}
+                  >
+                    Click to update your profile information.
+                  </Typography>
+                </Box>
         </Box>
 
-        <Box sx={{ borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px", width: "100%", height: "51%", background: "#fff", padding: "10px", boxShadow: "0 4px 12px rgba(0,0,0,0.12)" }}></Box>
-
+     
       </Box>
 
-      <Box sx={{ display: "flex", width: "25%", borderRadius: "10px", background: "#fff", height: "100%", boxShadow: "0 4px 12px rgba(0,0,0,0.12)", flexDirection: "column", justifyContent: "space-between" }} >
-
-      </Box></Box>
+    
+      
+      </Box>
   )
 }
 

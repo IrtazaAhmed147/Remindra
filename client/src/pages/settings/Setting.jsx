@@ -1,145 +1,130 @@
-import { Box, Tabs, Tab, Typography, Button, TextField, Switch, FormControlLabel, Divider } from "@mui/material";
-import React from "react";
-import UpdateProfileForm from "../../components/forms/UpdateProfileForm";
-import NotificationCard from "../../components/cards/notificationCard";
+import { Box, Typography, Button, Switch, FormControlLabel } from "@mui/material";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Setting() {
-    const [value, setValue] = React.useState(0);
+  const navigate = useNavigate();
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        minHeight: "100vh",
+        backgroundColor: "var(--bg-color)",
+        padding: { xs: "10px", sm: "20px", md: "30px" },
+        pt:"5px !important",
+      }}
+    >
+      <Typography
+        variant="h5"
+        fontWeight="bold"
+        sx={{ color: "var(--text-color)", mb: 3, fontSize: { xs: 18, sm: 20, md: 22 } }}
+      >
+        Settings
+      </Typography>
 
-    return (
-        <Box
-            sx={{
-                width: "100%",
-                minHeight: "100vh",
-                backgroundColor: "var(--bg-color)",
-                padding: "20px",
-            }}
+      {/* ---------------- UPDATE PROFILE ---------------- */}
+      <Box
+        onClick={() => navigate("/update/profile/123")}
+        sx={{
+          p: 3,
+          mb: 3,
+          borderRadius: 2,
+          bgcolor: "#fff",
+          boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+          cursor: "pointer",
+          transition: "0.2s all",
+          "&:hover": { boxShadow: "0 4px 20px rgba(0,0,0,0.12)" },
+        }}
+      >
+        <Typography
+          variant="subtitle1"
+          fontWeight="bold"
+          sx={{ fontSize: { xs: 13, sm: 14, md: 15 } }}
         >
-            {/* PAGE TITLE */}
-            <Typography variant="h4" fontWeight="bold" sx={{ color: "var(--text-color)", mb: 3 }}>
-                Settings
-            </Typography>
+          Update Profile
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{ fontSize: { xs: 11, sm: 12, md: 13 }, color: "#555", mt: 0.5 }}
+        >
+          Click to update your profile information.
+        </Typography>
+      </Box>
 
+      {/* ---------------- NOTIFICATIONS ---------------- */}
+      <Box
+        sx={{
+          p: 3,
+          mb: 3,
+          borderRadius: 2,
+          bgcolor: "#fff",
+          boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+        }}
+      >
+        <Typography
+          variant="subtitle1"
+          fontWeight="bold"
+          sx={{ fontSize: { xs: 13, sm: 14, md: 15 }, mb: 1 }}
+        >
+          Notification Access
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{ fontSize: { xs: 11, sm: 12, md: 13 }, color: "#555", mb: 1 }}
+        >
+          Allow this app to send you notifications about assignments, quizzes, and announcements.
+        </Typography>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={notificationsEnabled}
+              onChange={() => setNotificationsEnabled(!notificationsEnabled)}
+              color="primary"
+            />
+          }
+          label="Enable Notifications"
+          sx={{ fontSize: { xs: 12, sm: 13, md: 14 } }}
+        />
+      </Box>
 
-            <Box sx={{ position: "relative", display: "flex", gap: "25px", mt: 1 }}>
-
-                {/* Tabs */}
-                {[
-                    { id: 0, label: "Delete Account", width: "110px" },
-                    { id: 1, label: "Profile", width: "60px" },
-                ].map((tab) => (
-                    <Box
-                        key={tab.id}
-                        onClick={() => setValue(tab.id)}
-                        sx={{
-                            cursor: "pointer",
-                            fontWeight: "bold",
-                            fontSize: "14px",
-                            // width: tab.width,
-                            textAlign: "center",
-                            padding: "5px 5px 10px 5px",
-                            color: value === tab.id ? "var(--text-color)" : "#8383839c",
-                            position: "relative",
-                            zIndex: 2,
-                            transition: "color 0.2s ease",
-                        }}
-                    >
-                        {tab.label}
-                    </Box>
-                ))}
-
-                {/* Sliding Underline */}
-                <Box
-                    sx={{
-                        position: "absolute",
-                        bottom: "-2px",
-                        left:
-                            value === 0 ? "0px" :
-                                value === 1 ? "140px" :
-                                    "0px",
-
-                        width:
-                            value === 0 ? "120px" :
-                                value === 1  ? "60px" :
-                                    "60px",
-
-                        height: "5px",
-                        borderRadius: "10px 10px 0 0",
-                        backgroundColor: "var(--primary-color)",
-                        transition: "all 0.35s ease",
-                        zIndex: 1,
-                    }}
-                />
-            </Box>
-
-            <Divider />
-
-            {/* TAB CONTENT */}
-            <Box sx={{ mt: 4 }}>
-
-                {/* ---------------- PROFILE TAB ---------------- */}
-                {value === 1 && (
-                    <UpdateProfileForm />
-                )}
-
-                {/* ---------------- NOTIFICATIONS TAB ---------------- */}
-                
-
-                {/* ---------------- DELETE ACCOUNT TAB ---------------- */}
-                {value === 0 && (
-                    <Box>
-                        <Typography variant="h6" sx={{ mb: 2, color: "var(--text-color)" }}>
-                            Delete Account
-                        </Typography>
-
-                        <Typography sx={{ mb: 3, color: "red" }}>
-                            Warning: This action is permanent and cannot be undone.
-                        </Typography>
-
-                        <Button
-                            variant="contained"
-                            sx={{
-                                backgroundColor: "red",
-                                color: "#fff",
-                                textTransform: "none",
-                                "&:hover": { backgroundColor: "#cc0000" },
-                            }}
-                        >
-                            Delete My Account
-                        </Button>
-                    </Box>
-                )}
-
-                {/* ---------------- LOGOUT TAB ---------------- */}
-                {value === 3 && (
-                    <Box>
-                        <Typography variant="h6" sx={{ mb: 2, color: "var(--text-color)" }}>
-                            Logout
-                        </Typography>
-
-                        <Typography sx={{ mb: 3 }}>
-                            Click below if you want to logout from your account.
-                        </Typography>
-
-                        <Button
-                            variant="contained"
-                            sx={{
-                                backgroundColor: "var(--secondary-color)",
-                                textTransform: "none",
-                            }}
-                        >
-                            Logout
-                        </Button>
-                    </Box>
-                )}
-
-            </Box>
-        </Box>
-    );
+      {/* ---------------- DELETE ACCOUNT ---------------- */}
+      <Box
+        sx={{
+          p: 3,
+          mb: 3,
+          borderRadius: 2,
+          bgcolor: "#fff",
+          boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+        }}
+      >
+        <Typography
+          variant="subtitle1"
+          sx={{ mb: 1, color: "var(--text-color)", fontSize: { xs: 13, sm: 14, md: 15 } }}
+        >
+          Delete Account
+        </Typography>
+        <Typography
+          sx={{ mb: 2, color: "red", fontSize: { xs: 12, sm: 13, md: 14 } }}
+        >
+          Warning: This action is permanent and cannot be undone.
+        </Typography>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "red",
+            color: "#fff",
+            textTransform: "none",
+            "&:hover": { backgroundColor: "#cc0000" },
+            fontSize: { xs: 12, sm: 13, md: 14 },
+          }}
+        >
+          Delete My Account
+        </Button>
+      </Box>
+    </Box>
+  );
 }
 
 export default Setting;

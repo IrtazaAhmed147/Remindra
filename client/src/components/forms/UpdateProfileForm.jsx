@@ -25,7 +25,7 @@ function UpdateProfileForm() {
                                 bottom: '5%',
                                 right: '2%',
                                 position: "absolute",
-                                backgroundColor: "var(--primary-color)",
+                                background: "var(--primary-color)",
                                 color: "#fff",
                                 borderRadius: "50%",
                                 cursor: "pointer",

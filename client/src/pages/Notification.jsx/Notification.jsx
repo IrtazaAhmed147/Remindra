@@ -4,7 +4,7 @@ import NotificationCard from '../../components/cards/notificationCard'
 
 function Notification() {
   return (
-    <Box sx={{ width: "100%", backgroundColor: "var(--bg-color)", padding: "20px", }}>
+    <Box sx={{ width: "100%",minHeight:"100vh", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" }, pt:"0px !important", }}>
 
         <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
           Notifications

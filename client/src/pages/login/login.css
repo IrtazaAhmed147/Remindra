@@ -53,7 +53,7 @@
 }
 
 .inputForm:focus-within {
-  border: 1.5px solid var(--primary-color);
+  border: 1.5px solid #2A7DE1;
 }
 
 .flex-row {
@@ -80,7 +80,7 @@
 
 .button-submit {
   margin: 20px 0 10px 0;
-  background-color: var(--primary-color);
+  background: var(--primary-color);
   border: none;
   color: white;
   font-size: 15px;
@@ -109,7 +109,7 @@
 }
 
 .btn {
-  background-color: var(--primary-color);
+  background: var(--primary-color);
   margin-top: 10px;
   width: 100%;
   height: 50px;
@@ -135,7 +135,7 @@
 
 .link{
   text-decoration: none;
-  color: var(--primary-color);
+  color: #2A7DE1;
 }
 .signup-form{
   flex-direction:row;

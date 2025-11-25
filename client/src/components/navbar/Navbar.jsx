@@ -4,18 +4,16 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userReset } from '../../redux/slices/authSlice';
 import { notify } from '../../utils/HelperFunctions';
 import Sidebar from '../sidebar/Sidebar.jsx';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Tooltip from '@mui/material/Tooltip';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -36,9 +34,9 @@ function Navbar() {
   return (
     <>
       {/* NAVBAR */}
-      <AppBar position="fixed" sx={{right:"auto", backgroundColor: 'var(--primary-color)', zIndex: 10,height:"40px" }}>
-        <Container maxWidth="xl" sx={{height:"40px"}}>
-          <Toolbar disableGutters sx={{maxHeight:"40px !important",minHeight:"40px !important"}}>
+      <AppBar sx={{ background: 'var(--primary-color)', mb: 1, height: "40px", position: "static" }}>
+        <Container maxWidth="xl" >
+          <Toolbar disableGutters sx={{ justifyContent: "space-between", maxHeight: "40px !important", minHeight: "40px !important" }}>
 
             {/* Mobile menu */}
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -79,36 +77,27 @@ function Navbar() {
               <Link to="/" style={{ color: '#fff' }}>My Idea</Link>
             </Typography>
 
-            {/* Profile Avatar */}
-            {/* <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={(e) => setAnchorElUser(e.currentTarget)} sx={{ p: 0 }}>
-                  <Avatar src="https://media.licdn.com/dms/image/v2/D5603AQHzB2MM4hjZyA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1721399984734?e=2147483647&v=beta&t=GexUxYdCQ6dihCZYDE16KmokvHOslYZ7OeeepyR8br0" />
-                </IconButton>
-              </Tooltip>
+          
 
-              <Menu
-                sx={{ mt: '45px' }}
-                anchorEl={anchorElUser}
-                open={Boolean(anchorElUser)}
-                onClose={() => setAnchorElUser(null)}
+            <Tooltip title="Logout">
+              <IconButton sx={{
+                height: "100%", backgroundColor: "#2A7DE1", borderRadius: "50%", display: "flex", justifyContent: "center", alignItems: "center", padding: "5px", cursor: "pointer", transition: "0.3s all ease-in-out",
+                ":hover": {
+                  backgroundColor: "#19aae9",
+
+                },
+              }}
+
+                onClick={handleLogout}
               >
-                <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
-                <MenuItem onClick={() => navigate('/account')}>Account</MenuItem>
-                <MenuItem onClick={() => navigate('/dashboard')}>Dashboard</MenuItem>
+                <LogoutIcon sx={{color:"#fff"}} fontSize='small' />
+              </IconButton>
+            </Tooltip>
 
-                {user && (
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                )}
-              </Menu>
-            </Box> */}
 
           </Toolbar>
         </Container>
       </AppBar>
-
-      {/* SPACING BELOW NAVBAR */}
-      <Toolbar sx={{maxHeight:"40px !important",minHeight:"40px !important"}}/>
 
       {/* MOBILE SIDEBAR DRAWER */}
       <Drawer
@@ -118,7 +107,7 @@ function Navbar() {
         sx={{ display: { xs: "block", md: "none" } }}
       >
         <Box sx={{ width: 260, height: "100vh", bgcolor: "var(--bg-color)" }}>
-          <Sidebar collapsed={false} mobileSidebar ={mobileSidebar}/>
+          <Sidebar collapsed={false} mobileSidebar={mobileSidebar} />
         </Box>
       </Drawer>
     </>
