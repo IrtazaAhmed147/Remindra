@@ -104,82 +104,79 @@ function Dashboard() {
         </Box>
 
         <Divider sx={{ margin: "20px 0px" }} />
-
         <Box
           sx={{
             display: "flex",
             flexWrap: "wrap",
-            gap: "25px",
+            gap: "15px",
             mb: 3,
           }}
         >
-          {/* Quick Action Card Component */}
           {[
             {
               title: "Create Course",
-              icon: <FolderCopyOutlinedIcon sx={{ fontSize: 20, color: "#fff" }} />,
-              gradient: "linear-gradient(135deg, #6a11cb, #2575fc)",
-              url: "/add/course"
+              icon: <FolderCopyOutlinedIcon sx={{ fontSize: 18, color: "#2A7DE1" }} />,
+              gradient: "linear-gradient(135deg, #E7F1FD, #F3F8FF)",
+              url: "/add/course",
             },
             {
               title: "Add Assignment",
-              icon: <AssignmentOutlinedIcon sx={{ fontSize: 20, color: "#fff" }} />,
-              gradient: "linear-gradient(135deg, #ff9966, #ff5e62)",
-              url: "/create/assignment"
+              icon: <AssignmentOutlinedIcon sx={{ fontSize: 18, color: "#4158D0" }} />,
+              gradient: "linear-gradient(135deg, #EEF0FF, #F8F9FF)",
+              url: "/create/assignment",
             },
             {
               title: "Add Quiz",
-              icon: <AssignmentOutlinedIcon sx={{ fontSize: 20, color: "#fff" }} />,
-              gradient: "linear-gradient(135deg, #00c6ff, #0072ff)",
-              url: "/create/quiz"
+              icon: <AssignmentOutlinedIcon sx={{ fontSize: 18, color: "#1C5FB8" }} />,
+              gradient: "linear-gradient(135deg, #E9F1FF, #F4F7FF)",
+              url: "/create/quiz",
             },
           ].map((action, index) => (
             <Box
-              onClick={() => navigate(action.url)}
               key={index}
+              onClick={() => navigate(action.url)}
               sx={{
                 width: { xs: "100%", sm: "48%", md: "30%" },
-                padding: "10px 15px",
-                fontSize: "16px",
-                borderRadius: "10px",
-                color: "#fff",
+                p: "10px 12px",
+                borderRadius: "14px",
                 background: action.gradient,
                 display: "flex",
                 alignItems: "center",
                 gap: "10px",
-                boxShadow: "0px 10px 25px rgba(0,0,0,0.2)",
                 cursor: "pointer",
-                transition: "0.4s",
-                backdropFilter: "blur(10px)",
-                border: "1px solid rgba(255,255,255,0.2)",
+                transition: "0.25s ease",
+                border: "1px solid rgba(0,0,0,0.05)",
+
                 "&:hover": {
-                  transform: "scale(1.01) translateY(-5px)",
-                  boxShadow: "0px 15px 40px rgba(0,0,0,0.3)",
+                  background: "linear-gradient(135deg, #ffffff, #f2f8ff)",
+                  transform: "translateY(-3px)",
+                  boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
                 },
               }}
             >
-              {/* Icon */}
+              {/* Icon Bubble */}
               <Box
                 sx={{
-                  backgroundColor: "rgba(255,255,255,0.2)",
-                  padding: "12px",
-                  borderRadius: "50%",
+                  width: 34,
+                  height: 34,
+                  borderRadius: "10px",
+                  backgroundColor: "rgba(42, 125, 225, 0.08)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  backdropFilter: "blur(10px)",
                 }}
               >
                 {action.icon}
               </Box>
 
               {/* Title */}
-              <Typography fontWeight="bold">
+              <Typography fontSize="14px" fontWeight="600" color="#1e293b">
                 {action.title}
               </Typography>
             </Box>
           ))}
         </Box>
+
 
         <Typography mt={2} variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
           Tasks

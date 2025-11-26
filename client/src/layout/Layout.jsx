@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Footer from '../components/footer/Footer';
 
 const Layout = () => {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
     return (
         <>
             <Box sx={{ display: "flex" }}>

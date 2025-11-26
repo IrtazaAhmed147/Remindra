@@ -13,8 +13,9 @@ a{
 }
 
 :root {
-  /* --primary-color: #2A7DE1; */
-  --primary-color: linear-gradient(135deg, #2A7DE1, #6BB7FF);
+  --primary-color: #2A7DE1;
+  /* --primary-color: linear-gradient(135deg, #2A7DE1, #6BB7FF); */
+  --primaryHover-color: #1f6dcb;
   --secondary-color: #1AC8DB ;
   --notification-color: #F4B400 ;
   --bg-color: #F8FAFC ;

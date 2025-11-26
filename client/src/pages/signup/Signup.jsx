@@ -8,7 +8,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import '../login/login.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../../redux/actions/authActions';
-import { Box, CircularProgress, MenuItem, Select } from '@mui/material';
+import { Box, CircularProgress, MenuItem, Select, Typography } from '@mui/material';
 import { notify } from '../../utils/HelperFunctions';
 import { useState } from 'react';
 import SchoolIcon from '@mui/icons-material/School';
@@ -44,9 +44,16 @@ function Signup() {
 
     return (
         <>
-            <div style={{ width: "100%", backgroundColor: "var(--bg-color)", display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
 
-                <Box sx={{width:{xs:'90%',md:'800px',sm:'800px'},  backgroundColor: 'var(--bg-color)'}}>
+
+          <Box sx={{ width: '100%', minHeight: '100vh', backgroundColor: 'var(--bg-color)', pt: 2}}>
+
+                 <Typography lineHeight={1}  fontWeight={'bold'} sx={{pl:1,mb:{xs:7,sm:3,md:0}, fontSize: { xs: "33px", sm: '40px', md: '50px' } }} >My Idea</Typography>
+
+               
+            <div style={{ width: "100%", backgroundColor: "var(--bg-color)", display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
+
+                <Box sx={{width:{xs:'95%',md:'800px',sm:'800px'},  backgroundColor: 'var(--bg-color)'}}>
          <h1 style={{color:"var(--text-color)"}}>Sign up</h1>
 
                     <form className="form signup-form" onSubmit={handleForm}>
@@ -72,15 +79,21 @@ function Signup() {
                                 {/* <SchoolIcon /> */}
                                 <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter University" className="input" type="text" required />
                             </div>
+                            <div className="flex-column">
+                                <label>Field </label></div>
+                            <div className="inputForm">
+                                {/* <SchoolIcon /> */}
+                                <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter Field" className="input" type="text" required />
+                            </div>
 
-                             <div className="flex-column">
+                             {/* <div className="flex-column">
                                 <label>Gender </label></div>
                             <Select sx={{ width: '100%',height:'50px',backgroundColor:'#fff' }} defaultValue={'select gender'}>
 
                                 <MenuItem value='select gender'>Select Gender</MenuItem>
                                 <MenuItem value='male'>Male</MenuItem>
                                 <MenuItem value='female'>Female</MenuItem>
-                            </Select>
+                            </Select> */}
 
                         </div>
                         <div className='form-box-1'>
@@ -120,6 +133,7 @@ function Signup() {
                     </form>
                 </Box>
             </div>
+             </Box>
         </>
     )
 }

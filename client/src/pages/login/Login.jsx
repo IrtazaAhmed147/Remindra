@@ -7,7 +7,7 @@ import './login.css'
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/actions/authActions';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { notify } from '../../utils/HelperFunctions';
 import { useState } from 'react';
 function Login() {
@@ -43,39 +43,44 @@ function Login() {
 
     return (
         <>
-        <Box  sx={{width:'100%', height:'100vh', backgroundColor: 'var(--bg-color)', display: 'flex', justifyContent: 'center', alignItems: 'center',}}>
 
-            <Box sx={{width:{xs:'90%',md:'450px',sm:'450px'},  backgroundColor: 'var(--bg-color)'}}>
-        <h1 style={{color:"var(--text-color)"}}>Welcome Back</h1>
-                <form className="form" onSubmit={handleForm}  >
-                    <Box className="flex-column">
-                        <label>Username </label></Box>
-                    <Box className="inputForm">
-                        <input placeholder="Enter your username" name='username' className="input" type="text" onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} required />
-                    </Box>
+            <Box sx={{ width: '100%', minHeight: '100vh', backgroundColor: 'var(--bg-color)', pt: 2 }}>
 
-                    <Box className="flex-column">
-                        <label>Password </label></Box>
-                    <Box className="inputForm">
-                        <input placeholder="Enter your Password" name='password' onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} className="input" type={showPass ? "text" : "password"} required />
-                        <Box onClick={handleShowPassword} sx={{cursor: 'pointer'}}>
-                            {showPass ? <VisibilityIcon />:  <VisibilityOffIcon /> }
-                        </Box>
-                    </Box>
+                 <Typography mb={1} lineHeight={1}  fontWeight={'bold'} sx={{pl:2, fontSize: { xs: "33px", sm: '40px', md: '50px' } }} >My Idea</Typography>
+                <Box sx={{ width: '100%', height: '85vh', backgroundColor: 'var(--bg-color)', display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
 
-                    <Box className="flex-row">
-                        <span className="span">Forgot password?</span>
-                    </Box>
-                    {/* {error && <p>{error}</p>} */}
-                    <button disabled={isLoading} className="btn">
-                        {isLoading && <CircularProgress color="inherit" size="20px" />}
-
-                        Sign In</button>
-                    <p className="p">Don't have an account? <Link to={'/signup'} className="link">Sign Up</Link>
-                    </p>
-                </form>
-            </Box>
+                    <Box sx={{ width: { xs: '90%', md: '450px', sm: '450px' }, backgroundColor: 'var(--bg-color)' }}>
+                        <h1 style={{ color: "var(--text-color)" }}>Welcome Back</h1>
+                        <form className="form" onSubmit={handleForm}  >
+                            <Box className="flex-column">
+                                <label>Username </label></Box>
+                            <Box className="inputForm">
+                                <input placeholder="Enter your username" name='username' className="input" type="text" onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} required />
                             </Box>
+
+                            <Box className="flex-column">
+                                <label>Password </label></Box>
+                            <Box className="inputForm">
+                                <input placeholder="Enter your Password" name='password' onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} className="input" type={showPass ? "text" : "password"} required />
+                                <Box onClick={handleShowPassword} sx={{ cursor: 'pointer' }}>
+                                    {showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                </Box>
+                            </Box>
+
+                            <Box className="flex-row">
+                                <span className="span">Forgot password?</span>
+                            </Box>
+                            {/* {error && <p>{error}</p>} */}
+                            <button disabled={isLoading} className="btn">
+                                {isLoading && <CircularProgress color="inherit" size="20px" />}
+
+                                Sign In</button>
+                            <p className="p">Don't have an account? <Link to={'/signup'} className="link">Sign Up</Link>
+                            </p>
+                        </form>
+                    </Box>
+                </Box>
+            </Box>
         </>
     )
 }

@@ -55,13 +55,14 @@ export default function AddAssignmentPage() {
 
             <Box
                 sx={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
+                    display: "flex",
+                    width:"100%",
+                    flexWrap:"wrap",
                     gap: 4,
                 }}
             >
                 {/* LEFT SIDE */}
-                <Box>
+                <Box sx={{width:{xs:"100%",sm:"48%",md:"48%"}}}>
                     {/* Assignment Name */}
                     <Typography sx={{ mb: 1, fontSize: "12px", color: "#6b7280" }}>
                         Assignment Title
@@ -124,7 +125,7 @@ export default function AddAssignmentPage() {
                 </Box>
 
                 {/* RIGHT SIDE — MULTIPLE IMAGES */}
-                <Box>
+                <Box sx={{width:{xs:"100%",sm:"48%",md:"48%"}}}>
                     <Typography sx={{ mb: 1 }}>Upload Images</Typography>
 
                     <Paper

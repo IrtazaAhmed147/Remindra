@@ -7,10 +7,11 @@ function UpdateProfileForm() {
     return (
         <>
 
-            <form className="form" style={{ paddingTop: '10px', width: "100%", marginTop: '10px', flexDirection: "row" }}  >
+        
+            <form className="form  profile-form" style={{ paddingTop: '10px', width: "100%", marginTop: '10px', flexDirection: "row" }}  >
 
 
-                <Box sx={{ width: "300px", borderRadius: "20px", bgcolor: "#fff", boxShadow: "0 4px 5px rgba(0,0,0,0.12)", display: "flex", justifyContent: "center", alignItems: "center", height: "300px", flexDirection: "column", gap: '8px' }}>
+                <Box sx={{m:"auto",mb:2, width: "270px", borderRadius: "20px", bgcolor: "#fff", boxShadow: "0 4px 5px rgba(0,0,0,0.12)", display: "flex", justifyContent: "center", alignItems: "center", height: "300px", flexDirection: "column", }}>
 
                     <Box sx={{ height: '50%', width: "50%", bgcolor: "#fff", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: '50%', position: "relative" }}>
 
@@ -48,13 +49,14 @@ function UpdateProfileForm() {
 
                     </Box>
 
-                    <Typography color='var(--text-color)'>Username</Typography>
+                    <Typography color='var(--text-color)' fontWeight={'bold'}>Username</Typography>
+                    <Typography color='#575757dd' fontSize={"13px"}>example123@gmail.com</Typography>
 
                 </Box>
-                <Box sx={{ width: "70%", display: "flex", flexWrap: "wrap", gap: '5px' }}>
+                <Box sx={{ width: {xs:"100%",sm:"90%",md:"70%"}, display: "flex", flexWrap: "wrap", gap: '5px' }}>
 
 
-                            <Box sx={{width:"45%"}}>
+                            <Box sx={{width:{xs:"100%",sm:"45%",md:"45%"}}}>
 
                     <Box sx={{ width: '100%',height:"70px" }}>
 
@@ -82,7 +84,7 @@ function UpdateProfileForm() {
                     </Box>
 
                             </Box>
-                            <Box sx={{width:"45%"}}>
+                            <Box sx={{width:{xs:"100%",sm:"45%",md:"45%"}}}>
 
                     <Box sx={{ width: '100%',height:"70px" }}> <Box className="flex-column">
                         <label>Phone No</label></Box>
@@ -115,7 +117,7 @@ function UpdateProfileForm() {
                 </Box>
 
             </form>
-            <button className="btn" style={{width:"300px"}}>
+            <button className="btn" style={{width:"270px"}}>
                 {/* {isLoading && <CircularProgress color="inherit" size="20px" />} */}
 
                 Update Profile</button>
