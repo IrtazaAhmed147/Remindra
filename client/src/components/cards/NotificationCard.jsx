@@ -9,13 +9,10 @@ function NotificationCard({name, msg, course , time}) {
                 <Box sx={{ height: '100%', borderRadius: '50%' }} component={'img'} src='https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg' />
             </Box>
             <Box>
-                <Box sx={{display:'flex',gap:'5px'}}>
 
-                 <Typography  fontSize={'14px'} fontWeight={"bold"} color='var(--text-color)'>{name}</Typography>
-                <Typography   fontSize={'14px'} color='#575757ff'>{msg} in</Typography>
-                 <Typography  fontSize={'14px'} fontWeight={"bold"} color='var(--text-color)'>{course}</Typography>
-                </Box>
-                <Typography fontSize={'12px'} color='#9f9f9f'>{time} ago</Typography>
+                 <Typography  sx={{fontSize:{xs:"13px",sm:"14px",md:"14px",color:"#2e2e2eff"}}} fontWeight={"bold"} color='var(--text-color)'>{name} <span style={{color:"#000"}}>{msg} </span> in {course}</Typography>
+       
+                <Typography  sx={{fontSize:{xs:"10px",sm:"12px",md:"13px"}}} color='#9f9f9f'>{time} ago</Typography>
 
             </Box>
 

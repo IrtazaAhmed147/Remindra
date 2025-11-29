@@ -1,4 +1,4 @@
-import { List, ListItem, Typography, IconButton } from '@mui/material'
+import { List, ListItem, Typography, IconButton, Badge } from '@mui/material'
 import Box from '@mui/material/Box'
 import React, { useState } from 'react'
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
@@ -24,7 +24,10 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
     { name: "Courses", icon: <FolderCopyOutlinedIcon />, path: "/courses" },
     { name: "Friends", icon: <GroupOutlinedIcon />, path: "/friends/123" },
     { name: "Tasks", icon: <AssignmentOutlinedIcon />, path: "/task/123" },
-    { name: "Notifications", icon: <NotificationsNoneOutlinedIcon />, path: "/notification/irtaza" },
+    {
+      name: "Notifications", icon: <Badge sx={{ "& .MuiBadge-badge": { top: "-5px", right: "-5px" } }} badgeContent={6} color="primary">
+        <NotificationsNoneOutlinedIcon />  </Badge>, path: "/notification/irtaza"
+    },
     { name: "Settings", icon: <SettingsOutlinedIcon />, path: "/setting" },
   ];
 
@@ -80,7 +83,7 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
                 : "#fff",
               color: location.pathname === item.path ? "#fff" : "var(--text-color)",
               "&:hover": {
-                backgroundColor:"var(--bg-color)",
+                backgroundColor: "var(--bg-color)",
               },
             }}
           >
@@ -105,6 +108,7 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
               >
                 {item.name}
               </Box>}
+             
             </Link>
           </ListItem>
         ))}

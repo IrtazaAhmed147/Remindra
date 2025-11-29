@@ -12,6 +12,7 @@ import { Box, CircularProgress, MenuItem, Select, Typography } from '@mui/materi
 import { notify } from '../../utils/HelperFunctions';
 import { useState } from 'react';
 import SchoolIcon from '@mui/icons-material/School';
+import LandingNavbar from '../../components/navbar/LandingNavbar';
 
 function Signup() {
 
@@ -46,47 +47,47 @@ function Signup() {
         <>
 
 
-          <Box sx={{ width: '100%', minHeight: '100vh', backgroundColor: 'var(--bg-color)', pt: 2}}>
+            <Box sx={{ width: '100%', minHeight: '100vh', backgroundColor: 'var(--bg-color)' }}>
 
-                 <Typography lineHeight={1}  fontWeight={'bold'} sx={{pl:1,mb:{xs:7,sm:3,md:0}, fontSize: { xs: "33px", sm: '40px', md: '50px' } }} >My Idea</Typography>
+               <LandingNavbar  authBtn={false}/>
 
-               
-            <div style={{ width: "100%", backgroundColor: "var(--bg-color)", display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
 
-                <Box sx={{width:{xs:'95%',md:'800px',sm:'800px'},  backgroundColor: 'var(--bg-color)'}}>
-         <h1 style={{color:"var(--text-color)"}}>Sign up</h1>
+                <div style={{ width: "100%", backgroundColor: "var(--bg-color)", display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
 
-                    <form className="form signup-form" onSubmit={handleForm}>
-                        <div className='form-box-1'>
-                            <div className="flex-column">
-                                <label>Username </label></div>
-                            <div className="inputForm">
-                                {/* <PersonOutlineOutlinedIcon /> */}
-                                <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter Username" className="input" type="text" required />
-                            </div>
+                    <Box sx={{ width: { xs: '95%', md: '800px', sm: '800px' }, backgroundColor: 'var(--bg-color)' }}>
+                        <h1 style={{ color: "var(--text-color)" }}>Sign up</h1>
 
-                            <div className="flex-column">
-                                <label>FullName </label></div>
-                            <div className="inputForm">
-                                {/* <PersonOutlineOutlinedIcon /> */}
-                                <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter Full Name" className="input" type="text" required />
-                            </div>
+                        <form className="form signup-form" onSubmit={handleForm}>
+                            <div className='form-box-1'>
+                                <div className="flex-column">
+                                    <label>Username </label></div>
+                                <div className="inputForm">
+                                    {/* <PersonOutlineOutlinedIcon /> */}
+                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter Username" className="input" type="text" required />
+                                </div>
 
-                           
-                            <div className="flex-column">
-                                <label>University </label></div>
-                            <div className="inputForm">
-                                {/* <SchoolIcon /> */}
-                                <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter University" className="input" type="text" required />
-                            </div>
-                            <div className="flex-column">
-                                <label>Field </label></div>
-                            <div className="inputForm">
-                                {/* <SchoolIcon /> */}
-                                <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter Field" className="input" type="text" required />
-                            </div>
+                                <div className="flex-column">
+                                    <label>FullName </label></div>
+                                <div className="inputForm">
+                                    {/* <PersonOutlineOutlinedIcon /> */}
+                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter Full Name" className="input" type="text" required />
+                                </div>
 
-                             {/* <div className="flex-column">
+
+                                <div className="flex-column">
+                                    <label>University </label></div>
+                                <div className="inputForm">
+                                    {/* <SchoolIcon /> */}
+                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter University" className="input" type="text" required />
+                                </div>
+                                <div className="flex-column">
+                                    <label>Field </label></div>
+                                <div className="inputForm">
+                                    {/* <SchoolIcon /> */}
+                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter Field" className="input" type="text" required />
+                                </div>
+
+                                {/* <div className="flex-column">
                                 <label>Gender </label></div>
                             <Select sx={{ width: '100%',height:'50px',backgroundColor:'#fff' }} defaultValue={'select gender'}>
 
@@ -95,45 +96,45 @@ function Signup() {
                                 <MenuItem value='female'>Female</MenuItem>
                             </Select> */}
 
-                        </div>
-                        <div className='form-box-1'>
+                            </div>
+                            <div className='form-box-1'>
 
-                            <div className="flex-column">
-                                <label>Email </label></div>
-                            <div className="inputForm">
-                                {/* <AlternateEmailIcon /> */}
-                                <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} placeholder="Enter Email" name='email' className="input" type="email" required />
-                            </div>
-                            <div className="flex-column">
-                                <label>Password </label></div>
-                            <div className="inputForm">
-                                {/* <LockOutlinedIcon /> */}
-                                <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='password' placeholder="Enter Password" className="input" type={showPass ? "text" : "password"} required />
-                                <div onClick={handleShowPassword} style={{ cursor: 'pointer' }}>
-                                    {showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                <div className="flex-column">
+                                    <label>Email </label></div>
+                                <div className="inputForm">
+                                    {/* <AlternateEmailIcon /> */}
+                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} placeholder="Enter Email" name='email' className="input" type="email" required />
                                 </div>
-                            </div>
-                            <div className="flex-column">
-                                <label>Confirm Password </label></div>
-                            <div className="inputForm">
-                                {/* <LockOutlinedIcon /> */}
-                                <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='password' placeholder="Enter Confirm Password" className="input" type={showPass ? "text" : "password"} required />
-                                <div onClick={handleShowPassword} style={{ cursor: 'pointer' }}>
-                                    {showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                <div className="flex-column">
+                                    <label>Password </label></div>
+                                <div className="inputForm">
+                                    {/* <LockOutlinedIcon /> */}
+                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='password' placeholder="Enter Password" className="input" type={showPass ? "text" : "password"} required />
+                                    <div onClick={handleShowPassword} style={{ cursor: 'pointer' }}>
+                                        {showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                    </div>
                                 </div>
-                            </div>
+                                <div className="flex-column">
+                                    <label>Confirm Password </label></div>
+                                <div className="inputForm">
+                                    {/* <LockOutlinedIcon /> */}
+                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='password' placeholder="Enter Confirm Password" className="input" type={showPass ? "text" : "password"} required />
+                                    <div onClick={handleShowPassword} style={{ cursor: 'pointer' }}>
+                                        {showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                    </div>
+                                </div>
 
-                            <button className="btn">
-                                {isLoading && <CircularProgress color="inherit" size="20px" />}
-                                Create Account</button>
-                            {/* {error && <p>{error}</p>} */}
-                            <p className="p">Already have an account? <Link to={'/login'} className="link">Login</Link>
-                            </p>
-                        </div>
-                    </form>
-                </Box>
-            </div>
-             </Box>
+                                <button className="btn">
+                                    {isLoading && <CircularProgress color="inherit" size="20px" />}
+                                    Create Account</button>
+                                {/* {error && <p>{error}</p>} */}
+                                <p className="p">Already have an account? <Link to={'/login'} className="link">Login</Link>
+                                </p>
+                            </div>
+                        </form>
+                    </Box>
+                </div>
+            </Box>
         </>
     )
 }

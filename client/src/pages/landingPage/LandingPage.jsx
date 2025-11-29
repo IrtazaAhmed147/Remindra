@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Paper, Typography } from '@mui/material'
 import React from 'react'
-import LandingNavbar from '../../components/navbar/landingNavbar'
+import LandingNavbar from '../../components/navbar/LandingNavbar'
 import FeatureCard from '../../components/cards/FeatureCard'
 import BookIcon from '@mui/icons-material/Book';
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -22,7 +22,7 @@ function LandingPage() {
 
       <Box sx={{ minHeight: "100vh", width: "100%", backgroundColor: "var(--bg-color)", }}>
         <LandingNavbar />
-        <Box sx={{px:{xs:'10px',sm:'20px',md:'20px'}}} >
+        <Box sx={{ px: { xs: '10px', sm: '20px', md: '20px' } }} >
 
 
 
@@ -31,26 +31,26 @@ function LandingPage() {
               <Typography mb={1} lineHeight={1} fontWeight={'bold'} sx={{ fontSize: { xs: "33px", sm: '40px', md: '50px' } }} >Keep Your Work Flowing Smoothly</Typography>
               <Typography mb={4} sx={{ fontSize: { xs: "13px", sm: '16px', md: '16px' } }}>Organize, collaborate, and manage your courses
                 all in one flow</Typography>
-                <Link to={'/signup'} style={{width:"200px"}}>
-              <Button
-                sx={{
-                  px: 2,
-                  width: "200px",
-                  mb: 1,
-                  height: "40px",
-                  borderRadius: "6px",
-                  background: "var(--primary-color)",
-                  color: "#fff",
-                   transition:"0.3s all ease-in-out",
-                  textTransform: "capitalize",
-                  fontSize: "16px",
-                  display:{xs:"none",sm:"block",md:"block"},
-                  ":hover": { background: "var(--primaryHover-color)"},
-                }}
+              <Link to={'/signup'} style={{ width: "200px" }}>
+                <Button
+                  sx={{
+                    px: 2,
+                    width: "200px",
+                    mb: 1,
+                    height: "40px",
+                    borderRadius: "6px",
+                    background: "var(--primary-color)",
+                    color: "#fff",
+                    transition: "0.3s all ease-in-out",
+                    textTransform: "capitalize",
+                    fontSize: "16px",
+                    display: { xs: "none", sm: "block", md: "block" },
+                    ":hover": { background: "var(--primaryHover-color)" },
+                  }}
                 >
-                Get Started
-              </Button>
-                </Link>
+                  Get Started
+                </Button>
+              </Link>
             </Box>
 
             {/* image box */}
@@ -59,26 +59,26 @@ function LandingPage() {
               <Box component={'img'} sx={{ width: "100%", maxHeight: "100%" }} src='/heroImage.png ' />
 
               <Link to={'/signup'}>
-              <Button
-                sx={{
-                  px: 2,
-                  width: "200px",
-                  m:"auto",
-                  mb: 1,
-                  mt:2,
-                  height: "40px",
-                  borderRadius: "6px",
-                  background: "var(--primary-color)",
-                  color: "#fff",
-                  textTransform: "capitalize",
-                  fontSize: "16px",
-                  display:{xs:"block",sm:"none",md:"none"},
-                  ":hover": { backgroundColor: "#1258ad" },
-                }}
+                <Button
+                  sx={{
+                    px: 2,
+                    width: "200px",
+                    m: "auto",
+                    mb: 1,
+                    mt: 2,
+                    height: "40px",
+                    borderRadius: "6px",
+                    background: "var(--primary-color)",
+                    color: "#fff",
+                    textTransform: "capitalize",
+                    fontSize: "16px",
+                    display: { xs: "block", sm: "none", md: "none" },
+                    ":hover": { backgroundColor: "#1258ad" },
+                  }}
                 >
-                Get Started
-              </Button>
-                </Link>
+                  Get Started
+                </Button>
+              </Link>
 
             </Box>
           </Box>
@@ -113,39 +113,39 @@ function LandingPage() {
 
 
           <Box id='about' sx={{ py: 6, }}>
-            <Typography mb={3} sx={{ fontWeight: 'bold', textAlign: 'center',fontSize: { xs: "30px", sm: '33px', md: '50px'} }}>
+            <Typography mb={3} sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: { xs: "30px", sm: '33px', md: '50px' } }}>
               About Our Platform
             </Typography>
 
-            <Typography variant="body1" mb={5} sx={{ fontSize: { xs: "14px", sm: '16px', md: '16px'}, textAlign: {sm:"center",md:'center'}, maxWidth: 800, mx: 'auto', color: '#555' }}>
+            <Typography variant="body1" mb={5} sx={{ fontSize: { xs: "14px", sm: '16px', md: '16px' }, textAlign: { sm: "center", md: 'center' }, maxWidth: 800, mx: 'auto', color: '#555' }}>
               Our platform makes it easier for you to manage your studies. It brings all your learning materials into one organized and easy-to-use space. Everything is kept in order and easy to access whenever you need it. Focus on what matters most: <strong>learning well</strong> and <strong>keeping up with your studies</strong>.
             </Typography>
 
             <Grid container spacing={2} justifyContent="center">
-              <Grid item xs={12} sm={6} md={3}>
-                <Paper elevation={3} sx={{ p: {xs:2,sm:2,md:3}, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
-                  <BookIcon sx={{ fontSize: {xs:30,sm:35,md:40}, color: '#2A7DE1',  }} />
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Paper elevation={3} sx={{ p: { xs: 2, sm: 2, md: 3 }, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
+                  <BookIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: '#2A7DE1', }} />
                   <Typography variant="h6" mb={1}>Courses</Typography>
                   <Typography variant="body2" color="textSecondary">All your courses in one place.</Typography>
                 </Paper>
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <Paper elevation={3} sx={{ p: {xs:2,sm:2,md:3}, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
-                  <AssignmentIcon sx={{ fontSize: {xs:30,sm:35,md:40}, color: '#2A7DE1',  }} />
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Paper elevation={3} sx={{ p: { xs: 2, sm: 2, md: 3 }, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
+                  <AssignmentIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: '#2A7DE1', }} />
                   <Typography variant="h6" mb={1}>Assignments</Typography>
                   <Typography variant="body2" color="textSecondary">Track and manage all your tasks easily.</Typography>
                 </Paper>
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <Paper elevation={3} sx={{ p: {xs:2,sm:2,md:3}, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
-                  <QuizIcon sx={{ fontSize: {xs:30,sm:35,md:40}, color: '#2A7DE1',  }} />
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Paper elevation={3} sx={{ p: { xs: 2, sm: 2, md: 3 }, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
+                  <QuizIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: '#2A7DE1', }} />
                   <Typography variant="h6" mb={1}>Quizzes</Typography>
                   <Typography variant="body2" color="textSecondary">Prepare and test your knowledge anytime.</Typography>
                 </Paper>
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <Paper elevation={3} sx={{ p: {xs:2,sm:2,md:3}, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
-                  <NoteIcon sx={{ fontSize: {xs:30,sm:35,md:40}, color: '#2A7DE1',  }} />
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Paper elevation={3} sx={{ p: { xs: 2, sm: 2, md: 3 }, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
+                  <NoteIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: '#2A7DE1', }} />
                   <Typography variant="h6" mb={1}>Notes</Typography>
                   <Typography variant="body2" color="textSecondary">Keep your study notes organized and accessible.</Typography>
                 </Paper>

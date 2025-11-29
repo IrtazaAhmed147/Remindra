@@ -1,5 +1,5 @@
 import React from 'react'
-import LandingNavbar from '../../components/navbar/landingNavbar'
+import LandingNavbar from '../../components/navbar/LandingNavbar'
 import { Box, Typography, Container } from '@mui/material'
 import LandingPageFooter from '../../components/footer/LandingPageFooter'
 
@@ -7,7 +7,7 @@ function TermsConditionPage() {
   return (
     <>
       <Box sx={{ minHeight: "100vh", width: "100%", backgroundColor: "var(--bg-color)" }}>
-        <LandingNavbar />
+        <LandingNavbar authBtn={false}/>
 
         <Container maxWidth="md" sx={{ py: 6 }}>
           <Typography
@@ -23,10 +23,10 @@ function TermsConditionPage() {
           </Typography>
 
           {/* 1. Intro */}
-          <Typography variant="h5" fontWeight="bold" mb={1}>
+          <Typography sx={{fontSize:{xs:"20px",sm:"23px",md:"25px"}}} fontWeight="bold" mb={1}>
             1. Introduction
           </Typography>
-          <Typography mb={3} fontSize="16px" lineHeight={1.7}>
+          <Typography mb={3} sx={{fontSize:{xs:"14px",sm:"16px",md:"16px"}}} lineHeight={1.7}>
             Welcome to <strong>My Idea</strong>, a student collaboration and course management
             platform ("the Platform"). By creating an account or using our services, you agree to
             follow these Terms and Conditions. If you do not agree with any part of these Terms,
@@ -34,30 +34,30 @@ function TermsConditionPage() {
           </Typography>
 
           {/* 2. Purpose */}
-          <Typography variant="h5" fontWeight="bold" mb={1}>
+          <Typography sx={{fontSize:{xs:"20px",sm:"23px",md:"25px"}}} fontWeight="bold" mb={1}>
             2. Purpose
           </Typography>
-          <Typography mb={3} fontSize="16px" lineHeight={1.7}>
+          <Typography mb={3} sx={{fontSize:{xs:"14px",sm:"16px",md:"16px"}}} lineHeight={1.7}>
             <strong>My Idea</strong> provides a digital space for students to organize, share,
             and manage their academic coursework, including quizzes, assignments, resources,
             projects, and discussions.
           </Typography>
 
           {/* 3. User Eligibility */}
-          <Typography variant="h5" fontWeight="bold" mb={1}>
+          <Typography sx={{fontSize:{xs:"20px",sm:"23px",md:"25px"}}} fontWeight="bold" mb={1}>
             3. User Eligibility
           </Typography>
-          <Typography mb={3} fontSize="16px" lineHeight={1.7}>
+          <Typography mb={3} sx={{fontSize:{xs:"14px",sm:"16px",md:"16px"}}} lineHeight={1.7}>
             • You must be at least 13 years old to use this Platform.
             <br />• You must use the Platform solely for educational or academic collaboration.
             <br />• You must provide accurate and truthful information during registration.
           </Typography>
 
           {/* 4. Account Responsibilities */}
-          <Typography variant="h5" fontWeight="bold" mb={1}>
+          <Typography sx={{fontSize:{xs:"20px",sm:"23px",md:"25px"}}} fontWeight="bold" mb={1}>
             4. Account Responsibilities
           </Typography>
-          <Typography mb={3} fontSize="16px" lineHeight={1.7}>
+          <Typography mb={3} sx={{fontSize:{xs:"14px",sm:"16px",md:"16px"}}} lineHeight={1.7}>
             • You are responsible for all activities that occur under your account.
             <br />• Do not share your login credentials with anyone.
             <br />• Notify us immediately if you suspect unauthorized access.
@@ -66,10 +66,10 @@ function TermsConditionPage() {
           </Typography>
 
           {/* 5. Content Ownership */}
-          <Typography variant="h5" fontWeight="bold" mb={1}>
+          <Typography sx={{fontSize:{xs:"20px",sm:"23px",md:"25px"}}} fontWeight="bold" mb={1}>
             5. Content Ownership & Usage
           </Typography>
-          <Typography mb={3} fontSize="16px" lineHeight={1.7}>
+          <Typography mb={3} sx={{fontSize:{xs:"14px",sm:"16px",md:"16px"}}} lineHeight={1.7}>
             • You retain ownership of the files, notes, and materials you upload.
             <br />• By uploading content, you grant <strong>My Idea</strong> a non-exclusive,
             royalty-free license to store and display your materials within the Platform.
@@ -78,10 +78,10 @@ function TermsConditionPage() {
           </Typography>
 
           {/* 6. Prohibited Activities */}
-          <Typography variant="h5" fontWeight="bold" mb={1}>
+          <Typography sx={{fontSize:{xs:"20px",sm:"23px",md:"25px"}}} fontWeight="bold" mb={1}>
             6. Prohibited Activities
           </Typography>
-          <Typography mb={3} fontSize="16px" lineHeight={1.7}>
+          <Typography mb={3} sx={{fontSize:{xs:"14px",sm:"16px",md:"16px"}}} lineHeight={1.7}>
             You agree not to:
             <br />• Upload offensive, abusive, harmful, or explicit content.
             <br />• Share false, plagiarized, or misleading information.
@@ -91,20 +91,20 @@ function TermsConditionPage() {
           </Typography>
 
           {/* 7. Moderation */}
-          <Typography variant="h5" fontWeight="bold" mb={1}>
+          <Typography sx={{fontSize:{xs:"20px",sm:"23px",md:"25px"}}} fontWeight="bold" mb={1}>
             7. Moderation & Suspension
           </Typography>
-          <Typography mb={3} fontSize="16px" lineHeight={1.7}>
+          <Typography mb={3} sx={{fontSize:{xs:"14px",sm:"16px",md:"16px"}}} lineHeight={1.7}>
             • The admin may suspend or remove any account or course that violates these policies.
             <br />• Users with suspended accounts may request a review through support.
             <br />• Repeated violations may result in a permanent ban.
           </Typography>
 
           {/* 8. Liability */}
-          <Typography variant="h5" fontWeight="bold" mb={1}>
+          <Typography sx={{fontSize:{xs:"20px",sm:"23px",md:"25px"}}} fontWeight="bold" mb={1}>
             8. Limitation of Liability
           </Typography>
-          <Typography mb={3} fontSize="16px" lineHeight={1.7}>
+          <Typography mb={3} sx={{fontSize:{xs:"14px",sm:"16px",md:"16px"}}} lineHeight={1.7}>
             <strong>My Idea</strong> is not responsible for:
             <br />• Data loss, technical issues, or service interruptions.
             <br />• Damage caused by unauthorized access to your account.
@@ -114,10 +114,10 @@ function TermsConditionPage() {
         
 
           {/* 10. Contact */}
-          <Typography variant="h5" fontWeight="bold" mb={1}>
+          <Typography sx={{fontSize:{xs:"20px",sm:"23px",md:"25px"}}} fontWeight="bold" mb={1}>
             9. Contact Us
           </Typography>
-          <Typography mb={3} fontSize="16px" lineHeight={1.7}>
+          <Typography mb={3} sx={{fontSize:{xs:"14px",sm:"16px",md:"16px"}}} lineHeight={1.7}>
             If you have any questions regarding these Terms, contact us at:
             <br /><br />
             <strong>Email: </strong>

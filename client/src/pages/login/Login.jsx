@@ -10,6 +10,7 @@ import { loginUser } from '../../redux/actions/authActions';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { notify } from '../../utils/HelperFunctions';
 import { useState } from 'react';
+import LandingNavbar from '../../components/navbar/LandingNavbar';
 function Login() {
 
     const dispatch = useDispatch();
@@ -44,9 +45,9 @@ function Login() {
     return (
         <>
 
-            <Box sx={{ width: '100%', minHeight: '100vh', backgroundColor: 'var(--bg-color)', pt: 2 }}>
+            <Box sx={{ width: '100%', minHeight: '100vh', backgroundColor: 'var(--bg-color)'}}>
 
-                 <Typography mb={1} lineHeight={1}  fontWeight={'bold'} sx={{pl:2, fontSize: { xs: "33px", sm: '40px', md: '50px' } }} >My Idea</Typography>
+                 <LandingNavbar  authBtn={false}/>
                 <Box sx={{ width: '100%', height: '85vh', backgroundColor: 'var(--bg-color)', display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
 
                     <Box sx={{ width: { xs: '90%', md: '450px', sm: '450px' }, backgroundColor: 'var(--bg-color)' }}>

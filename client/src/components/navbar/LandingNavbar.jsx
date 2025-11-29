@@ -13,7 +13,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Menu, MenuItem } from '@mui/material';
 
 
-function LandingNavbar() {
+function LandingNavbar({authBtn = true}) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -40,7 +40,6 @@ function LandingNavbar() {
                         <Typography
                             variant="h6"
                             noWrap
-                            component="a"
                             sx={{
                                 mr: 2,
                                 display: { xs: 'none', md: 'flex' },
@@ -53,7 +52,7 @@ function LandingNavbar() {
                         </Typography>
 
                     </Link>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                  {authBtn &&  <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
@@ -128,13 +127,12 @@ function LandingNavbar() {
                         </Menu>
 
 
-                    </Box>
+                    </Box>}
 
                     <Link to={'/'}  style={{width:'100%'}}>
                         <Typography
                             variant="h5"
-                            noWrap
-                            component="a"
+                            noWrap  
                             sx={{
                                 mr: 2,
                                 display: { xs: 'flex', md: 'none' },
@@ -150,7 +148,7 @@ function LandingNavbar() {
 
                     <Box sx={{ flexGrow: 0, display: { xs: "none", sm: "none", md: "flex" } }}>
 
-                        <Link to={`/login`}>
+                      { authBtn && <><Link to={`/login`}>
                             <Button
                                 sx={{
                                     px: 2,
@@ -186,7 +184,7 @@ function LandingNavbar() {
                             >
                                 <PersonAddIcon sx={{ mr: 1 }} />  Sign Up
                             </Button>
-                        </Link>
+                        </Link> </>}
                     </Box>
                 </Toolbar>
             </Container>
