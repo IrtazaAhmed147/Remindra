@@ -1,9 +1,13 @@
-import { Button } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import { Link } from 'react-router-dom'
+import LandingNavbar from '../../components/navbar/LandingNavbar'
+import LandingPageFooter from '../../components/footer/LandingPageFooter'
 
 function NotFound() {
   return (
-    <div style={{textAlign: 'center', height: '100vh',display:'flex' }}>
+    <Box sx={{ minHeight: "100vh",display:"flex",flexDirection:"column",justifyContent:"space-between", width: "100%", backgroundColor: "var(--bg-color)", }}>
+      <LandingNavbar  authBtn={false}/>
+    <div style={{textAlign: 'center', display:'flex' }}>
         <div style={{margin: 'auto'}}>
 
         <h1 style={{fontSize: '50px'}}>404</h1>
@@ -14,6 +18,8 @@ function NotFound() {
         
         </div>
     </div>
+    <LandingPageFooter />
+    </Box>
   )
 }
 
