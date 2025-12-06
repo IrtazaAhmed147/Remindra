@@ -55,6 +55,8 @@ export const updateUser = async (req, res) => {
         },
             { new: true });
         successHandler(res, 200, "User updated successfully", userData)
+        
+
 
     }
     catch (err) {
