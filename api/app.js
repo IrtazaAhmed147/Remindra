@@ -5,6 +5,7 @@ import { connectDB } from './utils/connectDB.js'
 import helmet from "helmet"
 import { userRouter } from './routes/userRoute.js'
 import { authRouter } from './routes/authRoute.js'
+import { courseRouter } from './routes/courseRoute.js'
 
 const app = express()
 
@@ -21,7 +22,7 @@ app.use(helmet())
 // app.use(mongoSanitize())
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'http://localhost:5173' ,
     credentials: true
 }))
 
@@ -30,6 +31,7 @@ app.use(cors({
 // routes
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
+app.use('/api/course',courseRouter)
 
 
 

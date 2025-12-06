@@ -58,58 +58,71 @@ export const register = async (req, res, next) => {
     }
 }
 
-
-export const login = async (req, res, next) => {
-
-
+export const login = async (req, res) => {
     try {
-        if (!req.body.username || !req.body.password) {
-            // return errorHandler(res, 400, "missing fields");
-            return errorHandler(res, 400, "missing fields")
+        const { username, password } = req.body;
+
+        // 1. Check missing fields
+        if (!username || !password) {
+            return errorHandler(res, 400, "Missing fields");
         }
 
-        // const isExists = await Users.find({ $or: [{ email: email }, { userName: userName }] })
-        const isExists = await User.findOne({ username: req.body.username })
-
-
-
-        if (!isExists) {
-            return errorHandler(res, 400, "Invalid Credentials")
+        // 2. Check user exists
+        const user = await User.findOne({ username });
+        if (!user) {
+            return errorHandler(res, 400, "Invalid Credentials");
         }
-        const isPasswordCorrect = await compare(
-            req.body.password, isExists.password
-        );
+
+        // 3. Check password
+        const isPasswordCorrect = await compare(password, user.password);
         if (!isPasswordCorrect) {
-            return errorHandler(res, 400, "Invalid Credentials")
+            return errorHandler(res, 400, "Invalid Credentials");
         }
 
-        const isVerified = await User.findOne({ isVerified: true, username: req.body.username })
-        if (!isVerified) return errorHandler(res, 403, "Account already exist. Verify your account")
+        // 4. Check if user is verified
+        if (!user.isVerified) {
 
+            // Generate OTP
+            const otp = nanoid().slice(0, 6);
 
+            user.otp = otp;
+            user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 min
 
-        const token = jwt.sign({ id: isExists._id, username: isExists.username }, process.env.JWT, {
-            expiresIn: '7d'
-        })
+            await user.save();
 
-        const { password, ...otherDetails } = isExists._doc
+            // Send email
+            await generateEmail(user.email, otp);
 
+            return successHandler(
+                res,
+                200,
+                "Account exists but not verified. OTP sent for verification."
+            );
+        }
 
-        res.status(200).json({
+        // 5. If verified → generate login token
+        const token = jwt.sign(
+            { id: user._id, username: user.username },
+            process.env.JWT,
+            { expiresIn: "7d" }
+        );
+
+        // Remove password before sending
+        const { password: _, ...otherDetails } = user._doc;
+
+        return res.status(200).json({
             success: true,
             status: 200,
-            token: token,
-            data: { ...otherDetails },
-            message: 'user loggedin successfully'
-
-
-        })
-
+            token,
+            data: otherDetails,
+            message: "User logged in successfully"
+        });
 
     } catch (error) {
-        errorHandler(res, 404, error.message)
+        return errorHandler(res, 500, error.message);
     }
-}
+};
+
 
 export const logout = (req, res) => {
     res.status(200).json({ success: true, message: 'Logged out successfully' });
@@ -130,7 +143,7 @@ export const verifyEmail = async (req, res) => {
 
         let verifyingUser;
         try {
-         verifyingUser = VerifyEmailToken(tokenString); 
+            verifyingUser = VerifyEmailToken(tokenString);
         } catch (err) {
             if (err.name === "TokenExpiredError") {
                 return errorHandler(res, 401, "Token has expired");
