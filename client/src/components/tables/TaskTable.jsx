@@ -19,7 +19,7 @@ const options = ["Change Status", "Delete", "Edit"];
 
 const ITEM_HEIGHT = 48;
 
-export default function TaskTable({ assignments, viewModal, askDelete, handleUpdate, setSelectedItem, selectedItem, isLoading }) {
+export default function TaskTable({ assignments, viewModal, askDelete, handleUpdate, setSelectedItem, selectedItem, isLoading, type }) {
 
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -62,7 +62,7 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
 
       {/* Rows */}
       {isLoading && <> <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "250px" }}>  <CircularProgress color="inherit" size="30px" /> </Box></>}
-      {!isLoading && assignments?.map((item, i) => (
+      {!isLoading && (assignments?.length === 0 ? (<Typography fontSize={"14px"} margin={'auto'} mt={2}>No {type === 'quiz' ?'quiz':'assignments'} found.</Typography>) : assignments?.map((item, i) => (
         <Box
           key={i}
           sx={{
@@ -94,7 +94,7 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
               display: "flex",
             }}
           >
-            {item.status === "Completed" ? (
+            {item?.status === "Completed" ? (
               <Chip
                 icon={<CheckCircleOutlineIcon sx={{ fontSize: "16px" }} />}
                 label={"Completed"}
@@ -172,8 +172,14 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
                       selectedItem?._id,
                       { status: selectedItem?.status === "Pending" ? "Completed" : "Pending" }
                     )
-                  } else if(option === 'Edit') {
-                    navigate(`/create/assignment?type=edit&id=${selectedItem._id}`)
+                  } else if (option === 'Edit') {
+                    if (type === 'quiz') {
+
+                      navigate(`/create/quiz?type=edit&id=${selectedItem._id}`)
+                    } else {
+
+                      navigate(`/create/assignment?type=edit&id=${selectedItem._id}`)
+                    }
                   }
                   handleClose()
 
@@ -192,7 +198,7 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
           </Box>
 
 
-        </Box>
+        </Box>)
       ))}
     </Box>
   );

@@ -1,9 +1,12 @@
+import { useEffect } from 'react';
+import { fetchLoggedInUser } from './redux/actions/authActions.js';
+import { logout } from './redux/slices/authSlice.js';
+import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Layout from './layout/Layout';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
 import NotFound from './pages/notFound/NotFound.jsx';
-import SingleCourse from './pages/courses/SingleCourse.jsx';
 import Setting from './pages/settings/Setting.jsx';
 import CoursePage from './pages/courses/CoursePage.jsx';
 import AddCoursePage from './pages/courses/AddCoursePage.jsx';
@@ -12,7 +15,6 @@ import Notification from './pages/Notification.jsx/Notification.jsx';
 import FriendsPage from './pages/friends/FriendsPage.jsx';
 import AddAssignmentPage from './pages/tasks/AddAssignmentPage.jsx';
 import AddQuizPage from './pages/tasks/AddQuizPage.jsx';
-import TaskPage from './pages/tasks/TaskPage.jsx';
 import UpdateProfilePage from './pages/profile/UpdateProfilePage.jsx';
 import LandingPage from './pages/landingPage/LandingPage.jsx';
 import PrivacyPolicyPage from './pages/policy and conditions/PrivacyPolicyPage.jsx';
@@ -23,11 +25,14 @@ import Otp from './pages/auth/Otp.jsx';
 import ForgotPass from './pages/auth/forgotPass.jsx';
 import ResetPass from './pages/auth/ResetPass.jsx';
 import AddResource from './pages/resource/AddResource.jsx';
-import { useEffect } from 'react';
-import { fetchLoggedInUser } from './redux/actions/authActions.js';
 import ProtectedRoute from './components/protectedRoute/protectedRoute.jsx';
-import { useDispatch } from 'react-redux';
-import { logout } from './redux/slices/authSlice.js';
+import AssignmentPage from './pages/tasks/AssignmentPage.jsx';
+import QuizPage from './pages/tasks/QuizPage.jsx';
+import SingleCourseLayout from './pages/courses/SingleCourse.jsx';
+import AssignmentTabPage from './pages/courses/AssignmentTabPage.jsx';
+import ImagesTabPage from './pages/courses/ImagesTabPage.jsx';
+import OverviewTabPage from './pages/courses/OverviewTabPage.jsx';
+import QuizzesTabPage from './pages/courses/QuizzesTabPage.jsx';
 
 function App() {
 
@@ -35,15 +40,9 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log(token);
-
     if (token) {
-      console.log("chala");
-
       dispatch(fetchLoggedInUser());
     } else {
-      console.log('logout');
-
       dispatch(logout());
     }
   }, []);
@@ -80,8 +79,14 @@ function App() {
             <Route path='/courses' element={<CoursePage />} />
             <Route path='/add/course' element={<AddCoursePage />} />
             <Route path='/add/resources/:courseId' element={<AddResource />} />
-            <Route path='/course/:courseId' element={<SingleCourse />} />
-            <Route path='/task/:aId' element={<TaskPage />} />
+            <Route path="/course/:courseId" element={<SingleCourseLayout />}>
+              <Route index element={<OverviewTabPage />} />
+              <Route path="assignments" element={<AssignmentTabPage />} />
+              <Route path="quizzes" element={<QuizzesTabPage />} />
+              <Route path="resources" element={<ImagesTabPage />} />
+            </Route>
+            <Route path='/assignment/:aId' element={<AssignmentPage />} />
+            <Route path='/quiz/:aId' element={<QuizPage />} />
             <Route path='/create/assignment' element={<AddAssignmentPage />} />
             <Route path='/create/quiz' element={<AddQuizPage />} />
             <Route path='/friends/:friendId' element={<FriendsPage />} />

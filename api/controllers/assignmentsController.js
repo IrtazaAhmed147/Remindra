@@ -100,12 +100,14 @@ export const getSingleAssignment = async (req, res) => {
 export const getUserAssignments = async (req, res) => {
     try {
 
-        const { title, dueDate, status } = req.query;
+        const { title, dueDate, status ,courseId} = req.query;
 
         const filter = { createdBy: req.user.id };
         if (title) { filter.title = { $regex: title, $options: "i" } };
         if (dueDate) { filter.dueDate = dueDate };
-        if (status) { filter.status = status };
+        if (courseId) { filter.courseId = courseId };
+        
+        if (status && status !== 'all') { filter.status = status };
         const assignments = await assignmentsModel.find(filter).populate({
             path: "courseId",
             select: "title"

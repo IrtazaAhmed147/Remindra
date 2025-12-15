@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     courses: [],           // all courses
-    singleCourse: {},    // course detail page
+    singleCourse: {}, 
+    downloadLoading: false,
     courseIsLoading: false,
     error: null,
 };

@@ -6,6 +6,8 @@ import resourceModel from "../models/resourceModel.js";
 import userModel from "../models/userModel.js";
 import { deleteFromCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 import { errorHandler, successHandler } from "../utils/responseHandler.js";
+import archiver from "archiver";
+import axios from "axios";
 
 
 export const createCourse = async (req, res) => {
@@ -50,14 +52,24 @@ export const getAllcourses = async (req, res) => {
 
 export const getSinglecourse = async (req, res) => {
     try {
-        const courseData = await course.findById(req.params.id).populate({
-            path: "assignments",
-            populate: {
-                path: "courseId",
-                select: "title",
-                model: "course",
-            }
-        });
+        const courseData = await course.findById(req.params.id).populate([
+            {
+                path: "assignments",
+                populate: {
+                    path: "courseId",
+                    select: "title",
+                    model: "course",
+                },
+            },
+            {
+                path: "quizzes",
+                populate: {
+                    path: "courseId",
+                    select: "title",
+                    model: "course",
+                },
+            },
+        ]);
 
         if (!courseData) return errorHandler(res, 404, "course not found")
         successHandler(res, 200, "course found successfully", courseData)
@@ -164,3 +176,39 @@ export const updatecourse = async (req, res) => {
         errorHandler(res, 400, err.message)
     }
 }
+
+
+export const downloadCourseImages = async (req, res) => {
+  try {
+    const resources = await resourceModel.find({ courseId: req.params.id });
+
+    if (!resources.length) {
+      return errorHandler(res, 404 , "No images found" );
+    //   return res.status(404).json({ message: "No images found" });
+    }
+
+    res.setHeader("Content-Type", "application/zip");
+    res.setHeader(
+      "Content-Disposition",    
+      "attachment; filename=course-images.zip"
+    );
+
+    const archive = archiver( "zip", { zlib: { level: 9 } });
+    archive.pipe(res);
+
+    for (let i = 0; i < resources.length; i++) {
+      const imageRes = await axios.get(resources[i].fileUrl, {
+        responseType: "stream",
+      });
+
+      archive.append(imageRes.data, {
+        name: `image-${i + 1}.jpg`,
+      });
+    }
+
+    await archive.finalize();
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Download failed" });
+  }
+};

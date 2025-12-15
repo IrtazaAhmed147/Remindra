@@ -24,7 +24,8 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
     { name: "Dashboard", icon: <DashboardOutlinedIcon />, path: "/dashboard" },
     { name: "Courses", icon: <FolderCopyOutlinedIcon />, path: "/courses" },
     { name: "Friends", icon: <GroupOutlinedIcon />, path: "/friends/123" },
-    { name: "Tasks", icon: <AssignmentOutlinedIcon />, path: "/task/123" },
+    { name: "Assignments", icon: <AssignmentOutlinedIcon />, path: "/assignment/123" },
+    { name: "Quizs", icon: <AssignmentOutlinedIcon />, path: "/quiz/123" },
     {
       name: "Notifications", icon: <Badge sx={{ "& .MuiBadge-badge": { top: "-5px", right: "-5px" } }} badgeContent={6} color="primary">
         <NotificationsNoneOutlinedIcon />  </Badge>, path: "/notification/irtaza"

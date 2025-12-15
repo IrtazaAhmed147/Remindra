@@ -14,8 +14,9 @@ quizRouter.post("/create/course/:id", verifyToken,upload.array('attachments'), c
 quizRouter.get("/all", verifyToken,getAllQuizs);
 quizRouter.get("/:id", verifyToken, getSingleQuiz);
 quizRouter.get("/", verifyToken, getUserQuizs);
-quizRouter.put("/:id", verifyToken, updateQuiz);
+quizRouter.put("/:id", verifyToken, upload.array('attachments'),updateQuiz);
 quizRouter.delete("/:id/course/:courseId", verifyToken, deleteQuiz);
+
 
 
 export {quizRouter}

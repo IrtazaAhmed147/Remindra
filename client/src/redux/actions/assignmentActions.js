@@ -50,11 +50,14 @@ export const getUserAssignmentsAction = (query) => async (dispatch) => {
             withCredentials: true,
             params: query
         });
-
-        dispatch(fetchAssignmentsSuccess(res.data.data));
-        return res.data.data;
+        console.log(res);
+        
+        dispatch(fetchAssignmentsSuccess(res?.data?.data));
+        return res?.data?.data;
 
     } catch (error) {
+        console.log(error.message);
+        
         dispatch(fetchAssignmentsFailure(error.response.data.message));
         throw error.response.data.message;
     }
