@@ -17,7 +17,7 @@ export const getAllUsersAction = (query = {}) => async (dispatch) => {
 
     const token = localStorage.getItem("token");
 
-    const res = await api.get("/user", {
+    const res = await api.get("/user/all", {
       headers: { Authorization: `Bearer ${token}` },
       params: query,
       withCredentials: true,
@@ -114,12 +114,13 @@ export const deactivateUserAction = (id, body) => async (dispatch) => {
   }
 };
 
-export const suspendUserAction = (id, body) => async (dispatch) => {
+export const suspendUserAction = (id,body) => async (dispatch) => {
   try {
     dispatch(updateUserStart());
 
     const token = localStorage.getItem("token");
-
+    console.log("actions");
+    
     const res = await api.put(`/user/suspend/${id}`, body, {
       headers: { Authorization: `Bearer ${token}` },
       withCredentials: true,

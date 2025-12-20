@@ -133,6 +133,26 @@ export const updateCourseAction = (id, body) => async (dispatch) => {
 
 
 
+export const disableCourseAction = (id) => async (dispatch) => {
+    try {
+        dispatch(fetchCoursesStart());
+
+        const token = localStorage.getItem("token");
+
+        const res = await api.put(`/course/disable/${id}`,{}, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+        });
+
+        dispatch(fetchCoursesSuccess()); // you may remove from list in UI manually
+        return res.data.message;
+
+    } catch (error) {
+        dispatch(fetchCoursesFailure(error.response.data.message));
+        throw error.response.data.message;
+    }
+};
+
 export const deleteCourseAction = (id) => async (dispatch) => {
     try {
         dispatch(fetchCoursesStart());

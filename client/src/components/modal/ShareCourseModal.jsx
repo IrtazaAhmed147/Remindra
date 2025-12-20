@@ -15,22 +15,28 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
+import { useSelector } from "react-redux";
 
-// Sample users - replace with API data
-const sampleUsers = [
-  { id: 1, name: "Alice Johnson", username: "alice123", university: "MIT" },
-  { id: 2, name: "Bob Smith", username: "bob_smith", university: "Stanford" },
-  { id: 3, name: "Charlie Brown", username: "charlie_b", university: "Harvard" },
-  { id: 4, name: "David Lee", username: "davidlee", university: "SMIU" },
-];
 
-export default function ShareCourseModal({ open, onClose, onShare }) {
+export default function ShareCourseModal({ open, onClose, onShare, userList, members }) {
+
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
-    setUsers(sampleUsers);
+    userList?.filter((u, i) => {
+      console.log(user);
+      console.log(u);
+      if ((u._id !== user._id) ) {
+
+        console.log('chala');
+
+        setUsers(prev => [...prev, u]);
+      }
+    });
+
   }, []);
 
   const handleToggle = (userId) => {
@@ -47,9 +53,9 @@ export default function ShareCourseModal({ open, onClose, onShare }) {
 
   const filteredUsers = users.filter(
     (user) =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.university.toLowerCase().includes(searchTerm.toLowerCase())
+      user?.fullname?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
+      user?.username?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
+      user?.university?.toLowerCase()?.includes(searchTerm?.toLowerCase())
   );
 
   const handleShareClick = () => {
@@ -70,7 +76,7 @@ export default function ShareCourseModal({ open, onClose, onShare }) {
         </Typography>
       </DialogTitle>
 
-      <DialogContent sx={{p:2}}>
+      <DialogContent sx={{ p: 2 }}>
         <Typography fontSize={13} color="text.secondary" sx={{ mb: 2 }}>
           Select users to give access to this course. You can modify access anytime.
         </Typography>
@@ -93,11 +99,11 @@ export default function ShareCourseModal({ open, onClose, onShare }) {
         <Box sx={{ maxHeight: 250, overflowY: "auto" }}>
           {filteredUsers.map((user) => (
             <Card
-              key={user.id}
+              key={user._id}
               sx={{
                 mb: 1,
                 borderRadius: "10px",
-                boxShadow:"0 2px 6px rgba(0,0,0,0.05)",
+                boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
                 transition: "0.3s",
               }}
             >
@@ -109,23 +115,24 @@ export default function ShareCourseModal({ open, onClose, onShare }) {
                   p: "10px !important",
                 }}
               >
-                <Avatar sx={{ width: 40, height: 40 }}>{user.name[0]}</Avatar>
+                <Avatar sx={{ width: 40, height: 40 }}>{user?.profilePic}</Avatar>
                 <Box sx={{ flex: 1 }}>
                   <Typography sx={{ fontSize: "14px", fontWeight: 600 }}>
-                    {user.name}
+                    {user?.fullname}
                   </Typography>
                   <Typography sx={{ fontSize: "11px", color: "#64748B" }}>
-                    @{user.username}
+                    @{user?.username}
                   </Typography>
                   <Typography sx={{ fontSize: "11px", color: "#64748B" }}>
-                    {user.university}
+                    {user?.university}
                   </Typography>
                 </Box>
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={selectedUsers.includes(user.id)}
-                      onChange={() => handleToggle(user.id)}
+                    disabled={members?.includes(user.id)}
+                      checked={members?.includes(user.id) || selectedUsers?.includes(user._id)}
+                      onChange={() => handleToggle(user._id)}
                       sx={{
                         color: "#04a40e",
                         "&.Mui-checked": { color: "#04a40e" },

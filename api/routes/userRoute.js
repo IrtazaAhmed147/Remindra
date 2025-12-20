@@ -11,7 +11,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage })
 
 
-userRouter.get('/all', verifyToken, verifyAdmin, getAllUsers)
+userRouter.get('/all', verifyToken,  getAllUsers)
 userRouter.get('/me', verifyToken, getLoginUser)
 userRouter.get('/:id', verifyToken, getSingleUser)
 userRouter.delete('/:id', verifyToken, verifyAdmin, deleteUser);

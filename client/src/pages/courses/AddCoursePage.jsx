@@ -31,7 +31,7 @@ export default function AddCoursePage() {
     const formRef = useRef();
 
     const dispatch = useDispatch()
-    const { isLoading } = useSelector((state) => state.course)
+    const { courseIsLoading } = useSelector((state) => state.course)
 
     const [typeParam, setTypeParam] = useSearchParams()
     useEffect(() => {
@@ -182,7 +182,7 @@ export default function AddCoursePage() {
 
                     <Button
                         type="submit"
-                        disabled={isLoading}
+                        disabled={courseIsLoading}
                         sx={{
 
                             px: 2,
@@ -197,7 +197,7 @@ export default function AddCoursePage() {
                             ":hover": { backgroundColor: "#1258ad" },
                         }}
                     >
-                        {isLoading && <CircularProgress color="inherit" size="20px" />}
+                        {courseIsLoading && <CircularProgress color="inherit" size="20px" />}
                         {typeParam.get("type") === 'edit' ? "Edit" : 'Create'} Course
                     </Button>
                 </Box>

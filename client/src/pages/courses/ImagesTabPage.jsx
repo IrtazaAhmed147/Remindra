@@ -18,6 +18,8 @@ function ImagesTabPage() {
     const [isModal, setIsModal] = useState(false)
     const [downloadLoading, setDownloadLoading] = useState(false)
     const {resources, isLoading: resourcesLoading} = useSelector((state)=> state.resource)
+    const {singleCourse, } = useSelector((state)=> state.course)
+    const {user} = useSelector((state)=> state.auth)
     const {courseId} = useParams()
     useEffect(()=> {
         dispatch(getCourseResourcesAction(courseId)).then((msg)=> console.log(msg))
@@ -30,6 +32,7 @@ function ImagesTabPage() {
           })
           .catch((err) => notify("error", err));
       };
+  const isOwner = singleCourse?.owner?._id === user?._id;
 
     return (
 
@@ -40,7 +43,7 @@ function ImagesTabPage() {
                     Images
                 </Typography>
 
-                <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                {isOwner && <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                     {resources?.length > 0 && (
                         <>
                             <Button sx={{ minWidth: "auto", bgcolor: "red", borderRadius: "50%", color: "#fff" }} onClick={() => setIsModal(true)}>
@@ -60,7 +63,7 @@ function ImagesTabPage() {
                         </>
                     )}
                     <GradientBtn icon={<AssignmentOutlinedIcon sx={{ fontSize: 18, color: "#4158D0" }} />} text="Add Images" url={`/add/resources/${courseId}`} />
-                </Box>
+                </Box>}
             </Box>
 
             {resourcesLoading ? (

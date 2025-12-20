@@ -62,12 +62,12 @@ function App() {
 
       <Routes>
         {/* Public Routes */}
+        <Route index element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPass />} />
         <Route path="/reset-password" element={<ResetPass />} />
         <Route path="/otp" element={<Otp />} />
-        <Route index element={<LandingPage />} />
         <Route path='/privacypolicy' element={<PrivacyPolicyPage />} />
         <Route path='/termsandcondition' element={<TermsConditionPage />} />
 

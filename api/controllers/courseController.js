@@ -40,7 +40,11 @@ export const getAllcourses = async (req, res) => {
     const filter = {};
     if (courseName) filter.title = courseName;
     try {
-        const courseData = await course.find(filter);
+        const courseData = await course.find(filter).populate({
+            path: "owner",
+            select: "username",
+            model: "User",
+        })
         successHandler(res, 200, "All courses fetched", courseData)
     }
     catch (err) {
@@ -52,24 +56,29 @@ export const getAllcourses = async (req, res) => {
 
 export const getSinglecourse = async (req, res) => {
     try {
-        const courseData = await course.findById(req.params.id).populate([
-            {
-                path: "assignments",
-                populate: {
-                    path: "courseId",
-                    select: "title",
-                    model: "course",
-                },
-            },
-            {
-                path: "quizzes",
-                populate: {
-                    path: "courseId",
-                    select: "title",
-                    model: "course",
-                },
-            },
-        ]);
+        const courseData = await course.findById(req.params.id).populate({
+            path: "owner",
+            select: "username",
+            model: "User",
+        })
+        // .populate([
+        //     {
+        //         path: "assignments",
+        //         populate: {
+        //             path: "courseId",
+        //             select: "title",
+        //             model: "course",
+        //         },
+        //     },
+        //     {
+        //         path: "quizzes",
+        //         populate: {
+        //             path: "courseId",
+        //             select: "title",
+        //             model: "course",
+        //         },
+        //     },
+        // ]);
 
         if (!courseData) return errorHandler(res, 404, "course not found")
         successHandler(res, 200, "course found successfully", courseData)
@@ -89,6 +98,8 @@ export const getUserCourses = async (req, res) => {
         if (courseName) {
             filter.title = { $regex: courseName, $options: "i" }; // better search
         }
+        filter.disable = false;
+
         if (courseType === 'all') {
 
             filter.$or = [
@@ -102,7 +113,11 @@ export const getUserCourses = async (req, res) => {
         else if (courseType === "sharedcourses") {
             filter.members = req.user.id;
         }
-        const courseData = await course.find(filter);
+        const courseData = await course.find(filter).populate({
+            path: "owner",
+            select: "username",
+            model: "User",
+        })
 
         if (!courseData || courseData.length === 0) {
             return errorHandler(res, 404, "No courses found");
@@ -143,7 +158,23 @@ export const deletecourse = async (req, res) => {
     }
 }
 
+export const disableCourse = async (req, res) => {
+
+    try {
+        const courseData = await course.findByIdAndUpdate(req.params.id, {
+            $set: { disable: true },
+        });
+        successHandler(res, 200, "course deleted successfully", courseData)
+    }
+    catch (err) {
+        console.log(err);
+        errorHandler(res, 400, err.message)
+    }
+}
+
 export const suspendCourse = async (req, res) => {
+    console.log('req.params');
+
     try {
         const courseData = await course.findByIdAndUpdate(req.params.id, {
             $set: { suspend: true },
@@ -179,36 +210,36 @@ export const updatecourse = async (req, res) => {
 
 
 export const downloadCourseImages = async (req, res) => {
-  try {
-    const resources = await resourceModel.find({ courseId: req.params.id });
+    try {
+        const resources = await resourceModel.find({ courseId: req.params.id });
 
-    if (!resources.length) {
-      return errorHandler(res, 404 , "No images found" );
-    //   return res.status(404).json({ message: "No images found" });
+        if (!resources.length) {
+            return errorHandler(res, 404, "No images found");
+            //   return res.status(404).json({ message: "No images found" });
+        }
+
+        res.setHeader("Content-Type", "application/zip");
+        res.setHeader(
+            "Content-Disposition",
+            "attachment; filename=course-images.zip"
+        );
+
+        const archive = archiver("zip", { zlib: { level: 9 } });
+        archive.pipe(res);
+
+        for (let i = 0; i < resources.length; i++) {
+            const imageRes = await axios.get(resources[i].fileUrl, {
+                responseType: "stream",
+            });
+
+            archive.append(imageRes.data, {
+                name: `image-${i + 1}.jpg`,
+            });
+        }
+
+        await archive.finalize();
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Download failed" });
     }
-
-    res.setHeader("Content-Type", "application/zip");
-    res.setHeader(
-      "Content-Disposition",    
-      "attachment; filename=course-images.zip"
-    );
-
-    const archive = archiver( "zip", { zlib: { level: 9 } });
-    archive.pipe(res);
-
-    for (let i = 0; i < resources.length; i++) {
-      const imageRes = await axios.get(resources[i].fileUrl, {
-        responseType: "stream",
-      });
-
-      archive.append(imageRes.data, {
-        name: `image-${i + 1}.jpg`,
-      });
-    }
-
-    await archive.finalize();
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Download failed" });
-  }
 };

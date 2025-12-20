@@ -5,6 +5,7 @@ import courseSlice from './slices/courseSlice'
 import assignmentsSlice from './slices/assignmentsSlice'
 import quizsSlice from './slices/quizSlice'
 import resourceSlice from './slices/resourceSlice'
+import inviteSlice from './slices/inviteSlice'
 
 const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
         assignments: assignmentsSlice,
         resource: resourceSlice,
         quizs: quizsSlice,
+        invite: inviteSlice,
 
     }
 })

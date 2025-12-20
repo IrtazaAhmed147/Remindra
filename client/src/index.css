@@ -14,12 +14,21 @@ a{
 
 :root {
   --primary-color: #2A7DE1;
-  /* --primary-color: linear-gradient(135deg, #2A7DE1, #6BB7FF); */
   --primaryHover-color: #1f6dcb;
   --secondary-color: #1AC8DB ;
   --notification-color: #F4B400 ;
+  --card-bg-color: #fff; 
   --bg-color: #F8FAFC ;
   --text-color: #1E293B  ;
+  --sidebar-color: #fff  ;
+  
+  
+  /* --sidebar-color: #000  ; */
+  /* --primary-color: #4C9DFF;  
+  --secondary-color: #22D3EE;   
+  --bg-color: #0F172A;  
+    --text-color: #E5E7EB; 
+    --card-bg-color: #020617;  */
 }
 html {
   scroll-behavior: smooth;

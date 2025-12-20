@@ -40,7 +40,7 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
         width: collapsed ? '80px' : '260px',
         height: mobileSidebar ? '100vh' : "100vh",
         mt: 0,
-        backgroundColor: "#fff",
+        backgroundColor: "var(--sidebar-color)",
         position: 'fixed',
         zIndex: 0,
         boxShadow: "6px 11px 20px rgba(0,0,0,0.15)",

@@ -23,7 +23,7 @@ export default function AddQuizPage() {
     const [coverFiles, setCoverFiles] = useState([]);
     const [coverPreviews, setCoverPreviews] = useState([]);
     const [render, setRender] = useState(false);
-
+    const { quizLoading } = useSelector((state) => state.quizs)
 
     const [dueDate, setDueDate] = useState(null); // local state for picker
     const form = useRef({ task: "" })
@@ -64,7 +64,7 @@ export default function AddQuizPage() {
     }, [])
 
 
-    const handleCreateAssigment = async () => {
+    const handleCreateQuiz = async () => {
 
         const formData = new FormData();
         formData.append("title", form.current.title);
@@ -340,7 +340,8 @@ export default function AddQuizPage() {
             {/* BUTTONS */}
             <Box sx={{ mt: 4 }}>
                 <Button
-                    onClick={() => handleCreateAssigment()}
+                disabled={quizLoading}
+                    onClick={() => handleCreateQuiz()}
                     sx={{
                         padding: " 5px 10px",
                         width: "160px",

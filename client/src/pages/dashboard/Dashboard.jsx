@@ -74,7 +74,7 @@ function Dashboard() {
               key={index}
               sx={{
                 width: { xs: "45%", sm: "48%", md: "23%" },
-                backgroundColor: "#fff",
+                backgroundColor: "var(--card-bg-color)",
                 borderRadius: "12px",
                 padding: { xs: "10px", sm: "15px", md: "15px" },
                 boxShadow: "0px 4px 15px rgba(0,0,0,0.12)",

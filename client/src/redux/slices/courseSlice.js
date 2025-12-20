@@ -21,6 +21,7 @@ const courseSlice = createSlice({
         fetchCoursesSuccess: (state, { payload }) => {
             state.courseIsLoading = false;
             state.courses = payload;
+            state.singleCourse={};
         },
         fetchCoursesFailure: (state, action) => {
             state.courseIsLoading = false;

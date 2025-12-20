@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Tabs, Tab, CircularProgress } from "@mui/material";
 import { Outlet, useParams, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleCourseAction } from "../../redux/actions/courseActions";
 
-const tabPaths = ["overview", "assignments", "quizzes", "resources", "pdfs"];
+
+const ownerTabs = ["overview", "assignments", "quizzes", "resources", "pdfs"];
+const sharedTabs = ["resources", "pdfs"];
+
+
 
 const SingleCourseLayout = () => {
   const dispatch = useDispatch();
@@ -12,27 +16,50 @@ const SingleCourseLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { singleCourse, courseIsLoading } = useSelector((state) => state.course);
 
-  const currentTab = tabPaths.findIndex(path => location.pathname.includes(path));
-  const [tab, setTab] = React.useState(currentTab === -1 ? 0 : currentTab);
+  const { singleCourse, courseIsLoading } = useSelector((state) => state.course);
+  const { user } = useSelector((state) => state.auth)
+  const courseReady =
+    !courseIsLoading &&
+    Boolean(singleCourse?._id) &&
+    Boolean(user?._id);
+
+  const isOwner = courseReady && singleCourse.owner._id === user._id;
+
+
+  const activeTabs = isOwner ? ownerTabs : sharedTabs;
+  const currentTab = activeTabs.findIndex(tab =>
+  location.pathname.includes(tab)
+);
+
+const tabValue = currentTab === -1 ? 0 : currentTab;
 
   useEffect(() => {
-    dispatch(getSingleCourseAction(courseId));
-  }, [courseId, dispatch]);
+    if(JSON.stringify(singleCourse) === '{}'){
+      dispatch(getSingleCourseAction(courseId))
+    }
+
+  }, [courseId]);
+
+useEffect(() => {
+  if (!courseReady) return;
+  const basePath = `/course/${courseId}`;
+  if (!isOwner && location.pathname === basePath) {
+    navigate("resources", { replace: true });
+  }
+}, [courseReady, isOwner, location.pathname]);
+
 
   const handleTabChange = (e, newValue) => {
-    setTab(newValue);
-    console.log(newValue);
-    console.log(tabPaths);
-    if (tabPaths[newValue] === 'overview') {
 
-      navigate('');
+    const path = activeTabs[newValue];
+    if (path === "overview") {
+      navigate("");
     } else {
-
-      navigate(tabPaths[newValue]);
+      navigate(path);
     }
   };
+
 
   if (courseIsLoading) {
     return (
@@ -51,12 +78,11 @@ const SingleCourseLayout = () => {
         {singleCourse?.description || ""}
       </Typography>
 
-      <Tabs value={tab} onChange={handleTabChange} sx={{ mb: 3 }}>
-        <Tab label="Overview" sx={{ fontSize: '10px' }} />
-        <Tab label="Assignments" sx={{ fontSize: '10px' }} />
-        <Tab label="Quizzes" sx={{ fontSize: '10px' }} />
-        <Tab label="Resources" sx={{ fontSize: '10px' }} />
-        <Tab label="PDFs" sx={{ fontSize: '10px' }} />
+      <Tabs value={tabValue} onChange={handleTabChange} sx={{ mb: 3 }}>
+
+        {activeTabs?.map((item, i) => (
+          <Tab label={item} key={i} sx={{ fontSize: '10px' }} />
+        ))}
       </Tabs>
 
       <Outlet />

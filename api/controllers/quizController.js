@@ -102,7 +102,7 @@ export const getUserQuizs = async (req, res) => {
     try {
         const { title, dueDate, status,courseId } = req.query;
 
-        const filter = { createdBy: req.user.id };
+        const filter = { };
         if (title) { filter.title = { $regex: title, $options: "i" } };
         if (dueDate) { filter.dueDate = dueDate };
         if (courseId) { filter.courseId = courseId };

@@ -4,6 +4,7 @@ const initialState = {
   token: localStorage.getItem("token") || null,
   user: null,
   isAuthenticated: !!localStorage.getItem("token"),
+  authChecked: false,
   isLoading: false,
   error: null,
 };
@@ -37,17 +38,16 @@ const authSlice = createSlice({
     },
 
     loadUserSuccess: (state, { payload }) => {
-      state.isLoading = false;
       state.user = payload;
       state.isAuthenticated = true;
+      state.isLoading = false;
+      state.authChecked = true;
     },
 
     loadUserFailure: (state) => {
       state.isLoading = false;
-      state.user = null;
       state.isAuthenticated = false;
-      state.token = null;
-      localStorage.removeItem("token");
+      state.authChecked = true;
     },
 
     // LOGOUT
@@ -77,12 +77,12 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-    userReset:(state, action)=> {
-        state.isLoading = false;
-        state.user = null
-        state.token  = null
-        state.isAuthenticated = false
-        
+    userReset: (state, action) => {
+      state.isLoading = false;
+      state.user = null
+      state.token = null
+      state.isAuthenticated = false
+
     }
   },
 });
