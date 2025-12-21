@@ -7,7 +7,7 @@ export const sendInvite = async (req, res) => {
 
 
         let invite = await courseInviteModel({
-          senderId: req.user.id, receiverId: req.params.id,courseId:req.params.courseId,status:"pending"
+            senderId: req.user.id, receiverId: req.params.id, courseId: req.params.courseId, status: "pending"
         })
         let savedInvite = await invite.save();
         successHandler(res, 200, "invitation send successfully", savedInvite)
@@ -26,7 +26,7 @@ export const updateInvite = async (req, res) => {
             { new: true }
         );
         console.log(invite);
-        
+
         const courseId = invite.courseId;
         const receiverId = invite.receiverId;
 
@@ -41,9 +41,13 @@ export const updateInvite = async (req, res) => {
                 },
                 { new: true }
             );
+
+            successHandler(res, 200, "Invitation Accepted successfully", invite);
+        } else {
+            successHandler(res, 200, "Invitation Rejected successfully", invite);
+
         }
 
-        successHandler(res, 200, "Invitation updated successfully", invite);
     } catch (error) {
         errorHandler(res, 400, error.message);
     }
@@ -52,7 +56,30 @@ export const updateInvite = async (req, res) => {
 export const getAllInvitations = async (req, res) => {
     try {
 
-            const invites = await courseInviteModel.find();
+        const invites = await courseInviteModel.find();
+        successHandler(res, 200, "invitations fetched successfully", invites)
+
+    } catch (error) {
+        errorHandler(res, 400, error.message)
+    }
+}
+
+export const getUserInvitations = async (req, res) => {
+    try {
+
+        const invites = await courseInviteModel.find({ receiverId: req.user.id,status:'pending' }).populate([
+            {
+                path: "senderId",
+                select: ["username", "profilePic"],
+                model: "User",
+            },
+            {
+                path: "courseId",
+                select: "title",
+                model: "course",
+            },
+
+        ]);
         successHandler(res, 200, "invitations fetched successfully", invites)
 
     } catch (error) {

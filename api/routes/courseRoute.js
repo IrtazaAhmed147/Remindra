@@ -1,5 +1,5 @@
 import express from 'express'
-import { createCourse, deletecourse, getAllcourses, getSinglecourse, getUserCourses, updatecourse, } from '../controllers/courseController.js'
+import { createCourse, deletecourse, disableCourse, downloadCourseImages, getAllcourses, getSinglecourse, getUserCourses, suspendCourse, updatecourse, } from '../controllers/courseController.js'
 import { verifyToken } from '../middleware/verifyToken.js'
 
 const courseRouter = express.Router()
@@ -10,7 +10,14 @@ courseRouter.get("/", verifyToken, getUserCourses);
 courseRouter.get("/all", verifyToken, getAllcourses);
 courseRouter.get("/:id", verifyToken, getSinglecourse);
 courseRouter.put("/:id", verifyToken, updatecourse);
+courseRouter.put("/suspend/:id", verifyToken, suspendCourse);
+courseRouter.put("/disable/:id", verifyToken, disableCourse);
 courseRouter.delete("/:id", verifyToken, deletecourse);
+courseRouter.get(
+  "/resources/download/:id",
+  verifyToken,
+  downloadCourseImages
+);
 
 
 export { courseRouter }

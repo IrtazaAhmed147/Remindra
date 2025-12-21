@@ -1,5 +1,6 @@
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
+import './table.css'
 import {
   Box,
   IconButton,
@@ -19,7 +20,7 @@ const options = ["Change Status", "Delete", "Edit"];
 
 const ITEM_HEIGHT = 48;
 
-export default function TaskTable({ assignments, viewModal, askDelete, handleUpdate, setSelectedItem, selectedItem, isLoading }) {
+export default function TaskTable({ assignments, viewModal, askDelete, handleUpdate, setSelectedItem, selectedItem, isLoading, type }) {
 
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -62,16 +63,17 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
 
       {/* Rows */}
       {isLoading && <> <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "250px" }}>  <CircularProgress color="inherit" size="30px" /> </Box></>}
-      {!isLoading && assignments?.map((item, i) => (
+      {!isLoading && (assignments?.length === 0 ? (<Typography fontSize={"14px"} margin={'auto'} mt={2}>No {type === 'quiz' ?'quiz':'assignments'} found.</Typography>) : assignments?.map((item, i) => (
         <Box
           key={i}
           sx={{
             display: "flex",
             gap: "5px",
-            background: "#fff",
+            background: "var(--card-bg-color)",
             py: { xs: 0.5, sm: 1.5, md: 1.5 },
             px: { xs: 1, sm: 1.5, md: 1.5 },
             borderRadius: "10px",
+            color:"#fff",
             mt: 1.2,
             boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
             transition: "0.2s",
@@ -81,9 +83,9 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
             "&:hover": { boxShadow: "0 3px 12px rgba(0,0,0,0.12)" },
           }}
         >
-          <RowCell>{item?.description?.slice(0, 35)}</RowCell>
+          <RowCell >{item?.description?.slice(0, 35)}</RowCell>
           <RowCell>{item?.courseId?.title}</RowCell>
-          <RowCell>{item?.type}</RowCell>
+          <RowCell sx={{ color: "red" }}>{item?.type}</RowCell>
           <RowCell>{item?.dueDate?.slice(0, 10)}</RowCell>
           {/* <RowCell>{item?.fileType}</RowCell> */}
 
@@ -94,7 +96,7 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
               display: "flex",
             }}
           >
-            {item.status === "Completed" ? (
+            {item?.status === "Completed" ? (
               <Chip
                 icon={<CheckCircleOutlineIcon sx={{ fontSize: "16px" }} />}
                 label={"Completed"}
@@ -172,8 +174,14 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
                       selectedItem?._id,
                       { status: selectedItem?.status === "Pending" ? "Completed" : "Pending" }
                     )
-                  } else if(option === 'Edit') {
-                    navigate(`/create/assignment?type=edit&id=${selectedItem._id}`)
+                  } else if (option === 'Edit') {
+                    if (type === 'quiz') {
+
+                      navigate(`/create/quiz?type=edit&id=${selectedItem._id}`)
+                    } else {
+
+                      navigate(`/create/assignment?type=edit&id=${selectedItem._id}`)
+                    }
                   }
                   handleClose()
 
@@ -192,7 +200,7 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
           </Box>
 
 
-        </Box>
+        </Box>)
       ))}
     </Box>
   );

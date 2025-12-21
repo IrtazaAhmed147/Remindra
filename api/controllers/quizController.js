@@ -1,6 +1,6 @@
 import courseModel from "../models/courseModel.js";
 import quizModel from "../models/quizModel.js";
-import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js";
+import { uploadOnCloudinary, deleteFromCloudinary, uploadFileOnCloudinary } from "../utils/cloudinary.js";
 import { errorHandler, successHandler } from "../utils/responseHandler.js";
 
 
@@ -17,14 +17,24 @@ export const createQuizs = async (req, res) => {
             return errorHandler(res, 400, "Due date required");
         }
 
-        let attachments = [];
+        const attachments = [];
+
         for (const file of files) {
-            const url = await uploadOnCloudinary(file, "quiz-images");
-            attachments.push(url.secure_url);
+            if (file.mimetype?.startsWith("image/")) {
+                const url = await uploadOnCloudinary(file, "quizFiles");
+                attachments.push({ url: url.secure_url, mimetype: file.mimetype });
+            } else if (file.mimetype === "application/pdf" || file.mimetype === "text/plain") {
+                const url = await uploadFileOnCloudinary(file, "quizFiles");
+                attachments.push({ url: url.secure_url, mimetype: file.mimetype });
+            } else {
+                console.log("Unsupported file type:", file.mimetype);
+            }
+
         }
+        console.log(title, description, dueDate, attachments);
 
         const quiz = new quizModel({
-            title,
+            title: title,
             description,
             createdBy: req.user.id,
             dueDate,
@@ -34,13 +44,14 @@ export const createQuizs = async (req, res) => {
             type: "quiz"
         });
 
-        const savedQuiz = await quiz.save();
+        const saved = await quiz.save();
 
         await courseModel.findByIdAndUpdate(req.params.id, {
-            $push: { quizzes: savedQuiz._id }
+            $push: { quizzes: saved._id }
         });
 
-        successHandler(res, 200, "Quiz created successfully", savedQuiz);
+        successHandler(res, 200, "Quiz created successfully", saved);
+        // successHandler(res, 200, "Assignment created successfully");
 
     } catch (error) {
         errorHandler(res, 400, error.message);
@@ -51,8 +62,19 @@ export const createQuizs = async (req, res) => {
 
 export const getAllQuizs = async (req, res) => {
     try {
-        const quizData = await quizModel.find();
-        successHandler(res, 200, "All quizzes fetched", quizData);
+
+        const { title, dueDate, createdBy, status } = req.query;
+
+        const filter = {};
+        if (title) { filter.title = { $regex: title, $options: "i" } };
+        if (dueDate) { filter.dueDate = dueDate };
+        if (createdBy) { filter.createdBy = createdBy };
+        if (status) { filter.status = status };
+
+
+
+        const quizzes = await quizModel.find(filter);
+        successHandler(res, 200, "All quizzes fetched", quizzes);
     } catch (err) {
         errorHandler(res, 400, err.message);
     }
@@ -62,7 +84,10 @@ export const getAllQuizs = async (req, res) => {
 
 export const getSingleQuiz = async (req, res) => {
     try {
-        const quiz = await quizModel.findById(req.params.id);
+        const quiz = await quizModel.findById(req.params.id).populate({
+            path: "courseId",
+            select: "title"
+        });
         if (!quiz) return errorHandler(res, 404, "Quiz not found");
 
         successHandler(res, 200, "Quiz found", quiz);
@@ -75,8 +100,19 @@ export const getSingleQuiz = async (req, res) => {
 
 export const getUserQuizs = async (req, res) => {
     try {
-        const quizs = await quizModel.find({ createdBy: req.user.id });
-        successHandler(res, 200, "User quizzes fetched", quizs);
+        const { title, dueDate, status,courseId } = req.query;
+
+        const filter = { };
+        if (title) { filter.title = { $regex: title, $options: "i" } };
+        if (dueDate) { filter.dueDate = dueDate };
+        if (courseId) { filter.courseId = courseId };
+        if (status && status !== 'all') { filter.status = status };
+        const quizzes = await quizModel.find(filter).populate({
+            path: "courseId",
+            select: "title"
+        });
+
+        successHandler(res, 200, "quizzes fetched", quizzes);
     } catch (err) {
         errorHandler(res, 400, err.message);
     }
@@ -110,23 +146,37 @@ export const deleteQuiz = async (req, res) => {
 
 export const updateQuiz = async (req, res) => {
     try {
-        if (req.file) {
-            const url = await uploadOnCloudinary(req.file, "quiz-images");
-            req.body.newAttachment = url.secure_url;
-        }
+        const files = req.files || [];
+        req.body.attachments = [];
+        if (req.files) {
 
-        const updatedQuiz = await quizModel.findByIdAndUpdate(
+            for (const file of files) {
+                if (file.mimetype?.startsWith("image/")) {
+                    const url = await uploadOnCloudinary(file, "quizFiles");
+                    req.body.attachments.push({ url: url.secure_url, mimetype: file.mimetype });
+                } else if (file.mimetype === "application/pdf" || file.mimetype === "text/plain") {
+                    const url = await uploadFileOnCloudinary(file, "quizFiles");
+                    req.body.attachments.push({ url: url.secure_url, mimetype: file.mimetype });
+                } else {
+                    console.log("Unsupported file type:", file.mimetype);
+                }
+
+            }
+        }
+        console.log(req.body);
+
+        const updated = await quizModel.findByIdAndUpdate(
             req.params.id,
             { $set: req.body },
             { new: true }
         );
 
-        if (req.body.newAttachment) {
-            updatedQuiz.attachments.push(req.body.newAttachment);
-            await updatedQuiz.save();
+        if (req?.body?.newAttachment) {
+            updated.attachments.push(req.body.newAttachment);
+            await updated.save();
         }
 
-        successHandler(res, 200, "Quiz updated successfully", updatedQuiz);
+        successHandler(res, 200, "quiz updated", updated);
 
     } catch (err) {
         errorHandler(res, 400, err.message);

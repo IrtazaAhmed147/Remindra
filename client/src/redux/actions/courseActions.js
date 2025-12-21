@@ -133,6 +133,26 @@ export const updateCourseAction = (id, body) => async (dispatch) => {
 
 
 
+export const disableCourseAction = (id) => async (dispatch) => {
+    try {
+        dispatch(fetchCoursesStart());
+
+        const token = localStorage.getItem("token");
+
+        const res = await api.put(`/course/disable/${id}`,{}, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+        });
+
+        dispatch(fetchCoursesSuccess()); // you may remove from list in UI manually
+        return res.data.message;
+
+    } catch (error) {
+        dispatch(fetchCoursesFailure(error.response.data.message));
+        throw error.response.data.message;
+    }
+};
+
 export const deleteCourseAction = (id) => async (dispatch) => {
     try {
         dispatch(fetchCoursesStart());
@@ -151,4 +171,32 @@ export const deleteCourseAction = (id) => async (dispatch) => {
         dispatch(fetchCoursesFailure(error.response.data.message));
         throw error.response.data.message;
     }
+};
+
+export const handleDownloadAll = async (id) => {
+  const token = localStorage.getItem("token");
+
+  const res = await api.get(
+    `course/resources/download/${id}`,
+    {
+      responseType: "blob", 
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  console.log(res);
+  
+
+  const url = window.URL.createObjectURL(new Blob([res.data]));
+  console.log(url);
+  
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "course-images.zip";
+  document.body.appendChild(a);
+  a.click();
+
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url);
 };

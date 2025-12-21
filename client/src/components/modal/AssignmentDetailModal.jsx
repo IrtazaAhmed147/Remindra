@@ -28,6 +28,7 @@ const AssignmentDetailModal = ({ open, handleClose, assignment }) => {
             fullWidth
             PaperProps={{
                 sx: {
+                    background:"var(--card-bg-color) !important",
                     borderRadius: "16px",
                     paddingY: 1.5,
                 },

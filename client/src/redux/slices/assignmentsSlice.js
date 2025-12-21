@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     assignments: [],        // all assignments
     singleAssignment: null, // single assignment detail
-    isLoading: false,
+    assignmentLoading: false,
     error: null,
 };
 
@@ -14,43 +14,43 @@ const assignmentsSlice = createSlice({
 
         // FETCH ALL USER ASSIGNMENTS
         fetchAssignmentsStart: (state) => {
-            state.isLoading = true;
+            state.assignmentLoading = true;
             state.error = null;
         },
         fetchAssignmentsSuccess: (state, { payload }) => {
-            state.isLoading = false;
+            state.assignmentLoading = false;
             state.assignments = payload;
         },
         fetchAssignmentsFailure: (state, action) => {
-            state.isLoading = false;
+            state.assignmentLoading = false;
             state.error = action.payload;
         },
 
         // FETCH SINGLE ASSIGNMENT
         fetchSingleAssignmentStart: (state) => {
-            state.isLoading = true;
+            state.assignmentLoading = true;
             state.error = null;
         },
         fetchSingleAssignmentSuccess: (state, { payload }) => {
-            state.isLoading = false;
+            state.assignmentLoading = false;
             state.singleAssignment = payload;
         },
         fetchSingleAssignmentFailure: (state, action) => {
-            state.isLoading = false;
+            state.assignmentLoading = false;
             state.error = action.payload;
         },
 
         // CREATE ASSIGNMENT
         createAssignmentStart: (state) => {
-            state.isLoading = true;
+            state.assignmentLoading = true;
             state.error = null;
         },
         createAssignmentSuccess: (state, { payload }) => {
-            state.isLoading = false;
+            state.assignmentLoading = false;
             state.assignments.push(payload);
         },
         createAssignmentFailure: (state, action) => {
-            state.isLoading = false;
+            state.assignmentLoading = false;
             state.error = action.payload;
         },
 

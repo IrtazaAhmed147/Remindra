@@ -23,6 +23,7 @@ export default function AddAssignmentPage() {
     const [coverFiles, setCoverFiles] = useState([]);
     const [coverPreviews, setCoverPreviews] = useState([]);
     const [render, setRender] = useState(false);
+    const {assignmentLoading} = useSelector((state)=> state.assignments)
 
 
     const [dueDate, setDueDate] = useState(null); // local state for picker
@@ -340,6 +341,7 @@ export default function AddAssignmentPage() {
             {/* BUTTONS */}
             <Box sx={{ mt: 4 }}>
                 <Button
+                disabled={assignmentLoading}
                     onClick={() => handleCreateAssigment()}
                     sx={{
                         padding: " 5px 10px",
