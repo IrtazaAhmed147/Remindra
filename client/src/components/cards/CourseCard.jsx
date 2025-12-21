@@ -23,6 +23,7 @@ function CourseCard({
   title,
   description,
   members,
+  isShow=true,
   resources,
   updatedAt,
   _id,
@@ -81,7 +82,6 @@ function CourseCard({
         >
           <Box sx={{
             display: "flex",
-            alignItems: "center",
             justifyContent: "space-between",
             alignItems: "flex-start",
             mb: 1,
@@ -98,7 +98,7 @@ function CourseCard({
 
           </Box>
 
-          {isOwner && (
+          {(isOwner && isShow) && (
             <Box sx={{ display: "flex", justifyContent: "flex-end", }}>
               <IconButton
                 // sx={{ p:  }}

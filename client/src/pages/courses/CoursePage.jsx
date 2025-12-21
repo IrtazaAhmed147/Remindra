@@ -13,6 +13,7 @@ import RemoveModal from '../../components/modal/RemoveModal';
 import ShareCourseModal from '../../components/modal/ShareCourseModal';
 import { getAllUsersAction, suspendUserAction } from '../../redux/actions/userActions';
 import { sendInviteAction } from '../../redux/actions/inviteActions';
+import GradientBtn from '../../components/common/GradientBtn';
 
 
 function CoursePage() {
@@ -91,53 +92,13 @@ function CoursePage() {
 
             <Box sx={{ width: "100%", minHeight: "100vh", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" }, pt: "5px !important", }}>
 
-                <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between", flexWrap: 'wrap' }}>
+                <Box sx={{ width: "100%", display: "flex",mb:2, justifyContent: "space-between", flexWrap: 'wrap' }}>
 
                     <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 1 }}>
                         Courses
                     </Typography>
 
-                    <Box
-                        onClick={() => navigate('/add/course')}
-                        sx={{
-                            width: { xs: "100%", sm: "48%", md: "250px" },
-                            p: "10px 12px",
-                            borderRadius: "14px",
-                            background: "linear-gradient(135deg, #E7F1FD, #F3F8FF)",
-                            display: "flex",
-                            mb: 1,
-                            alignItems: "center",
-                            gap: "10px",
-                            cursor: "pointer",
-                            transition: "0.25s ease",
-                            border: "1px solid rgba(0,0,0,0.05)",
-
-                            "&:hover": {
-                                background: "linear-gradient(135deg, #ffffff, #f2f8ff)",
-                                transform: "translateY(-3px)",
-                                boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
-                            },
-                        }}
-                    >
-                        {/* Icon Bubble */}
-                        <Box
-                            sx={{
-                                width: 34,
-                                height: 34,
-                                borderRadius: "10px",
-                                backgroundColor: "rgba(42, 125, 225, 0.08)",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <FolderCopyOutlinedIcon sx={{ fontSize: 18, color: "#2A7DE1" }} />
-                        </Box>
-
-                        <Typography fontSize="14px" fontWeight="600" color="#1e293b">
-                            Create Course
-                        </Typography>
-                    </Box>
+                    <GradientBtn text={"Create Course"} icon={<FolderCopyOutlinedIcon sx={{ fontSize: 18, color: "#2A7DE1" }} />} url={'/add/course'} />
                 </Box>
 
 

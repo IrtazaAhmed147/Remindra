@@ -15,6 +15,7 @@ import { quizRouter } from './routes/quizRoute.js'
 import { resourceRouter } from './routes/resourceRoute.js'
 import { inviteRouter } from './routes/InviteRoute.js'
 import notificationRouter from './routes/notificationRoute.js';
+import { dashboardRouter } from './routes/dashboardRoute.js';
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.use('/api/quiz', quizRouter);
 app.use('/api/resource', resourceRouter);
 app.use('/api/invite', inviteRouter);
 app.use('/api/notification', notificationRouter);
+app.use('/api/dashboard', dashboardRouter);
 
 
 if (process.env.NODE_ENV !== 'production') {

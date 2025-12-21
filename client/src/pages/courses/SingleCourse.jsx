@@ -71,7 +71,7 @@ useEffect(() => {
 
   return (
     <Box sx={{ p: 2, minHeight: "100vh" }}>
-      <Typography fontSize="20px" fontWeight={700} sx={{ mb: 1 }}>
+      <Typography fontSize="20px" color="var(--text-color)" fontWeight={700} sx={{ mb: 1 }}>
         {singleCourse?.title || "Course Title"}
       </Typography>
       <Typography fontSize="13px" sx={{ mb: 3, color: "#64748b" }}>

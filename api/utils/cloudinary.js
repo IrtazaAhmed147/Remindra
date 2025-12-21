@@ -12,6 +12,7 @@ export const uploadOnCloudinary = async (file, folder = 'default') => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         resource_type: 'image',
+          type: 'private',  
         folder,
         quality: "auto",       // automatic compression
         fetch_format: "auto",

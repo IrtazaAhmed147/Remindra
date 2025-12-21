@@ -97,7 +97,7 @@ export const getSingleResource = async (req, res) => {
 
 
 export const getCourseResources = async (req, res) => {
-    try {
+    try { 
 
         const resourcesData = await resourceModel.find({ courseId: req.params.id });
         if (!resourcesData) return errorHandler(res, 404, "resources not found")

@@ -11,6 +11,8 @@ import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import { Link, useLocation } from 'react-router-dom';
+import QuizOutlinedIcon from "@mui/icons-material/QuizOutlined";
+
 import { useSelector } from 'react-redux';
 
 function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
@@ -21,11 +23,11 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
   const {user} = useSelector((state)=> state.auth)
 
   const listItems = [
-    { name: "Dashboard", icon: <DashboardOutlinedIcon />, path: "/dashboard" },
-    { name: "Courses", icon: <FolderCopyOutlinedIcon />, path: "/courses" },
-    { name: "Friends", icon: <GroupOutlinedIcon />, path: "/friends/123" },
-    { name: "Assignments", icon: <AssignmentOutlinedIcon />, path: "/assignment/123" },
-    { name: "Quizs", icon: <AssignmentOutlinedIcon />, path: "/quiz/123" },
+    { name: "Dashboard", icon: <DashboardOutlinedIcon color='var(--text-color)'/>, path: "/dashboard" },
+    { name: "Courses", icon: <FolderCopyOutlinedIcon color='var(--text-color)'/>, path: "/courses" },
+    // { name: "Friends", icon: <GroupOutlinedIcon />, path: "/friends/123" },
+    { name: "Assignments", icon: <AssignmentOutlinedIcon color='var(--text-color)'/>, path: "/assignment/123" },
+    { name: "Quizs", icon: <QuizOutlinedIcon color='var(--text-color)'/>, path: "/quiz/123" },
     {
       name: "Notifications", icon: <Badge sx={{ "& .MuiBadge-badge": { top: "-5px", right: "-5px" } }} badgeContent={6} color="primary">
         <NotificationsNoneOutlinedIcon />  </Badge>, path: "/notification/irtaza"
@@ -81,8 +83,8 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
               padding: '0px',
               transition: '0.3s all ease-in-out',
               backgroundColor: location.pathname === item.path
-                ? "#f2f8ff"
-                : "#fff",
+                ? "var(--bg-color)"
+                : "var(--sidebar-btn-color)",
               color: location.pathname === item.path ? "#fff" : "var(--text-color)",
               "&:hover": {
                 backgroundColor: "var(--bg-color)",

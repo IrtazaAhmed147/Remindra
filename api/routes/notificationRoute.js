@@ -1,25 +1,33 @@
 import express from "express";
 import { sendPushNotification } from "../utils/webPush.js";
-import subscriptionModel from "../models/SubscriptionModel.js";
+// import SubscriptionModel from "../models/SubscriptionModel.js";
 import quizModel from "../models/quizModel.js";
 import assignmentsModel from "../models/assignmentsModel.js";
+import { errorHandler, successHandler } from "../utils/responseHandler.js";
+import SubscriptionModel from "../models/SubscriptionModel.js";
 // import SubscriptionModel from "../models/SubscriptionModel.js";
-// import SubscriptionModel from "../models/subscriptionModel.js"; // store subscriptions in DB
+// import SubscriptionModel from "../models/SubscriptionModel.js"; // store subscriptions in DB
 
 const notificationRouter = express.Router();
 
 // Save user subscription
 notificationRouter.post("/subscribe", async (req, res) => {
     try {
-        const { userId, subscription } = req.body;
-        await subscriptionModel.findOneAndUpdate(
-            { userId },
+        const { subscription } = req.body;
+        console.log(req.body);
+        
+        await SubscriptionModel.findOneAndUpdate(
+            { userId: req?.user?.id },
             { subscription },
             { upsert: true }
         );
-        res.status(201).json({ success: true });
+
+        return successHandler(res, 200, "Acess updated");
+
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.log(err);
+        
+        return errorHandler(res, 500, "Something went wrong", err);
     }
 });
 
@@ -29,7 +37,7 @@ notificationRouter.post("/notify/:userId", async (req, res) => {
         const { userId } = req.params;
         const { title, message } = req.body;
 
-        const sub = await subscriptionModel.findOne({ userId });
+        const sub = await SubscriptionModel.findOne({ userId });
         if (!sub) return res.status(404).json({ error: "User subscription not found" });
 
         await sendPushNotification(sub.subscription, { title, message });
@@ -92,7 +100,7 @@ notificationRouter.get("/notifyassignments", async (req, res) => {
         // Send function
         const sendReminder = async (assignment, message) => {
             for (let userId of assignment.assignedUsers) {
-                const subscription = await subscriptionModel.findOne({ userId });
+                const subscription = await SubscriptionModel.findOne({ userId });
                 if (!subscription) continue;
 
                 await sendPushNotification(subscription.subscription, {
@@ -195,7 +203,7 @@ notificationRouter.get("/notifycheck", async (req, res) => {
         // ------------------------------
         const sendReminder = async (quiz, message) => {
             for (let userId of quiz.assignedUsers) {
-                const subscription = await subscriptionModel.findOne({ userId });
+                const subscription = await SubscriptionModel.findOne({ userId });
                 if (!subscription) continue;
 
                 await sendPushNotification(subscription.subscription, {

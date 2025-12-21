@@ -91,8 +91,7 @@ export const getSinglecourse = async (req, res) => {
 
 export const getUserCourses = async (req, res) => {
     try {
-        const { courseName, courseType } = req.query;
-        console.log(req.query);
+        const { courseName, courseType, } = req.query;
 
         const filter = {};
         if (courseName) {
@@ -113,12 +112,9 @@ export const getUserCourses = async (req, res) => {
         else if (courseType === "sharedcourses") {
             filter.members = req.user.id;
         }
-        const courseData = await course.find(filter).populate({
-            path: "owner",
-            select: "username",
-            model: "User",
-        })
-
+        let query = course.find(filter).populate({ path: "owner", select: "username", model: "User", });
+        if (req.query?.limit) { query = query.limit(Number(req.query.limit)); }
+        const courseData = await query;
         if (!courseData || courseData.length === 0) {
             return errorHandler(res, 404, "No courses found");
         }

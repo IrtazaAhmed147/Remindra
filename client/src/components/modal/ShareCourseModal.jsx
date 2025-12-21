@@ -29,7 +29,7 @@ export default function ShareCourseModal({ open, onClose, onShare, userList, mem
     userList?.filter((u, i) => {
       console.log(user);
       console.log(u);
-      if ((u._id !== user._id) ) {
+      if ((u._id !== user._id)) {
 
         console.log('chala');
 
@@ -67,7 +67,11 @@ export default function ShareCourseModal({ open, onClose, onShare, userList, mem
     <Dialog
       open={open}
       onClose={onClose}
-      PaperProps={{ sx: { borderRadius: 3, width: 400 } }}
+      PaperProps={{
+        sx: {
+          background: "var(--card-bg-color) !important", borderRadius: 3, width: 400
+        }
+      }}
     >
       <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1 }}>
         <ShareIcon sx={{ color: "#2a7de1" }} />
@@ -130,7 +134,7 @@ export default function ShareCourseModal({ open, onClose, onShare, userList, mem
                 <FormControlLabel
                   control={
                     <Checkbox
-                    disabled={members?.includes(user.id)}
+                      disabled={members?.includes(user.id)}
                       checked={members?.includes(user.id) || selectedUsers?.includes(user._id)}
                       onChange={() => handleToggle(user._id)}
                       sx={{

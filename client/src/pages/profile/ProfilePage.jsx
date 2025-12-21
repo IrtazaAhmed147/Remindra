@@ -6,24 +6,27 @@ import { getSingleUserAction } from '../../redux/actions/userActions';
 import { useNavigate, useParams } from "react-router-dom";
 function ProfilePage() {
 
-
+  const navigate= useNavigate()
   const { user } = useSelector((state) => state.auth)
   console.log(user);
-  
+
   const { isLoading } = useSelector((state) => state.user)
- 
+
   return (
     <>
 
       {isLoading && <> <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>  <CircularProgress color="inherit" size="30px" /> </Box></>}
-    {!isLoading&&  <Box
+      {!isLoading && <Box
 
         sx={{ width: "100%", height: "91vh", display: "flex", justifyContent: "space-between", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" }, pt: "0px !important", }}
       >
-        <Box sx={{ display: "flex", width: "100%", flexDirection: "column", justifyContent: "space-between" }}>
+        <Box sx={{
+          display: "flex", width: "100%",
+          flexDirection: "column", justifyContent: "space-between"
+        }}>
 
-          <Box sx={{ width: "100%", justifyContent: "space-between" }}>
-            <Box sx={{ borderTopLeftRadius: "10px", width: "100%", background: "#fff", padding: "10px", boxShadow: "0 4px 12px rgba(0,0,0,0.12)", height: "150px", gap: '10px', alignItems: "center", display: "flex", }}>
+          <Box sx={{ width: "100%", justifyContent: "space-between", }}>
+            <Box sx={{ borderTopLeftRadius: "10px", width: "100%", background: "var(--card-bg-color) !important", padding: "10px", boxShadow: "0 4px 12px rgba(0,0,0,0.12)", height: "150px", gap: '10px', alignItems: "center", display: "flex", }}>
 
 
               <Box sx={{ height: '90%', borderRadius: '50%' }} component={'img'} src={user?.profilePic || 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'} />
@@ -38,7 +41,7 @@ function ProfilePage() {
               sx={{
                 borderTopRightRadius: "10px",
                 width: "100%",
-                background: "#fff",
+                background: "var(--card-bg-color) !important",
                 mt: 3,
                 padding: "10px",
                 boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
@@ -85,32 +88,26 @@ function ProfilePage() {
             </Box>
 
 
+
             <Box
-              onClick={() => navigate("/update-profile")}
+              onClick={() => navigate("/update/profile/123")}
               sx={{
-                mt: 2,
                 p: 3,
+                mt: 3,
                 mb: 3,
-                borderRadius: 2,
-                bgcolor: "#fff",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+                borderRadius: 3,
+                bgcolor: "var(--card-bg-color)",
+                boxShadow: `
+            0 1px 2px rgba(0, 0, 0, 0.08),
+            0 4px 12px rgba(0, 0, 0, 0.06)
+          `,
                 cursor: "pointer",
-                transition: "0.2s all",
-                "&:hover": { boxShadow: "0 4px 20px rgba(0,0,0,0.12)" },
+                "&:hover": { backgroundColor: "rgba(255,255,255,0.04)" },
               }}
             >
-              <Typography
-                variant="subtitle1"
-                fontWeight="bold"
-                sx={{ fontSize: { xs: 13, sm: 14, md: 15 } }}
-              >
-                Update Profile
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ fontSize: { xs: 11, sm: 12, md: 13 }, color: "#555", mt: 0.5 }}
-              >
-                Click to update your profile information.
+              <Typography fontWeight={600} color="var(--text-color)">Update Profile</Typography>
+              <Typography fontSize={12} color="var(--text-muted-color)">
+                Edit your personal information
               </Typography>
             </Box>
           </Box>
@@ -120,7 +117,7 @@ function ProfilePage() {
 
 
 
-      </Box> }
+      </Box>}
     </>
   )
 }

@@ -40,11 +40,16 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
     if (token) {
       dispatch(fetchLoggedInUser());
     } else {
       dispatch(logout());
     }
+
   }, []);
 
   return (

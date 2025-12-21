@@ -1,5 +1,6 @@
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
+import './table.css'
 import {
   Box,
   IconButton,
@@ -68,10 +69,11 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
           sx={{
             display: "flex",
             gap: "5px",
-            background: "#fff",
+            background: "var(--card-bg-color)",
             py: { xs: 0.5, sm: 1.5, md: 1.5 },
             px: { xs: 1, sm: 1.5, md: 1.5 },
             borderRadius: "10px",
+            color:"#fff",
             mt: 1.2,
             boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
             transition: "0.2s",
@@ -81,9 +83,9 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
             "&:hover": { boxShadow: "0 3px 12px rgba(0,0,0,0.12)" },
           }}
         >
-          <RowCell>{item?.description?.slice(0, 35)}</RowCell>
+          <RowCell >{item?.description?.slice(0, 35)}</RowCell>
           <RowCell>{item?.courseId?.title}</RowCell>
-          <RowCell>{item?.type}</RowCell>
+          <RowCell sx={{ color: "red" }}>{item?.type}</RowCell>
           <RowCell>{item?.dueDate?.slice(0, 10)}</RowCell>
           {/* <RowCell>{item?.fileType}</RowCell> */}
 

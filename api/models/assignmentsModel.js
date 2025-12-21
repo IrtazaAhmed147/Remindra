@@ -14,7 +14,7 @@ const assignmentSchema = new mongoose.Schema(
   ], 
     dueDate: { type: Date, required: true },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    status: { type: String, default: "pending" },
+    status: { type: String, default: "Pending" },
   },
   { timestamps: true }
 );
