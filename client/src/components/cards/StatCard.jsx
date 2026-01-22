@@ -7,13 +7,13 @@ function StatCard({label,value}) {
     <Card
       sx={{
         width: { xs: "47%", sm: "30%", md: "20%" },
-        backgroundColor: "#fff",
+        backgroundColor: "var(--card-bg-color)",
         borderRadius: "10px",
         boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
       }}
     >
       <CardContent>
-        <Typography sx={{ fontSize: { xs: "11px", sm: "12px", md: "13px" } }} color="#6b6b6b">
+        <Typography sx={{ fontSize: { xs: "11px", sm: "12px", md: "13px" }, color:"var(--text-color)" }}>
           {label}
         </Typography>
         <Typography sx={{ fontSize: { xs: "18px", sm: "20px", md: "22px" } }} fontWeight="bold" color="var(--text-color)">

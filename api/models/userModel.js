@@ -12,7 +12,6 @@ const userSchema = new mongoose.Schema({
     semester: { type: Number },
     gender: { type: String },
     phone: { type: String },
-    courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "courses" }],
     otp: {
         type: String,
     },

@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSingleCourseAction } from "../../redux/actions/courseActions";
 
 
-const ownerTabs = ["overview", "assignments", "quizzes", "resources", "pdfs"];
-const sharedTabs = ["resources", "pdfs"];
+const ownerTabs = ["overview", "resources", "files"];
+const sharedTabs = ["resources", "files"];
 
+const tabs = ["resources", "files"];
 
 
 const SingleCourseLayout = () => {
@@ -27,44 +28,47 @@ const SingleCourseLayout = () => {
   const isOwner = courseReady && singleCourse.owner._id === user._id;
 
 
-  const activeTabs = isOwner ? ownerTabs : sharedTabs;
+  const activeTabs = tabs;
   const currentTab = activeTabs.findIndex(tab =>
-  location.pathname.includes(tab)
-);
+    location.pathname.includes(tab)
+  );
 
-const tabValue = currentTab === -1 ? 0 : currentTab;
+  const tabValue = currentTab === -1 ? 0 : currentTab;
 
   useEffect(() => {
-    if(JSON.stringify(singleCourse) === '{}'){
+    if (JSON.stringify(singleCourse) === '{}') {
       dispatch(getSingleCourseAction(courseId))
     }
 
   }, [courseId]);
 
-useEffect(() => {
-  if (!courseReady) return;
-  const basePath = `/course/${courseId}`;
-  if (!isOwner && location.pathname === basePath) {
-    navigate("resources", { replace: true });
-  }
-}, [courseReady, isOwner, location.pathname]);
+  useEffect(() => {
+    if (!courseReady) return;
+    const basePath = `/course/${courseId}/resources`;
+    if (location.pathname === `/course/${courseId}` || location.pathname === `/course/${courseId}/`) {
+      navigate("resources", { replace: true });
+    }
+    // if (!isOwner && location.pathname === basePath) {
+    //   navigate("resources", { replace: true });
+    // }
+  }, [courseReady, isOwner, location.pathname]);
 
 
   const handleTabChange = (e, newValue) => {
 
     const path = activeTabs[newValue];
-    if (path === "overview") {
-      navigate("");
-    } else {
+    // if (path === "overview") {
+    //   navigate("");
+    // } else {
       navigate(path);
-    }
+    // }
   };
 
 
   if (courseIsLoading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
-        <CircularProgress color="inherit" size="30px" />
+        <CircularProgress  sx={{color:"var(--text-color)"}} size="30px" />
       </Box>
     );
   }
@@ -81,7 +85,7 @@ useEffect(() => {
       <Tabs value={tabValue} onChange={handleTabChange} sx={{ mb: 3 }}>
 
         {activeTabs?.map((item, i) => (
-          <Tab label={item} key={i} sx={{ fontSize: '10px' }} />
+          <Tab label={item} key={i} sx={{ fontSize: '10px',color:"var(--text-color)" }} />
         ))}
       </Tabs>
 

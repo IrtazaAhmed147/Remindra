@@ -24,6 +24,7 @@ export default function AddQuizPage() {
     const [coverPreviews, setCoverPreviews] = useState([]);
     const [render, setRender] = useState(false);
     const { quizLoading } = useSelector((state) => state.quizs)
+    const { courseIsLoading } = useSelector((state) => state.course)
 
     const [dueDate, setDueDate] = useState(null); // local state for picker
     const form = useRef({ task: "" })
@@ -66,6 +67,13 @@ export default function AddQuizPage() {
 
     const handleCreateQuiz = async () => {
 
+        if ((!form.current.title || !form.current.task || !form.current.dueDate || !form.current.course) || (!form.current.title.trim() || !form.current.task.trim())) {
+
+
+            notify("error", "Please fill in all required fields: Title, Task, Course, and Due Date. Uploading a file is optional.");
+            return
+
+        }
         const formData = new FormData();
         formData.append("title", form.current.title);
         formData.append("description", form.current.task);
@@ -171,6 +179,8 @@ export default function AddQuizPage() {
                             fullWidth
                             size="small"
                             name="course"
+
+                            disabled={courseIsLoading}
                             sx={{
                                 mb: 2,
                                 bgcolor: "#fff",
@@ -340,7 +350,7 @@ export default function AddQuizPage() {
             {/* BUTTONS */}
             <Box sx={{ mt: 4 }}>
                 <Button
-                disabled={quizLoading}
+                    disabled={quizLoading}
                     onClick={() => handleCreateQuiz()}
                     sx={{
                         padding: " 5px 10px",

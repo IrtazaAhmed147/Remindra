@@ -23,9 +23,6 @@ export const createCourse = async (req, res) => {
         })
         let savedCourse = await courseData.save();
 
-        await userModel.findByIdAndUpdate(req.user.id, {
-            $push: { courses: savedCourse._id }
-        });
 
         successHandler(res, 200, "course created successfully", savedCourse)
 
@@ -61,24 +58,6 @@ export const getSinglecourse = async (req, res) => {
             select: "username",
             model: "User",
         })
-        // .populate([
-        //     {
-        //         path: "assignments",
-        //         populate: {
-        //             path: "courseId",
-        //             select: "title",
-        //             model: "course",
-        //         },
-        //     },
-        //     {
-        //         path: "quizzes",
-        //         populate: {
-        //             path: "courseId",
-        //             select: "title",
-        //             model: "course",
-        //         },
-        //     },
-        // ]);
 
         if (!courseData) return errorHandler(res, 404, "course not found")
         successHandler(res, 200, "course found successfully", courseData)
@@ -206,8 +185,15 @@ export const updatecourse = async (req, res) => {
 
 
 export const downloadCourseImages = async (req, res) => {
+    const filter = { courseId: req.params.id,   fileType: { $regex: "^image/" } };
+
+    const { ids, title } = req.body;
+
+    if (ids) {
+        filter._id = { $in: ids};
+    }
     try {
-        const resources = await resourceModel.find({ courseId: req.params.id });
+        const resources = await resourceModel.find(filter);
 
         if (!resources.length) {
             return errorHandler(res, 404, "No images found");
@@ -216,8 +202,8 @@ export const downloadCourseImages = async (req, res) => {
 
         res.setHeader("Content-Type", "application/zip");
         res.setHeader(
-            "Content-Disposition",
-            "attachment; filename=course-images.zip"
+            "Content-Disposition",  
+            `attachment; filename=${title}.zip`
         );
 
         const archive = archiver("zip", { zlib: { level: 9 } });

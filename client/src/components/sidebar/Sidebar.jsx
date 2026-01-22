@@ -21,7 +21,9 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
 
   // console.log(location.pathname);
   const {user} = useSelector((state)=> state.auth)
-
+    const { stats, statsLoading,
+    statsError } = useSelector((state) => state.dashboard)
+ 
   const listItems = [
     { name: "Dashboard", icon: <DashboardOutlinedIcon color='var(--text-color)'/>, path: "/dashboard" },
     { name: "Courses", icon: <FolderCopyOutlinedIcon color='var(--text-color)'/>, path: "/courses" },
@@ -29,7 +31,7 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
     { name: "Assignments", icon: <AssignmentOutlinedIcon color='var(--text-color)'/>, path: "/assignment/123" },
     { name: "Quizs", icon: <QuizOutlinedIcon color='var(--text-color)'/>, path: "/quiz/123" },
     {
-      name: "Notifications", icon: <Badge sx={{ "& .MuiBadge-badge": { top: "-5px", right: "-5px" } }} badgeContent={6} color="primary">
+      name: "Notifications", icon: <Badge sx={{ "& .MuiBadge-badge": { top: "-5px", right: "-5px" } }} badgeContent={stats?.notifications} color="primary">
         <NotificationsNoneOutlinedIcon />  </Badge>, path: "/notification/irtaza"
     },
     { name: "Settings", icon: <SettingsOutlinedIcon />, path: "/setting" },

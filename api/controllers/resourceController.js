@@ -1,7 +1,7 @@
 // import resourceModel from "../models/resourceModel.js";
 import mongoose from "mongoose";
 import resourceModel from "../models/resourceModel.js";
-import { deleteFromCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
+import { deleteFromCloudinary, uploadFileOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 import { errorHandler, successHandler } from "../utils/responseHandler.js";
 import courseModel from "../models/courseModel.js";
 // import { sendNotification } from "../utils/sendNotification.js";
@@ -11,6 +11,7 @@ import { sendPushNotification } from "../utils/webPush.js";
 export const uploadResource = async (req, res) => {
     try {
         const files = req.files; // array of files
+        
         if (!files || files.length === 0) {
             return errorHandler(res, 404, "materials required");
         }
@@ -18,28 +19,36 @@ export const uploadResource = async (req, res) => {
             return errorHandler(res, 400, "Invalid courseId");
         }
 
-        // 1️⃣ Upload all files in parallel
-        const uploadPromises = files.map(file => uploadOnCloudinary(file, "resource-images"));
+        const uploadPromises = files.map(file => {
+            const isImage = file.mimetype.startsWith("image/");
+            const folder = isImage ? "resource-images" : "resource-files";
+            if (isImage) {
+
+                return uploadOnCloudinary(file, folder);
+            } else {
+                return uploadFileOnCloudinary(file, folder);
+
+            }
+        });
         const uploadedUrls = await Promise.all(uploadPromises);
 
         // 2️⃣ Save resources in parallel
         const savedResources = await Promise.all(
             uploadedUrls.map(async (url, i) => {
                 const file = files[i];
+                
                 const resource = new resourceModel({
+                    fileName: file.originalname,
+                    fileSize: file.size,
                     uploadedBy: req.user.id,
                     fileUrl: url.secure_url,
                     publicId: url.public_id,
                     courseId: req.params.id,
                     fileType: file.mimetype
+
                 });
                 const saved = await resource.save();
-
-                // add resource to course
-                await courseModel.findByIdAndUpdate(req.params.id, {
-                    $push: { resources: saved._id }
-                });
-
+              
                 return saved;
             })
         );
@@ -97,9 +106,20 @@ export const getSingleResource = async (req, res) => {
 
 
 export const getCourseResources = async (req, res) => {
-    try { 
 
-        const resourcesData = await resourceModel.find({ courseId: req.params.id });
+    const { type } = req.query;
+    console.log(req.query);
+    
+    try {
+        let filter = { courseId: req.params.id };
+
+        if (type === "image") {
+            filter.fileType = { $regex: "^image/" };
+        } else if (type === "file") {
+            filter.fileType = { $not: /^image\// };
+        }
+
+        const resourcesData = await resourceModel.find(filter);
         if (!resourcesData) return errorHandler(res, 404, "resources not found")
         successHandler(res, 200, "resources found successfully", resourcesData)
     }
@@ -117,9 +137,7 @@ export const deleteResource = async (req, res) => {
 
         await resourceModel.findByIdAndDelete(req.params.id);
 
-        await courseModel.findByIdAndUpdate(req.params.courseId, {
-            $pull: { resources: req.params.id }
-        });
+      
 
         successHandler(res, 200, "Resource deleted successfully");
     } catch (err) {
@@ -131,16 +149,14 @@ export const deleteAllResource = async (req, res) => {
     try {
         const resources = await resourceModel.find({ courseId: req.params.courseId });
         console.log(resources);
-        
+
         if (!resources) return errorHandler(res, 404, "Resource not found");
         for (const resource of resources) {
 
 
             await deleteFromCloudinary(resource.publicId);
             await resourceModel.findByIdAndDelete(resource._id);
-            await courseModel.findByIdAndUpdate(resource?.courseId?.toString(), {
-                $pull: { resources: resource._id }
-            });
+           
 
         }
 

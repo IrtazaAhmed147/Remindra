@@ -52,7 +52,7 @@ export const getUserCoursesAction = (query = '') => async (dispatch) => {
 
         dispatch(fetchCoursesSuccess(res.data.data));
         console.log(res.data.data);
-        
+
         return res.data.data;
 
     } catch (error) {
@@ -139,7 +139,7 @@ export const disableCourseAction = (id) => async (dispatch) => {
 
         const token = localStorage.getItem("token");
 
-        const res = await api.put(`/course/disable/${id}`,{}, {
+        const res = await api.put(`/course/disable/${id}`, {}, {
             headers: { Authorization: `Bearer ${token}` },
             withCredentials: true,
         });
@@ -173,30 +173,33 @@ export const deleteCourseAction = (id) => async (dispatch) => {
     }
 };
 
-export const handleDownloadAll = async (id) => {
-  const token = localStorage.getItem("token");
+export const handleDownloadAll = async (title,id, selectedids) => {
+    const token = localStorage.getItem("token");
 
-  const res = await api.get(
-    `course/resources/download/${id}`,
-    {
-      responseType: "blob", 
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  console.log(res);
-  
+    const res = await api.post(
+        `course/resources/download/${id}`, {
+        ids: selectedids,
+        title
+    },
+        {
+            responseType: "blob",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+    console.log(res);
 
-  const url = window.URL.createObjectURL(new Blob([res.data]));
-  console.log(url);
-  
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "course-images.zip";
-  document.body.appendChild(a);
-  a.click();
 
-  document.body.removeChild(a);
-  window.URL.revokeObjectURL(url);
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    console.log(url);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "course-images.zip";
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
 };

@@ -42,6 +42,7 @@ export const loginUser = (credentials) => async (dispatch) => {
         } else {
             
             localStorage.setItem("token", res?.data?.token)
+           
             dispatch(loginSuccess(res?.data.data))
             return {msg:res.data.message, url:"dashboard"}
         }

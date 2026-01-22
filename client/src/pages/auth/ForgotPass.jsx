@@ -95,7 +95,7 @@ function ForgotPass() {
                             <input placeholder="Email Address" name='email' className="input" type="email" onChange={(e) => setEmail(e.target.value)} required />
                         </Box>
                         <button disabled={isLoading} className="btn">
-                            {isLoading && <CircularProgress color="inherit" size="20px" />}
+                            {isLoading && <CircularProgress  sx={{color:"var(--text-color)"}} size="20px" />}
 
                             Send Reset Link</button>
                     </form>

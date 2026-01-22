@@ -94,12 +94,12 @@ export const deactivateUser = async (req, res) => {
         }
 
         // 2. Disable/enable all courses of user
-        if (userData.courses && userData.courses.length > 0) {
-            await courseModel.updateMany(
-                { _id: { $in: userData.courses } },   // filter
-                { $set: { disable: deactivate } }     // update
-            );
-        }
+        // if (userData.courses && userData.courses.length > 0) {
+        //     await courseModel.updateMany(
+        //         { _id: { $in: userData.courses } },   // filter
+        //         { $set: { disable: deactivate } }     // update
+        //     );
+        // }
 
         return successHandler(res, 200, "User updated successfully", userData);
 

@@ -112,7 +112,7 @@ function ResetPass() {
 
                         {/* Reset Button */}
                         <button disabled={isLoading} className="btn">
-                            {isLoading && <CircularProgress color="inherit" size="20px" />}
+                            {isLoading && <CircularProgress  sx={{color:"var(--text-color)"}} size="20px" />}
 
                             Change Password</button>
                     </form>
