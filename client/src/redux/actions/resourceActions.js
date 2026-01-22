@@ -53,7 +53,7 @@ export const getAllResourcesAction = () => async (dispatch) => {
 };
 
 // GET RESOURCES OF A COURSE
-export const getCourseResourcesAction = (courseId) => async (dispatch) => {
+export const getCourseResourcesAction = (courseId, type) => async (dispatch) => {
     try {
         dispatch(fetchResourcesStart());
         const token = localStorage.getItem("token");
@@ -61,6 +61,7 @@ export const getCourseResourcesAction = (courseId) => async (dispatch) => {
         const res = await api.get(`/resource/courses/${courseId}/`, {
             headers: { Authorization: `Bearer ${token}` },
             withCredentials: true,
+            params: { type }
         });
 
         dispatch(fetchResourcesSuccess(res.data.data));
@@ -92,6 +93,7 @@ export const getSingleResourceAction = (id) => async (dispatch) => {
 
 // DELETE RESOURCE
 export const deleteResourceAction = (id, courseId) => async (dispatch) => {
+
     try {
         dispatch(deleteResourceStart());
         const token = localStorage.getItem("token");

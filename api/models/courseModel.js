@@ -26,22 +26,7 @@ const courseSchema = new mongoose.Schema({
             ref: "User",
         }
     ],
-    assignments: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Assignment",
-        }
-    ], quizzes: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Quiz",
-        }
-    ], resources: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Resource",
-        }
-    ],
+   
     disable: { type: Boolean, default: false },
 },
     { timestamps: true }

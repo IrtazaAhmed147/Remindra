@@ -24,6 +24,7 @@ export default function AddAssignmentPage() {
     const [coverPreviews, setCoverPreviews] = useState([]);
     const [render, setRender] = useState(false);
     const {assignmentLoading} = useSelector((state)=> state.assignments)
+    const {courseIsLoading} = useSelector((state)=> state.course)
 
 
     const [dueDate, setDueDate] = useState(null); // local state for picker
@@ -67,6 +68,13 @@ export default function AddAssignmentPage() {
 
     const handleCreateAssigment = async () => {
 
+        if((!form.current.title ||!form.current.task ||!form.current.dueDate ||!form.current.course  )  || (!form.current.title.trim() ||!form.current.task.trim())){
+            
+            
+             notify("error", "Please fill in all required fields: Title, Task, Course, and Due Date. Uploading a file is optional.");
+            return
+        
+        }
         const formData = new FormData();
         formData.append("title", form.current.title);
         formData.append("description", form.current.task);
@@ -80,9 +88,9 @@ export default function AddAssignmentPage() {
 
         if (params.get('type') === 'edit' && params.get('id')) {
 
-            dispatch(updateAssignmentAction(params.get('id'), formData)).then((msg) => notify("success", msg))
+            dispatch(updateAssignmentAction(params.get('id'), formData)).then((msg) => notify("success", msg)).catch((msg) => notify("error", msg))
         } else {
-            dispatch(createAssignmentAction(form.current.course, formData)).then((msg) => notify("success", msg))
+            dispatch(createAssignmentAction(form.current.course, formData)).then((msg) => notify("success", msg)).catch((msg) => notify("error", msg))
 
         }
 
@@ -171,6 +179,7 @@ export default function AddAssignmentPage() {
                         <Select
                             fullWidth
                             size="small"
+                            disabled={courseIsLoading}
                             name="course"
                             sx={{
                                 mb: 2,
@@ -189,7 +198,7 @@ export default function AddAssignmentPage() {
                             <MenuItem value={'Select Course'} sx={{ fontSize: "13px" }}>
                                 Select Course
                             </MenuItem>
-                            {courseList.map((cat) => (
+                            {courseList?.map((cat) => (
                                 <MenuItem key={cat._id} value={cat._id} sx={{ fontSize: "13px" }}>
                                     {cat.title}
                                 </MenuItem>

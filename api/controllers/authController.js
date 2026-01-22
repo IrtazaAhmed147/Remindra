@@ -82,14 +82,14 @@ export const login = async (req, res) => {
 
         // 4. Check if user is verified
         if (user.isSuspend) {
-            return successHandler(
+            return errorHandler(
                 res,
                 200,
                 "Your account is suspended"
             );
         }
         if (user.isDeactivate) {
-            return successHandler(
+            return errorHandler(
                 res,
                 200,
                 "Your account is deactivated"

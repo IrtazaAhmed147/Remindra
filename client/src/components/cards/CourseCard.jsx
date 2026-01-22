@@ -23,7 +23,7 @@ function CourseCard({
   title,
   description,
   members,
-  isShow=true,
+  isShow = true,
   resources,
   updatedAt,
   _id,
@@ -36,8 +36,7 @@ function CourseCard({
   const navigate = useNavigate();
 
   const isOwner = owner?._id === user?._id;
-  console.log(isOwner);
-  
+
   return (
     <Box
       sx={{
@@ -69,8 +68,8 @@ function CourseCard({
         }}
       />
 
-     
-        <Box sx={{height:'100%',display:"flex", flexDirection:"column", justifyContent:"space-between"}}>
+
+      <Box sx={{ height: '100%', display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
         {/* HEADER */}
         <Box
           sx={{
@@ -136,63 +135,66 @@ function CourseCard({
             </Box>
           )}
         </Box>
-           <Link
-        to={isOwner ? `/course/${_id}/` : `/course/${_id}/resources`}
-        style={{ textDecoration: "none" }}
-      >
-        {/* OWNER INFO */}
-        {!isOwner && (
+        <Link
+          to={isOwner ? `/course/${_id}/` : `/course/${_id}/resources`}
+          style={{ textDecoration: "none", height: '100%', display: "flex", flexDirection: "column", justifyContent: 'space-between' }}
+        >
+          {/* OWNER INFO */}
+          {!isOwner && (
+            <Typography
+              fontSize="11px"
+              color="#6b7280"
+              sx={{ mb: 1 }}
+            >
+              Shared By: <b>{owner?.username}</b>
+            </Typography>
+          )}
+
+          {/* DESCRIPTION */}
           <Typography
-            fontSize="11px"
+            // minHeight={'90px'}
+            fontSize="13px"
             color="#6b7280"
             sx={{ mb: 1 }}
           >
-            Shared By: <b>{owner?.username}</b>
+            {description?.slice(0, 90)}
           </Typography>
-        )}
 
-        {/* DESCRIPTION */}
-        <Typography
-          fontSize="13px"
-          color="#6b7280"
-          sx={{ mb: 1 }}
-        >
-          {description?.slice(0, 90)}
-        </Typography>
 
-        <Divider sx={{ mb: 1 }} />
+          {/* STATS */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              mt: 1,
+              borderTop: "1px solid var(--text-color)",
+              pt: 1,
+            }}
+          >
 
-        {/* STATS */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            mt: 1,
-          }}
-        >
-          <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
-            <FolderOutlinedIcon sx={{ fontSize: 16, color: "#64748B" }} />
-            <Typography fontSize="12px" color="var(--text-color)">
-              {resources?.length || 0} {resources?.length > 1 ? "Rescoures":"Rescoure"}
-            </Typography>
+            <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
+              <FolderOutlinedIcon sx={{ fontSize: 16, color: "#64748B" }} />
+              <Typography fontSize="12px" color="var(--text-color)">
+                {resources?.length || 0} {resources?.length > 1 ? "Rescoures" : "Rescoure"}
+              </Typography>
+            </Box>
+
+            <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
+              <GroupOutlinedIcon sx={{ fontSize: 16, color: "#64748B" }} />
+              <Typography fontSize="12px" color="var(--text-color)">
+                {members?.length || 0} {members?.length > 1 ? "Members" : "Member"}
+              </Typography>
+            </Box>
+
+            <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
+              <UpdateOutlinedIcon sx={{ fontSize: 16, color: "#64748B" }} />
+              <Typography fontSize="12px" color="var(--text-color)">
+                {formatDate(updatedAt)}
+              </Typography>
+            </Box>
           </Box>
-
-          <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
-            <GroupOutlinedIcon sx={{ fontSize: 16, color: "#64748B" }} />
-            <Typography fontSize="12px" color="var(--text-color)">
-              {members?.length || 0} {members?.length > 1 ? "Members":"Member"} 
-            </Typography>
-          </Box>
-
-          <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
-            <UpdateOutlinedIcon sx={{ fontSize: 16, color: "#64748B" }} />
-            <Typography fontSize="12px" color="var(--text-color)">
-              {formatDate(updatedAt)}
-            </Typography>
-          </Box>
-        </Box>
-      </Link>
-        </Box>
+        </Link>
+      </Box>
 
       {/* ACTIONS */}
       {/* {isOwner && (

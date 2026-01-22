@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import FolderCopyOutlinedIcon from "@mui/icons-material/FolderCopyOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
-import { Divider } from "@mui/material";
+import { CircularProgress, Divider } from "@mui/material";
 import CourseCard from "../../components/cards/CourseCard";
 import TaskTable from "../../components/tables/TaskTable";
 import { useNavigate } from "react-router-dom";
@@ -22,13 +22,12 @@ function Dashboard() {
   const dispatch = useDispatch();
   const { stats, statsLoading,
     statsError } = useSelector((state) => state.dashboard)
-  const { courses, } = useSelector((state) => state.course)
+  const { courses, courseIsLoading } = useSelector((state) => state.course)
 
   useEffect(() => {
-    dispatch(getStats());
-    console.log(stats);
+    dispatch(getStats()).then((msg)=> console.log(msg)
+    );
     dispatch(getUserCoursesAction({ courseType: 'all', limit: 3 }))
-    console.log(courses);
 
 
   }, [])
@@ -37,45 +36,47 @@ function Dashboard() {
     <>
 
 
-      <Box sx={{ width: "100%", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" }, pt: "5px !important",minHeight:"100vh" }}>
+      <Box sx={{ width: "100%", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" }, pt: "5px !important", minHeight: "100vh" }}>
 
         <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
           Dashboard
         </Typography>
 
         {/* Overview Cards */}
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: { xs: "10px", sm: "10px", md: "20px" },
-          }}
-        >
-          <DashStatCard title="Courses"
-            icon={<FolderCopyOutlinedIcon sx={{ color: "#2A7DE1", fontSize: 20 }} />}
-            stats={[
-              { label: "Total Courses", value: stats?.totalCourses },
-              { label: "Courses in which you are member", value: stats.sharedCourses },
-            ]}
-          />
-          <DashStatCard title="Quizs"
-            icon={<QuizOutlinedIcon sx={{ color: "var(--notification-color)", fontSize: 20 }} />}
-            stats={[
-              { label: "Total Quizs", value: stats?.totalQuizzes },
-              { label: "Pending", value: stats?.pendingQuizzes },
-              { label: "Completed", value: stats?.completedQuizzes },
-            ]}
-          />
-          <DashStatCard title="Assignments"
-            icon={<AssignmentOutlinedIcon sx={{ color: "var(--notification-color)", fontSize: 20 }} />}
-            stats={[
-              { label: "Total Assignments", value: stats?.totalAssignments },
-              { label: "Pending", value: stats?.pendingAssignments },
-              { label: "Completed", value: stats?.completedAssignments },
-            ]}
-          />
-        </Box>
+        {statsLoading ? <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px" }}> <CircularProgress  sx={{color:"var(--text-color)"}} size={'30px'} /> </Box> :
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: { xs: "10px", sm: "10px", md: "20px" },
 
+            }}
+          >
+            <DashStatCard title="Courses"
+              icon={<FolderCopyOutlinedIcon sx={{ color: "#2A7DE1", fontSize: 20 }} />}
+              stats={[
+                { label: "Total Courses", value: stats?.totalCourses },
+                { label: "Courses in which you are member", value: stats.sharedCourses },
+              ]}
+            />
+            <DashStatCard title="Quizs"
+              icon={<QuizOutlinedIcon sx={{ color: "var(--notification-color)", fontSize: 20 }} />}
+              stats={[
+                { label: "Total Quizs", value: stats?.totalQuizzes },
+                { label: "Pending", value: stats?.pendingQuizzes },
+                { label: "Completed", value: stats?.completedQuizzes },
+              ]}
+            />
+            <DashStatCard title="Assignments"
+              icon={<AssignmentOutlinedIcon sx={{ color: "var(--notification-color)", fontSize: 20 }} />}
+              stats={[
+                { label: "Total Assignments", value: stats?.totalAssignments },
+                { label: "Pending", value: stats?.pendingAssignments },
+                { label: "Completed", value: stats?.completedAssignments },
+              ]}
+            />
+          </Box>
+        }
         <Divider sx={{ margin: "20px 0px" }} />
         <Box
           sx={{
@@ -103,7 +104,7 @@ function Dashboard() {
             },
           ].map((action, index) => (
 
-            <GradientBtn text={action?.title} icon={action?.icon} url={action?.url} />
+            <GradientBtn key={index} text={action?.title} icon={action?.icon} url={action?.url} />
           ))}
 
         </Box>
@@ -113,20 +114,21 @@ function Dashboard() {
         <Typography variant="h4" fontWeight="bold" mt={2} color="var(--text-color)" sx={{ mb: 2 }}>
           Quick Access
         </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "20px",
-          }}
-        >
-
-          {courses?.map((course) => (
-
-            <CourseCard key={course._id} {...course} isShow={false}/>
-          ))
-          }
-        </Box>
+        {
+          courseIsLoading ? <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100px" }}> <CircularProgress  sx={{color:"var(--text-color)"}} size={'30px'} /> </Box> :
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "20px",
+              }}
+            >
+              {courses?.map((course) => (
+                <CourseCard key={course._id} {...course} isShow={false} />
+              ))
+              }
+            </Box>
+        }
 
 
       </Box>

@@ -1,8 +1,5 @@
 import React, { useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import './login.css'
@@ -11,7 +8,6 @@ import { registerUser } from '../../redux/actions/authActions';
 import { Box, CircularProgress, MenuItem, Select, Typography } from '@mui/material';
 import { notify } from '../../utils/HelperFunctions';
 import { useState } from 'react';
-import SchoolIcon from '@mui/icons-material/School';
 import LandingNavbar from '../../components/navbar/LandingNavbar';
 
 function Signup() {
@@ -125,7 +121,7 @@ function Signup() {
                                 </div>
 
                                 <button className="btn">
-                                    {isLoading && <CircularProgress color="inherit" size="20px" />}
+                                    {isLoading && <CircularProgress  sx={{color:"var(--text-color)"}} size="20px" />}
                                     Create Account</button>
                                 {/* {error && <p>{error}</p>} */}
                                 <p className="p">Already have an account? <Link to={'/login'} className="link">Login</Link>

@@ -11,10 +11,12 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { notify } from '../../utils/HelperFunctions';
 import { useState } from 'react';
 import LandingNavbar from '../../components/navbar/LandingNavbar';
+import AccountStatusCard from '../../components/cards/AccountStatusCard';
 function Login() {
 
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [accStatusModal, setAccStatusModal] = useState({status:false});
     const [showPass, setShowPass] = useState(false)
     const { isLoading, error, user } = useSelector((state) => state.auth)
     const form = useRef({})
@@ -33,7 +35,11 @@ function Login() {
 
         dispatch(loginUser(form.current))
             .then(({msg, url}) => {
-                
+                if(msg.includes("suspended") || msg.includes("deactivated")) {
+
+                    setAccStatusModal({status:true, msg});
+                    return;
+                }
                 notify('success', msg)
                 navigate(`/${url}`)
             })
@@ -49,7 +55,7 @@ function Login() {
     return (
         <>
 
-            <Box sx={{ width: '100%', minHeight: '100vh', backgroundColor: 'var(--bg-color)'}}>
+            <Box sx={{ width: '100%', minHeight: '100vh', backgroundColor: 'var(--bg-color)', position:"relative"}}>
 
                  <LandingNavbar  authBtn={false}/>
                 <Box sx={{ width: '100%', height: '85vh', backgroundColor: 'var(--bg-color)', display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
@@ -79,7 +85,7 @@ function Login() {
                             </Box>
                             {/* {error && <p>{error}</p>} */}
                             <button disabled={isLoading} className="btn">
-                                {isLoading && <CircularProgress color="inherit" size="20px" />}
+                                {isLoading && <CircularProgress  sx={{color:"var(--text-color)"}} size="20px" />}
 
                                 Sign In</button>
                             <p className="p">Don't have an account? <Link to={'/signup'} className="link">Sign Up</Link>
@@ -87,6 +93,8 @@ function Login() {
                         </form>
                     </Box>
                 </Box>
+
+                {accStatusModal?.status && <AccountStatusCard open={accStatusModal?.status} status={accStatusModal?.msg}/>}
             </Box>
         </>
     )

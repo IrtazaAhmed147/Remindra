@@ -197,7 +197,7 @@ export default function AddCoursePage() {
                             ":hover": { backgroundColor: "#1258ad" },
                         }}
                     >
-                        {courseIsLoading && <CircularProgress color="inherit" size="20px" />}
+                        {courseIsLoading && <CircularProgress  sx={{color:"var(--text-color)"}} size="20px" />}
                         {typeParam.get("type") === 'edit' ? "Edit" : 'Create'} Course
                     </Button>
                 </Box>

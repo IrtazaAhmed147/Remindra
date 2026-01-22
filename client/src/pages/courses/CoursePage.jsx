@@ -18,9 +18,7 @@ import GradientBtn from '../../components/common/GradientBtn';
 
 function CoursePage() {
     const { courseIsLoading, courses, error } = useSelector((state) => state.course)
-    const { user } = useSelector((state) => state.auth)
     const { users, userIsLoading } = useSelector((state) => state.user)
-    const { invitationLoading } = useSelector((state) => state.invite)
     const [searchName, setSearchName] = useState("");
     const [courseType, setCourseType] = useState("all");
     const [removeModalState, setRemoveModalState] = useState(false);
@@ -35,18 +33,17 @@ function CoursePage() {
 
     useEffect(() => {
 
-            const name = searchParams.get("courseName") || "";
-            const type = searchParams.get("courseType") || "all";
-            
-            setSearchName(name);
-            setCourseType(type);
-            
-            dispatch(getUserCoursesAction({ courseName: name, courseType: type }));
-        
+        const name = searchParams.get("courseName") || "";
+        const type = searchParams.get("courseType") || "all";
+
+        setSearchName(name);
+        setCourseType(type);
+
+        dispatch(getUserCoursesAction({ courseName: name, courseType: type }));
+
     }, []);
 
     const deleteCourse = (id) => {
-        console.log("delete");
 
         dispatch(disableCourseAction(id))
             .then((msg) => {
@@ -83,8 +80,7 @@ function CoursePage() {
         dispatch(getUserCoursesAction(params));
     };
     const handleShare = (userIds) => {
-        console.log("Shared with user IDs:", userIds);
-        dispatch(sendInviteAction(userIds[0],selectedCourseId)).then((msg)=> notify('success', msg))
+        dispatch(sendInviteAction(userIds[0], selectedCourseId)).then((msg) => notify('success', msg))
     };
 
     return (
@@ -92,7 +88,7 @@ function CoursePage() {
 
             <Box sx={{ width: "100%", minHeight: "100vh", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" }, pt: "5px !important", }}>
 
-                <Box sx={{ width: "100%", display: "flex",mb:2, justifyContent: "space-between", flexWrap: 'wrap' }}>
+                <Box sx={{ width: "100%", display: "flex", mb: 2, justifyContent: "space-between", flexWrap: 'wrap' }}>
 
                     <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 1 }}>
                         Courses
@@ -129,11 +125,11 @@ function CoursePage() {
                             <MenuItem value="mycourses">My Courses</MenuItem>
                             <MenuItem value="sharedcourses">Shared Courses</MenuItem>
                         </Select>
-                        <Select sx={{ background: "var(--primary-color)", px: "20px", border: "none", color: "#fff", height: "40px", fontSize: "14px" }} defaultValue={"Sort by Latest"}>
+                        {/* <Select sx={{ background: "var(--primary-color)", px: "20px", border: "none", color: "#fff", height: "40px", fontSize: "14px" }} defaultValue={"Sort by Latest"}>
                             <MenuItem value="Sort by Latest">Sort by Latest</MenuItem>
                             <MenuItem value="Sort by Ascending">Sort by Ascending</MenuItem>
                             <MenuItem value="Sort by Descending">Sort by Descending</MenuItem>
-                        </Select>
+                        </Select> */}
                     </Box>
 
 
@@ -142,14 +138,14 @@ function CoursePage() {
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: '10px', marginTop: "20px" }}>
                     {error && (<Typography fontSize={"14px"} margin={'auto'} mt={2}>{error}</Typography>)}
                     {courseIsLoading && !error && <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh", width: "100%" }} >
-                        <CircularProgress color="inherit" size="30px" />
+                        <CircularProgress  sx={{color:"var(--text-color)"}} size="30px" />
                     </Box>}
                     {!courseIsLoading && !error && (
                         courses?.length === 0 ?
                             (<Typography fontSize={"14px"} margin={'auto'} mt={2}>You haven't created any courses yet. Start by creating your first course to get started!</Typography>)
                             : (courses?.map((course) => (
 
-                                <CourseCard key={course._id} {...course} setShareModalOpen={(id,members) => {
+                                <CourseCard key={course._id} {...course} setShareModalOpen={(id, members) => {
                                     dispatch(getAllUsersAction()).then(() => {
                                         setCourseMembers(members)
                                         setSelectedCourseId(id)
@@ -179,7 +175,7 @@ function CoursePage() {
                         description='By deleting this course, all associated materials including assignments, quizzes, and other related content will also be permanently removed. This action cannot be undone'
                     />}
                     {!userIsLoading && <ShareCourseModal
-                    members={courseMembers}
+                        members={courseMembers}
                         userList={users}
                         open={shareModalOpen}
                         onClose={() => setShareModalOpen(false)}

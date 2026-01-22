@@ -46,9 +46,7 @@ export const createQuizs = async (req, res) => {
 
         const saved = await quiz.save();
 
-        await courseModel.findByIdAndUpdate(req.params.id, {
-            $push: { quizzes: saved._id }
-        });
+        
 
         successHandler(res, 200, "Quiz created successfully", saved);
         // successHandler(res, 200, "Assignment created successfully");
@@ -131,9 +129,7 @@ export const deleteQuiz = async (req, res) => {
 
         await quizModel.findByIdAndDelete(req.params.id);
 
-        await courseModel.findByIdAndUpdate(req.params.courseId, {
-            $pull: { quizzes: req.params.id }
-        });
+       
 
         successHandler(res, 200, "Quiz deleted successfully");
 
@@ -163,7 +159,6 @@ export const updateQuiz = async (req, res) => {
 
             }
         }
-        console.log(req.body);
 
         const updated = await quizModel.findByIdAndUpdate(
             req.params.id,

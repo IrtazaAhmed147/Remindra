@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 const resourceSchema = new mongoose.Schema(
   {
     courseId: { type: mongoose.Schema.Types.ObjectId, ref: "course", required: true },
+    fileName: { type: String, required: true },
+    fileSize: { type: String, required: true },
     fileUrl: { type: String, required: true },
     publicId: { type: String, required: true },
     fileType: { type: String },

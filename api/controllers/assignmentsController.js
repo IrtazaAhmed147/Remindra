@@ -31,7 +31,6 @@ export const createAssignment = async (req, res) => {
             }
 
         }
-        console.log(title, description, dueDate, attachments);
 
         const assignment = new assignmentsModel({
             title: title,
@@ -46,9 +45,7 @@ export const createAssignment = async (req, res) => {
 
         const saved = await assignment.save();
 
-        await courseModel.findByIdAndUpdate(req.params.id, {
-            $push: { assignments: saved._id }
-        });
+       
 
         successHandler(res, 200, "Assignment created successfully", saved);
         // successHandler(res, 200, "Assignment created successfully");
@@ -132,9 +129,6 @@ export const deleteAssignment = async (req, res) => {
 
         await assignmentsModel.findByIdAndDelete(req.params.id);
 
-        await courseModel.findByIdAndUpdate(req.params.courseId, {
-            $pull: { assignments: req.params.id }
-        });
 
         successHandler(res, 200, "Assignment deleted");
     } catch (err) {
@@ -163,7 +157,6 @@ export const updateAssignment = async (req, res) => {
 
             }
         }
-        console.log(req.body);
 
         const updated = await assignmentsModel.findByIdAndUpdate(
             req.params.id,

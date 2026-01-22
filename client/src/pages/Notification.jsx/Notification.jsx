@@ -27,7 +27,7 @@ function Notification() {
         Notifications
       </Typography>
       {invitationFetchLoading && !error && <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh", width: "100%" }} >
-        <CircularProgress color="inherit" size="30px" />
+        <CircularProgress  sx={{color:"var(--text-color)"}} size="30px" />
       </Box>}
       {!invitationFetchLoading && invitations?.map((invite) => (
         <NotificationCard key={invite._id} responseHandle={responseHandle} {...invite} msg={' has invited you to access the course '} />

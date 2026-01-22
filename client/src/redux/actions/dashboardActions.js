@@ -14,6 +14,8 @@ export const getStats = () => async (dispatch) => {
                 withCredentials: true,
             }
         );
+        console.log(res.data?.data);
+        
 
         dispatch(dashboardStatsSuccess(res?.data?.data));
         return res.data.message;

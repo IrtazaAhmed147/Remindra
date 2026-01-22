@@ -12,7 +12,7 @@ export const uploadOnCloudinary = async (file, folder = 'default') => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         resource_type: 'image',
-          type: 'private',  
+        type: 'private',
         folder,
         quality: "auto",       // automatic compression
         fetch_format: "auto",
@@ -29,12 +29,21 @@ export const uploadOnCloudinary = async (file, folder = 'default') => {
 
   })
 };
-export const uploadFileOnCloudinary = async (file, folder = 'default') => {
+
+export const uploadFileOnCloudinary = async (file, folder = "default") => {
   return new Promise((resolve, reject) => {
+
+    const originalName = file.originalname.replace(/\s+/g, "_");
+    const extension = originalName.split(".").pop();
+    const fileNameWithoutExt = originalName.replace(`.${extension}`, "");
+
     const uploadStream = cloudinary.uploader.upload_stream(
       {
-        resource_type: 'auto',
+        resource_type: "raw",
         folder,
+        public_id: `${fileNameWithoutExt}.${extension}`, // 👈 KEY FIX
+        use_filename: false,
+        unique_filename: false
       },
       (error, result) => {
         if (error) return reject(error);
@@ -43,9 +52,9 @@ export const uploadFileOnCloudinary = async (file, folder = 'default') => {
     );
 
     streamifier.createReadStream(file.buffer).pipe(uploadStream);
-
-  })
+  });
 };
+
 
 
 export const deleteFromCloudinary = async (publicId) => {

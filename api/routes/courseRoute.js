@@ -13,7 +13,7 @@ courseRouter.put("/:id", verifyToken, updatecourse);
 courseRouter.put("/suspend/:id", verifyToken, suspendCourse);
 courseRouter.put("/disable/:id", verifyToken, disableCourse);
 courseRouter.delete("/:id", verifyToken, deletecourse);
-courseRouter.get(
+courseRouter.post(
   "/resources/download/:id",
   verifyToken,
   downloadCourseImages

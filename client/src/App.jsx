@@ -29,10 +29,11 @@ import ProtectedRoute from './components/protectedRoute/protectedRoute.jsx';
 import AssignmentPage from './pages/tasks/AssignmentPage.jsx';
 import QuizPage from './pages/tasks/QuizPage.jsx';
 import SingleCourseLayout from './pages/courses/SingleCourse.jsx';
-import AssignmentTabPage from './pages/courses/AssignmentTabPage.jsx';
+// import AssignmentTabPage from './pages/courses/AssignmentTabPage.jsx';
 import ImagesTabPage from './pages/courses/ImagesTabPage.jsx';
 import OverviewTabPage from './pages/courses/OverviewTabPage.jsx';
-import QuizzesTabPage from './pages/courses/QuizzesTabPage.jsx';
+import FileTabPage from './pages/courses/FileTabPage.jsx';
+// import QuizzesTabPage from './pages/courses/QuizzesTabPage.jsx';
 
 function App() {
 
@@ -83,12 +84,11 @@ function App() {
             <Route path='/update/profile/:username' element={<UpdateProfilePage />} />
             <Route path='/courses' element={<CoursePage />} />
             <Route path='/add/course' element={<AddCoursePage />} />
-            <Route path='/add/resources/:courseId' element={<AddResource />} />
+            <Route path='/add/resources/:type/:courseId' element={<AddResource />} />
             <Route path="/course/:courseId" element={<SingleCourseLayout />}>
               <Route index element={<OverviewTabPage />} />
-              <Route path="assignments" element={<AssignmentTabPage />} />
-              <Route path="quizzes" element={<QuizzesTabPage />} />
               <Route path="resources" element={<ImagesTabPage />} />
+              <Route path="files" element={<FileTabPage />} />
             </Route>
             <Route path='/assignment/:aId' element={<AssignmentPage />} />
             <Route path='/quiz/:aId' element={<QuizPage />} />

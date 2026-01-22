@@ -15,7 +15,7 @@ function ProfilePage() {
   return (
     <>
 
-      {isLoading && <> <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>  <CircularProgress color="inherit" size="30px" /> </Box></>}
+      {isLoading && <> <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>  <CircularProgress  sx={{color:"var(--text-color)"}} size="30px" /> </Box></>}
       {!isLoading && <Box
 
         sx={{ width: "100%", height: "91vh", display: "flex", justifyContent: "space-between", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" }, pt: "0px !important", }}

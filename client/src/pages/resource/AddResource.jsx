@@ -7,34 +7,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import { uploadResourceAction } from '../../redux/actions/resourceActions';
 import { useNavigate, useParams } from 'react-router-dom';
 import { notify } from '../../utils/HelperFunctions';
+import FileCard from '../../components/cards/FileCard';
 function AddResource() {
 
     const form = useRef({})
+    const { type } = useParams();
 
     const [coverFiles, setCoverFiles] = useState([]);
     const [coverPreviews, setCoverPreviews] = useState([]);
-    const {courseId} = useParams();
+    const { courseId } = useParams();
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {isLoading} = useSelector((state)=> state.resource)
+    const { isLoading } = useSelector((state) => state.resource)
 
-     const uploadFiles = async () => {
-    
-            const formData = new FormData();
-            // formData.append("title", form.current.title);
-            
-    
-            coverFiles.forEach((file, index) => {
-                formData.append("materials", file);
-            });
-    
-    
-                dispatch(uploadResourceAction(courseId, formData)).then((msg) => {
-                    notify("success", msg)
-                    navigate(`/course/${courseId}`)
-                })
-    
-        }
+    const uploadFiles = async () => {
+        const formData = new FormData();
+        coverFiles.forEach((file, index) => {
+            formData.append("materials", file);
+        });
+
+
+        dispatch(uploadResourceAction(courseId, formData)).then((msg) => {
+            notify("success", msg)
+            navigate(`/course/${courseId}`)
+        })
+
+    }
     const handleCoverUpload = (e) => {
         const files = Array.from(e.target.files);
 
@@ -67,31 +65,12 @@ function AddResource() {
                         color: "var(--text-color)"
                     }}
                 >
-                    Add Images
+                    Add {type === 'image' ? "Images" : "files"}
                 </Typography>
-                <Typography sx={{ mb: 1, fontSize: "12px", color: "#6b7280" }}>
-                    Title
-                </Typography>
-                <input
-                    type="text"
-                    name="title"
-                    defaultValue={form.current.title}
-                    onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }}
-                    placeholder="Enter title"
-                    style={{
-                        outline: "none",
-                        background: "#fff",
-                        border: "1px solid #cfd3d8",
-                        borderRadius: "6px",
-                        padding: "6px 10px",
-                        width: "100%",
-                        height: "34px",
-                        fontSize: "13px"
-                    }}
-                />
 
 
-                <Box sx={{ width: "100%" }}>
+
+                <Box sx={{ width: "100%", }}>
                     <Typography sx={{ mb: 1 }}>Upload Files</Typography>
 
                     <Paper
@@ -102,7 +81,7 @@ function AddResource() {
                             borderRadius: "10px",
                             padding: 1,
                             cursor: "pointer",
-                            background: "#f8fafc",
+                            bgcolor: "var(--card-bg-color)"
                         }}
                         onClick={() => document.getElementById("coverUpload").click()}
                     >
@@ -118,13 +97,13 @@ function AddResource() {
                                 }}
                             >
                                 <CloudUploadIcon sx={{ fontSize: 40 }} />
-                                <Typography>Upload Images</Typography>
+                                <Typography>Upload {type === 'image' ? "Images" : "files"}</Typography>
                                 <Typography sx={{ fontSize: "12px" }}>
-                                    (You can upload multiple images)
+                                    (You can upload multiple files)
                                 </Typography>
                             </Box>
-                        ) : (
-                            <Box
+                        ) : type === 'image' ? (
+                            <>  <Box
                                 sx={{
                                     width: "100%",
                                     display: "flex",
@@ -173,15 +152,20 @@ function AddResource() {
                                         />
                                     </Box>
                                 ))}
-                            </Box>
-                        )}
+                            </Box> </>
+                        ) : <Box> {coverFiles?.map((file, index) => (
+                            <FileCard key={index} fileName={file.name} fileSize={file.size} isDownloadBtn={false} />
+                        ))} </Box>}
                     </Paper>
 
                     {/* Hidden Input */}
                     <input
                         type="file"
-                        accept="image/*,application/pdf,text/plain"
-                        multiple
+                        accept={
+                            type === "image"
+                                ? "image/*"
+                                : ".pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx,.zip,.rar"
+                        } multiple
                         id="coverUpload"
                         style={{ display: "none" }}
                         onChange={handleCoverUpload}
@@ -189,7 +173,7 @@ function AddResource() {
                 </Box>
                 <Box sx={{ mt: 4 }}>
                     <Button
-                    disabled={isLoading}
+                        disabled={isLoading}
                         onClick={() => uploadFiles()}
                         sx={{
                             padding: " 5px 10px",
