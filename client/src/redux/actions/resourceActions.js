@@ -1,4 +1,5 @@
 import api from "../../utils/common.js";
+import { handleApiError } from "../../utils/HelperFunctions.js";
 import {
     fetchResourcesStart,
     fetchResourcesSuccess,
@@ -28,8 +29,7 @@ export const uploadResourceAction = (courseId, data) => async (dispatch) => {
         dispatch(createResourceSuccess(res.data.data));
         return res.data.message;
     } catch (error) {
-        dispatch(createResourceFailure(error.response?.data?.message || error.message));
-        throw error.response?.data?.message || error.message;
+        handleApiError(error, dispatch, createResourceFailure);
     }
 };
 
@@ -47,8 +47,7 @@ export const getAllResourcesAction = () => async (dispatch) => {
         dispatch(fetchResourcesSuccess(res.data.data));
         return res.data.data;
     } catch (error) {
-        dispatch(fetchResourcesFailure(error.response?.data?.message || error.message));
-        throw error.response?.data?.message || error.message;
+        handleApiError(error, dispatch, fetchResourcesFailure);
     }
 };
 
@@ -67,8 +66,7 @@ export const getCourseResourcesAction = (courseId, type) => async (dispatch) => 
         dispatch(fetchResourcesSuccess(res.data.data));
         return res.data.data;
     } catch (error) {
-        dispatch(fetchResourcesFailure(error.response?.data?.message || error.message));
-        throw error.response?.data?.message || error.message;
+        handleApiError(error, dispatch, fetchResourcesFailure);
     }
 };
 
@@ -86,13 +84,12 @@ export const getSingleResourceAction = (id) => async (dispatch) => {
         dispatch(fetchSingleResourceSuccess(res.data.data));
         return res.data.data;
     } catch (error) {
-        dispatch(fetchSingleResourceFailure(error.response?.data?.message || error.message));
-        throw error.response?.data?.message || error.message;
+        handleApiError(error, dispatch, fetchSingleResourceFailure);
     }
 };
 
 // DELETE RESOURCE
-export const deleteResourceAction = (id, courseId) => async (dispatch) => {
+export const deleteResourceAction = (id, courseId, type) => async (dispatch) => {
 
     try {
         dispatch(deleteResourceStart());
@@ -101,13 +98,13 @@ export const deleteResourceAction = (id, courseId) => async (dispatch) => {
         const res = await api.delete(`/resource/${id}/course/${courseId}`, {
             headers: { Authorization: `Bearer ${token}` },
             withCredentials: true,
+            params: { type }
         });
 
         dispatch(deleteResourceSuccess(id));
         return res.data.message;
     } catch (error) {
-        dispatch(deleteResourceFailure(error.response?.data?.message || error.message));
-        throw error.response?.data?.message || error.message;
+        handleApiError(error, dispatch, deleteResourceFailure);
     }
 };
 export const deleteAllResourceAction = (courseId) => async (dispatch) => {
@@ -123,7 +120,6 @@ export const deleteAllResourceAction = (courseId) => async (dispatch) => {
         dispatch(deleteResourceSuccess());
         return res.data.message;
     } catch (error) {
-        dispatch(deleteResourceFailure(error.response?.data?.message || error.message));
-        throw error.response?.data?.message || error.message;
+        handleApiError(error, dispatch, deleteResourceFailure);
     }
 };

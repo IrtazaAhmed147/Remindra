@@ -7,7 +7,7 @@ function GradientBtn({icon, text, url}) {
             onClick={() => navigate(url)}
             sx={{
                 width: { xs: "100%", sm: "48%", md: "250px" },
-                p: "10px 12px",
+                p: {xs:"5px 7px",sm:"7px 9px",md:"10px 12px"},
                 borderRadius: "14px",
                 background: "var(--gradientBtn-color)",
                 

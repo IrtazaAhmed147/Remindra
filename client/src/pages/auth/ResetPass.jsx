@@ -11,20 +11,25 @@ function ResetPass() {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const navigate = useNavigate()
-    const { isLoading,user } = useSelector((state) => state.auth)
+    const { authLoading, user } = useSelector((state) => state.auth)
 
-    
-        useEffect(() => {
-            if (user) {
-                navigate('/dashboard')
-            }
-        }, [user])
+
+    useEffect(() => {
+        if (user) {
+            navigate('/dashboard')
+        }
+    }, [user])
 
     const dispatch = useDispatch();
     const [searchParams] = useSearchParams();
 
     const token = searchParams.get("token");
     const handleSubmit = async (e) => {
+
+        if (newPassword !== confirmPassword) {
+            return notify("error", "Password and Confirm Password should be same")
+
+        }
 
         try {
             e.preventDefault()
@@ -33,10 +38,10 @@ function ResetPass() {
                 notify('success', msg)
                 navigate('/login')
 
-            })
-                .catch((err) => notify('error', err))
+            }).catch((err) => notify('error', err))
 
         } catch (error) {
+            console.log(error);
 
         }
     }
@@ -111,8 +116,8 @@ function ResetPass() {
 
 
                         {/* Reset Button */}
-                        <button disabled={isLoading} className="btn">
-                            {isLoading && <CircularProgress  sx={{color:"var(--text-color)"}} size="20px" />}
+                        <button disabled={authLoading} className="btn">
+                            {authLoading && <CircularProgress sx={{ color: "var(--text-color)" }} size="20px" />}
 
                             Change Password</button>
                     </form>

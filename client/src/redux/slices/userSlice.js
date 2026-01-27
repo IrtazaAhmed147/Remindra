@@ -4,7 +4,7 @@ const initialState = {
   users: [],
   singleUser: null,
   userIsLoading: false,
-  error: null,
+  userError: null,
 };
 
 const userSlice = createSlice({
@@ -15,7 +15,7 @@ const userSlice = createSlice({
     // ===== GET ALL USERS =====
     fetchUsersStart: (state) => {
       state.userIsLoading = true;
-      state.error = null;
+      state.userError = null;
     },
     fetchUsersSuccess: (state, { payload }) => {
       state.userIsLoading = false;
@@ -23,13 +23,13 @@ const userSlice = createSlice({
     },
     fetchUsersFailure: (state, { payload }) => {
       state.userIsLoading = false;
-      state.error = payload;
+      state.userError = payload;
     },
 
     // ===== GET SINGLE USER =====
     fetchSingleUserStart: (state) => {
       state.userIsLoading = true;
-      state.error = null;
+      state.userError = null;
     },
     fetchSingleUserSuccess: (state, { payload }) => {
       state.userIsLoading = false;
@@ -37,13 +37,13 @@ const userSlice = createSlice({
     },
     fetchSingleUserFailure: (state, { payload }) => {
       state.userIsLoading = false;
-      state.error = payload;
+      state.userError = payload;
     },
 
     // ===== UPDATE USER =====
     updateUserStart: (state) => {
       state.userIsLoading = true;
-      state.error = null;
+      state.userError = null;
     },
     updateUserSuccess: (state, { payload }) => {
       state.userIsLoading = false;
@@ -61,13 +61,13 @@ const userSlice = createSlice({
     },
     updateUserFailure: (state, { payload }) => {
       state.userIsLoading = false;
-      state.error = payload;
+      state.userError = payload;
     },
 
     // ===== CLEAR STATE =====
     clearUserState: (state) => {
       state.singleUser = null;
-      state.error = null;
+      state.userError = null;
     }
   },
 });

@@ -1,11 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
-const FeatureCard = ({ title, description }) => {
+const FeatureCard = ({ title, description,theme }) => {
   return (
     <Box
       sx={{
-        background: "linear-gradient(135deg, #ffffff, #f3f6f9)",
+        background: theme === 'dark' ? "linear-gradient(135deg, #0B1220, #020617)" : "linear-gradient(135deg, #ffffff, #f3f6f9)",
         borderRadius: "16px",
         padding: "18px",
         width: {xs:"100%",sm:"48%",md:"24%"},

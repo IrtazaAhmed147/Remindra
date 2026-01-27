@@ -13,31 +13,54 @@ import {
   CardContent,
   Avatar,
   FormControlLabel,
+  CircularProgress,
 } from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
 import { useSelector } from "react-redux";
 
-
-export default function ShareCourseModal({ open, onClose, onShare, userList, members }) {
-
+export default function ShareCourseModal({
+  open,
+  onClose,
+  onShare,
+  userList,
+  members = [],
+  loading,
+  searchUser,
+}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const { user } = useSelector((state) => state.auth)
+
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    userList?.filter((u, i) => {
-      console.log(user);
-      console.log(u);
-      if ((u._id !== user._id)) {
 
-        console.log('chala');
+    if (!open) return;
+    const timer = setTimeout(async () => {
+      const result = await searchUser(searchTerm, members);
+      setUsers(result || []);
+    }, 400);
 
-        setUsers(prev => [...prev, u]);
-      }
-    });
+    return () => clearTimeout(timer);
+  }, [searchTerm, open]);
 
-  }, []);
+  useEffect(() => {
+    if (!loading && userList && open) {
+      const filtered = userList.filter(
+        (u) => u._id !== user._id && !members.includes(u._id)
+      );
+      setUsers(filtered);
+    }
+  }, [loading, userList, open]);
+
+  /*  Reset on modal close */
+  useEffect(() => {
+    if (!open) {
+      setSearchTerm("");
+      setSelectedUsers([]);
+      setUsers([]);
+    }
+  }, [open]);
 
   const handleToggle = (userId) => {
     setSelectedUsers((prev) =>
@@ -47,17 +70,6 @@ export default function ShareCourseModal({ open, onClose, onShare, userList, mem
     );
   };
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const filteredUsers = users.filter(
-    (user) =>
-      user?.fullname?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
-      user?.username?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
-      user?.university?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-  );
-
   const handleShareClick = () => {
     onShare(selectedUsers);
     onClose();
@@ -66,11 +78,14 @@ export default function ShareCourseModal({ open, onClose, onShare, userList, mem
   return (
     <Dialog
       open={open}
+       disableRestoreFocus
       onClose={onClose}
       PaperProps={{
         sx: {
-          background: "var(--card-bg-color) !important", borderRadius: 3, width: 400
-        }
+          background: "var(--card-bg-color)",
+          borderRadius: 3,
+          width: 400,
+        },
       }}
     >
       <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -82,7 +97,7 @@ export default function ShareCourseModal({ open, onClose, onShare, userList, mem
 
       <DialogContent sx={{ p: 2 }}>
         <Typography fontSize={13} color="text.secondary" sx={{ mb: 2 }}>
-          Select users to give access to this course. You can modify access anytime.
+          Select users to give access to this course.
         </Typography>
 
         <TextField
@@ -90,82 +105,72 @@ export default function ShareCourseModal({ open, onClose, onShare, userList, mem
           fullWidth
           placeholder="Search users..."
           value={searchTerm}
-          onChange={handleSearch}
+          onChange={(e) => setSearchTerm(e.target.value)}
           sx={{
-            background: "#fff",
+            background: "var(--input-bg-color)",
             borderRadius: "8px",
             mb: 2,
             "& fieldset": { border: "none" },
           }}
-          inputProps={{ style: { fontSize: "12px" } }}
+          inputProps={{
+            style: { fontSize: "12px", color: "var(--text-color)" },
+          }}
         />
 
-        <Box sx={{ maxHeight: 250, overflowY: "auto" }}>
-          {filteredUsers.map((user) => (
-            <Card
-              key={user._id}
-              sx={{
-                mb: 1,
-                borderRadius: "10px",
-                boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
-                transition: "0.3s",
-              }}
-            >
-              <CardContent
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  p: "10px !important",
-                }}
-              >
-                <Avatar sx={{ width: 40, height: 40 }}>{user?.profilePic}</Avatar>
-                <Box sx={{ flex: 1 }}>
-                  <Typography sx={{ fontSize: "14px", fontWeight: 600 }}>
-                    {user?.fullname}
-                  </Typography>
-                  <Typography sx={{ fontSize: "11px", color: "#64748B" }}>
-                    @{user?.username}
-                  </Typography>
-                  <Typography sx={{ fontSize: "11px", color: "#64748B" }}>
-                    {user?.university}
-                  </Typography>
-                </Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      disabled={members?.includes(user.id)}
-                      checked={members?.includes(user.id) || selectedUsers?.includes(user._id)}
-                      onChange={() => handleToggle(user._id)}
-                      sx={{
-                        color: "#04a40e",
-                        "&.Mui-checked": { color: "#04a40e" },
-                      }}
-                    />
-                  }
-                  label=""
-                />
-              </CardContent>
-            </Card>
-          ))}
-        </Box>
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <CircularProgress size={30} />
+          </Box>
+        ) : (
+          <Box sx={{ maxHeight: 250, overflowY: "auto" }}>
+            {users?.map((u) => (
+              <Card key={u._id} sx={{ mb: 1, bgcolor: "var(--share-box-bg)", borderRadius: 2 }}>
+                <CardContent
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    p: "10px !important",
+                  }}
+                >
+                  <Avatar src={u.profilePic} />
+                  <Box sx={{ flex: 1 }}>
+                    <Typography fontSize={14} fontWeight={600}>
+                      {u.fullname}
+                    </Typography>
+                    <Typography fontSize={11} color="#64748B">
+                      @{u.username}
+                    </Typography>
+                    <Typography fontSize={11} color="#64748B">
+                      {u.university}
+                    </Typography>
+                  </Box>
+
+                  <Checkbox
+                    disabled={members.includes(u._id)}
+                    checked={
+                      members.includes(u._id) ||
+                      selectedUsers.includes(u._id)
+                    }
+                    onChange={() => handleToggle(u._id)}
+                  />
+                </CardContent>
+              </Card>
+            ))}
+          </Box>
+        )}
       </DialogContent>
 
-      <DialogActions sx={{ justifyContent: "flex-end", p: 2 }}>
-        <Button
-          onClick={onClose}
-          variant="outlined"
-          size="small"
-          sx={{ textTransform: "none", borderRadius: "8px" }}
-        >
+      <DialogActions sx={{ p: 2 }} autoFocus>
+        <Button onClick={onClose} size="small">
           Cancel
         </Button>
         <Button
           variant="contained"
           size="small"
-          sx={{ textTransform: "none", borderRadius: "8px", background: "#04a40e" }}
+          sx={{ background: "#04a40e" }}
+          disabled={!selectedUsers.length}
           onClick={handleShareClick}
-          disabled={selectedUsers.length === 0}
         >
           Share
         </Button>

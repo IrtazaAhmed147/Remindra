@@ -5,8 +5,8 @@ const initialState = {
   user: null,
   isAuthenticated: !!localStorage.getItem("token"),
   authChecked: false,
-  isLoading: false,
-  error: null,
+  authLoading: false,
+  authError: null,
 };
 
 const authSlice = createSlice({
@@ -16,36 +16,36 @@ const authSlice = createSlice({
 
     // LOGIN
     loginStart: (state) => {
-      state.isLoading = true;
-      state.error = null;
+      state.authLoading = true;
+      state.authError = null;
     },
 
     loginSuccess: (state, { payload }) => {
-      state.isLoading = false;
+      state.authLoading = false;
       state.user = payload;
       state.isAuthenticated = true;
-      state.error = null;
+      state.authError = null;
     },
 
     loginFailure: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
+      state.authLoading = false;
+      state.authError = action.payload;
     },
 
     // LOAD USER (token valid)
     loadUserStart: (state) => {
-      state.isLoading = true;
+      state.authLoading = true;
     },
 
     loadUserSuccess: (state, { payload }) => {
       state.user = payload;
       state.isAuthenticated = true;
-      state.isLoading = false;
+      state.authLoading = false;
       state.authChecked = true;
     },
 
     loadUserFailure: (state) => {
-      state.isLoading = false;
+      state.authLoading = false;
       state.isAuthenticated = false;
       state.authChecked = true;
     },
@@ -60,25 +60,25 @@ const authSlice = createSlice({
 
     // OTP / SIGNUP
     otpSuccess: (state) => {
-      state.isLoading = false;
-      state.error = null;
+      state.authLoading = false;
+      state.authError = null;
     },
 
     signupStart: (state) => {
-      state.isLoading = true;
-      state.error = null;
+      state.authLoading = true;
+      state.authError = null;
     },
 
     signupSuccess: (state) => {
-      state.isLoading = false;
+      state.authLoading = false;
     },
 
     signupFailure: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
+      state.authLoading = false;
+      state.authError = action.payload;
     },
     userReset: (state, action) => {
-      state.isLoading = false;
+      state.authLoading = false;
       state.user = null
       state.token = null
       state.isAuthenticated = false

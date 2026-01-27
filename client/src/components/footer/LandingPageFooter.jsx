@@ -23,10 +23,10 @@ const LandingPageFooter = () => {
 
                 {/* Left Section */}
                 <Box>
-                    <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                        My Idea
+                    <Typography variant="h5" sx={{ fontWeight: "bold" }} color="#fff !important">
+                        Remindra
                     </Typography>
-                    <Typography variant="body2" sx={{ mt: 1, maxWidth: 350, opacity: 0.9 }}>
+                    <Typography variant="body2" sx={{ mt: 1, maxWidth: 350, opacity: 0.9 }} color="#fff !important">
                         Organize your courses, assignments, notes, and study materials in one smart space.
                     </Typography>
                 </Box>
@@ -41,7 +41,7 @@ const LandingPageFooter = () => {
                     </Typography>
                     <Stack direction="row" alignItems="center" spacing={1}>
                         <EmailIcon />
-                        <a style={{ color: "#fff" }} href="mailto:example@gmail.com">example@gmail.com</a>
+                        <a style={{ color: "#fff" }} href="mailto:irtz.studio@gmail.com">irtz.studio@gmail.com</a>
                     </Stack>
                 </Box>
 
@@ -52,7 +52,7 @@ const LandingPageFooter = () => {
                 <Link to={`/privacypolicy`}>
                     <Typography
                         // variant="body2"
-                        color="#fff"
+                        color="#fff !important" 
                         sx={{ textAlign: "center", opacity: 0.8 }}
                     >
                         Privacy Policy
@@ -61,7 +61,7 @@ const LandingPageFooter = () => {
 
                 <Link to={`/termsandcondition`}>
                     <Typography
-                        color="#fff"
+                        color="#fff !important"
                         // variant="body2"
                         sx={{ textAlign: "center", opacity: 0.8 }}
                     >
@@ -72,8 +72,9 @@ const LandingPageFooter = () => {
             <Typography
                 variant="body2"
                 sx={{ textAlign: "center", opacity: 0.8 }}
+                color="#fff !important"
             >
-                © {new Date().getFullYear()} My Idea. All rights reserved.
+                © {new Date().getFullYear()} Remindra. All rights reserved.
             </Typography>
             {/* Bottom Text */}
         </Box>

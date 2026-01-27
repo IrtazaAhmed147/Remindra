@@ -5,7 +5,7 @@ const initialState = {
     singleInvite: null, // single Invite detail
     invitationLoading: false,
     invitationFetchLoading: false,
-    error: null,
+    invitationError: null,
 };
 
 const inviteSlice = createSlice({
@@ -15,7 +15,7 @@ const inviteSlice = createSlice({
 
         fetchInviteStart: (state) => {
             state.invitationFetchLoading = true;
-            state.error = null;
+            state.invitationError = null;
         },
         fetchInviteSuccess: (state, { payload }) => {
             state.invitationFetchLoading = false;
@@ -23,13 +23,13 @@ const inviteSlice = createSlice({
         },
         fetchInviteFailure: (state, action) => {
             state.invitationFetchLoading = false;
-            state.error = action.payload;
+            state.invitationError = action.payload;
         },
 
         // FETCH SINGLE Invite
         updateInviteStart: (state) => {
             state.invitationLoading = true;
-            state.error = null;
+            state.invitationError = null;
         },
         updateInviteSuccess: (state, { payload }) => {
             state.invitationLoading = false;
@@ -37,13 +37,13 @@ const inviteSlice = createSlice({
         },
         updateInviteFailure: (state, action) => {
             state.invitationLoading = false;
-            state.error = action.payload;
+            state.invitationError = action.payload;
         },
 
         // CREATE Invite
         createInvitetart: (state) => {
             state.invitationFetchLoading = true;
-            state.error = null;
+            state.invitationError = null;
         },
         createInviteuccess: (state, { payload }) => {
             state.invitationFetchLoading = false;
@@ -51,13 +51,13 @@ const inviteSlice = createSlice({
         },
         createInviteFailure: (state, action) => {
             state.invitationFetchLoading = false;
-            state.error = action.payload;
+            state.invitationError = action.payload;
         },
 
         // CLEAR Invite STATE
         clearInvitesetate: (state) => {
             state.singleInvite = null;
-            state.error = null;
+            state.invitationError = null;
         }
     }
 });

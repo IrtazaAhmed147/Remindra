@@ -21,10 +21,13 @@ a {
   --bg-color: #F8FAFC ;
   --text-color: #1E293B  ;
   --sidebar-color: #fff  ;
+  --table-header-bgColor: #f0f4fa  ;
   --sidebar-btn-color: #fff  ; 
   --gradientBtn-color: linear-gradient(135deg, #E7F1FD, #F3F8FF)  ; 
   --gradientBtn-hover-color: linear-gradient(135deg, #ffffff, #f2f8ff) ; 
-
+  --noti-msg-color: #181818;
+   --input-bg-color: #e1e1e11f; 
+   --share-box-bg: #fff;   
   /* --primary-color: #4F8DFF;
   --primaryHover-color: #3B7CFF;
   --secondary-color: #22D3EE;
@@ -50,16 +53,24 @@ a {
   --primaryHover-color: #3B7CFF;
   --secondary-color: #22D3EE;
   --notification-color: #FBBF24;
-
+  
   --card-bg-color: #0F172A;
   --bg-color: #020617;
   --text-color: #E5E7EB;
-
+  
   --sidebar-color: #020617;
   --sidebar-btn-color: #0B1220;
-
+  
   --gradientBtn-color: linear-gradient(135deg, #1E293B, #020617);
   --gradientBtn-hover-color: linear-gradient(135deg, #334155, #020617);
+  
+  --table-header-bgColor: #1e293b;
+  
+  --noti-msg-color: #d8d8d8;
+
+   --input-bg-color: #00030e; 
+
+   --share-box-bg: #0B1220;   
 }
 
 

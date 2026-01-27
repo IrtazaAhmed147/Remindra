@@ -137,7 +137,7 @@ function Setting() {
 
 
       <Box
-        onClick={() => navigate("/update/profile/123")}
+        onClick={() => navigate("/update/profile")}
         sx={{
           p: 3,
           mb: 3,

@@ -3,6 +3,8 @@ import TaskTable from '../../components/tables/TaskTable'
 import { Box, MenuItem, Select, Typography, TextField, Button } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteAssignmentAction, getSingleAssignmentAction, getUserAssignmentsAction, updateAssignmentAction } from '../../redux/actions/assignmentActions'
+// import GradientBtn from "../../components/common/GradientBtn";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import AssignmentDetailModal from '../../components/modal/AssignmentDetailModal'
 import RemoveModal from '../../components/modal/RemoveModal'
 import { notify } from '../../utils/HelperFunctions'
@@ -10,6 +12,8 @@ import { useSearchParams } from 'react-router-dom'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
+import ClearIcon from "@mui/icons-material/Clear";
+import GradientBtn from '../../components/common/GradientBtn'
 
 function AssignmentPage() {
 
@@ -33,7 +37,7 @@ function AssignmentPage() {
     setStatuss(status)
     setDueDate(date ? dayjs(date) : null);
 
-    dispatch(getUserAssignmentsAction({ status: status, dueDate: date || undefined })).then((data) => console.log(data));
+    dispatch(getUserAssignmentsAction({ status: status, dueDate: date || undefined }))
   }, [])
 
 
@@ -41,13 +45,13 @@ function AssignmentPage() {
     dispatch(updateAssignmentAction(id, data))
       .then((msg) => {
         notify('success', msg);
-        dispatch(getUserAssignmentsAction({ status:statuss, dueDate }));
+        dispatch(getUserAssignmentsAction({ status: statuss, dueDate }));
       })
       .catch((err) => {
 
         notify('error', err)
 
-        dispatch(getUserAssignmentsAction({ status:statuss, dueDate }));
+        dispatch(getUserAssignmentsAction({ status: statuss, dueDate }));
       });
 
 
@@ -76,7 +80,7 @@ function AssignmentPage() {
     setFilters(param);
     // setDueDate(dueDate);
 
-    dispatch(getUserAssignmentsAction(param)).then((data) => console.log(data));
+    dispatch(getUserAssignmentsAction(param))
 
   }
 
@@ -100,98 +104,114 @@ function AssignmentPage() {
       </Typography>
 
       {/* Filters */}
-      <Box
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: "end",
-          gap: 2,
-          mb: 3,
-        }}
-      >
-        {/* Task Type */}
-
-
-        {/* Status */}
-        <Box>
-
-          <Typography sx={{ mt: 1, mb: 1, fontSize: "12px", color: "#6b7280" }}>
-            Status
-          </Typography>
-          <Select
-            sx={{
-              background: 'var(--primary-color)',
-              color: '#fff',
-              height: 40,
-              fontSize: 14,
-              borderRadius: 1,
-              flex: '1 1 150px',
-              minWidth: 120,
-            }}
-            value={statuss}
-            onChange={(e) => {
-              setStatuss(e.target.value)
-              handleFilter(e.target.value, dueDate)
-            }}
-          >
-            <MenuItem value="all">All</MenuItem>
-            <MenuItem value="Completed">Completed</MenuItem>
-            <MenuItem value="Pending">Pending</MenuItem>
-          </Select>
-
-        </Box>
-      
-        {/* Due Date */}
-        <Box>
-
-          <Typography sx={{ mt: 1, mb: 1, fontSize: "12px", color: "#6b7280" }}>
-            Due Date
-          </Typography>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              // label="Due Date"
-              value={dueDate}
-              onChange={(newValue) => {
-                setDueDate(newValue); // update local state
-                handleFilter(statuss, newValue)
-                // form.current.dueDate = newValue ? newValue.format("YYYY-MM-DD") : "";
-                // store as string in your form data
-              }}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  size: "small",
-                },
-              }}
-            />
-          </LocalizationProvider>
-        </Box>
-
-        <Button
-          onClick={() => {
-            setDueDate(null)
-            setFilters({status:statuss})
-            dispatch(getUserAssignmentsAction({status:statuss}))
-
-
-          }}
+      <Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", alignItems: "center", gap: 2, mb: 3 }}>
+        <GradientBtn text={"Add Assigment"} icon={<AssignmentOutlinedIcon sx={{ fontSize: 18, color: "#4158D0" }} />} url={"/create/assignment"} />
+        <Box
           sx={{
-            padding: " 5px 10px",
-            width: "160px",
-            height: "35px",
-            borderRadius: "5px",
-            background: "var(--primary-color)",
-            color: "#fff",
-            textTransform: "capitalize",
-            fontSize: "13px",
-            ":hover": {
-              backgroundColor: "#1258ad",
-            }
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: "end",
+            width: { md: "60%" },
+            gap: 2,
           }}
-
         >
-          Clear Date
-        </Button>
+          {/* Task Type */}
+
+
+          {/* Status */}
+          <Box>
+
+            <Typography sx={{ mt: 1, mb: 1, fontSize: "12px", color: "#6b7280" }}>
+              Status
+            </Typography>
+            <Select
+              sx={{
+                background: "var(--primary-color)",
+                color: "#fff",
+                height: { xs: 30, sm: 30, md: 40 },
+                fontSize: { xs: 12, sm: 15, md: 15 },
+                minWidth: { xs: 100, sm: 110, md: 120 },
+              }}
+              value={statuss}
+              onChange={(e) => {
+                setStatuss(e.target.value)
+                handleFilter(e.target.value, dueDate)
+              }}
+            >
+              <MenuItem value="all">All</MenuItem>
+              <MenuItem value="Completed">Completed</MenuItem>
+              <MenuItem value="Pending">Pending</MenuItem>
+            </Select>
+
+          </Box>
+
+          {/* Due Date */}
+          <Box sx={{ width: { xs: "50%" } }}>
+
+            <Typography sx={{ mt: 1, mb: 1, fontSize: "12px", color: "#6b7280" }}>
+              Due Date
+            </Typography>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                // label="Due Date"
+                value={dueDate}
+                onChange={(newValue) => {
+                  setDueDate(newValue); // update local state
+                  handleFilter(statuss, newValue)
+                  // form.current.dueDate = newValue ? newValue.format("YYYY-MM-DD") : "";
+                  // store as string in your form data
+                }}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    size: "small",
+                    sx: {
+
+                      "& .MuiSvgIcon-root": {
+                        color: "var(--text-color)",
+                      },
+                      "& .MuiPickersInputBase-root": {
+                        border: "1px solid var(--text-color)",
+                        color: "var(--text-color)",
+                        fontSize: { xs: 12, sm: 15, md: 15 },
+                      },
+
+                    },
+                  },
+                }}
+              />
+            </LocalizationProvider>
+          </Box>
+
+          <Button
+            startIcon={<ClearIcon
+              sx={{ fontSize: { xs: 12, sm: 15, md: 15 } }} />}
+            onClick={() => {
+              setDueDate(null)
+              setFilters({ status: statuss })
+              dispatch(getUserAssignmentsAction({ status: statuss }))
+
+
+            }}
+            sx={{
+              height: { xs: 30, sm: 30, md: 35 },
+              background: "var(--primary-color)",
+              color: "#fff",
+
+              fontSize: { xs: 12, sm: 15, md: 15 },
+              textTransform: "capitalize",
+              ":hover": { backgroundColor: "#1258ad" },
+            }}
+
+          >
+            Clear Date
+          </Button>
+
+
+
+        </Box>
+
+
       </Box>
 
       {/* Task Table */}
@@ -207,8 +227,8 @@ function AssignmentPage() {
         }} viewModal={(item) => {
           setSelectedAssignment(item);
           setIsModal(true);
-        }} 
-        />
+        }}
+      />
 
       {isModal && <AssignmentDetailModal open={isModal}
         handleClose={() => setIsModal(false)} assignment={selectedAssignment} />}

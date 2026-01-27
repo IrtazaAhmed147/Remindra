@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 export const notify = (theme, msg) => {
     return toast[theme](msg, {
         position: "top-right",
-        autoClose: 2000,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: false,
         pauseOnHover: true,
@@ -43,4 +43,27 @@ export const timeAgo = (date) => {
     }
 
     return "just now";
+};
+
+
+export const handleApiError = (error, dispatch, failureAction) => {
+  let message = "Something went wrong";
+
+  //  Network / JS error
+  if (error?.message && !error?.response) {
+    message = error.message;
+  }
+  //  Backend error
+  else if (error?.response?.data?.message) {
+    message = error.response.data.message;
+  }
+
+  //  Redux failure action
+  if (dispatch && failureAction) {
+    dispatch(failureAction(message));
+  }
+  console.log(message);
+  
+  //  Reject promise for .catch()
+  throw message;
 };

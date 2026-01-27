@@ -57,9 +57,9 @@ export const uploadFileOnCloudinary = async (file, folder = "default") => {
 
 
 
-export const deleteFromCloudinary = async (publicId) => {
+export const deleteFromCloudinary = async (publicId, type) => {
   return new Promise((resolve, reject) => {
-    cloudinary.uploader.destroy(publicId, { resource_type: "image" }, (error, result) => {
+    cloudinary.uploader.destroy(publicId, { resource_type: type }, (error, result) => {
       if (error) return reject(error);
       resolve(result);
     });

@@ -118,7 +118,7 @@ export default function AddCoursePage() {
                             onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }}
                             style={{
                                 outline: "none",
-                                background: "#fff",
+                                background: "var(--input-bg-color)",
                                 border: "1px solid #cfd3d8",
                                 borderRadius: "6px",
                                 padding: "8px 12px",
@@ -163,7 +163,7 @@ export default function AddCoursePage() {
                             placeholder="Write something about your course..."
                             style={{
                                 outline: "none",
-                                background: "#fff",
+                                background: "var(--input-bg-color)",
                                 border: "1px solid #cfd3d8",
                                 borderRadius: "6px",
                                 padding: "10px 12px",

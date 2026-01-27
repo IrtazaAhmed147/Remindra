@@ -21,10 +21,10 @@ export const createQuizs = async (req, res) => {
 
         for (const file of files) {
             if (file.mimetype?.startsWith("image/")) {
-                const url = await uploadOnCloudinary(file, "quizFiles");
+                const url = await uploadOnCloudinary(file, "remindra-quizFiles");
                 attachments.push({ url: url.secure_url, mimetype: file.mimetype });
             } else if (file.mimetype === "application/pdf" || file.mimetype === "text/plain") {
-                const url = await uploadFileOnCloudinary(file, "quizFiles");
+                const url = await uploadFileOnCloudinary(file, "remindra-quizFiles");
                 attachments.push({ url: url.secure_url, mimetype: file.mimetype });
             } else {
                 console.log("Unsupported file type:", file.mimetype);
@@ -148,10 +148,10 @@ export const updateQuiz = async (req, res) => {
 
             for (const file of files) {
                 if (file.mimetype?.startsWith("image/")) {
-                    const url = await uploadOnCloudinary(file, "quizFiles");
+                    const url = await uploadOnCloudinary(file, "remindra-quizFiles");
                     req.body.attachments.push({ url: url.secure_url, mimetype: file.mimetype });
                 } else if (file.mimetype === "application/pdf" || file.mimetype === "text/plain") {
-                    const url = await uploadFileOnCloudinary(file, "quizFiles");
+                    const url = await uploadFileOnCloudinary(file, "remindra-quizFiles");
                     req.body.attachments.push({ url: url.secure_url, mimetype: file.mimetype });
                 } else {
                     console.log("Unsupported file type:", file.mimetype);
