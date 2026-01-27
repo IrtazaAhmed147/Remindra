@@ -90,7 +90,7 @@ function ProfilePage() {
 
 
             <Box
-              onClick={() => navigate("/update/profile/123")}
+              onClick={() => navigate("/update/profile")}
               sx={{
                 p: 3,
                 mt: 3,

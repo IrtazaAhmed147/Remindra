@@ -15,7 +15,8 @@ function Signup() {
     const form = useRef({})
     const navigate = useNavigate()
     const [showPass, setShowPass] = useState(false)
-    const { isLoading, error, user } = useSelector((state) => state.auth)
+    const [showConPass, setShowConPass] = useState(false)
+    const { authLoading, authError, user } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -26,8 +27,11 @@ function Signup() {
 
     const handleForm = async (e) => {
         e.preventDefault()
-        if (!form.current.username.trim() || !form.current.email.trim() || !form.current.password.trim()) return;
-
+        
+        if (!form.current.username.trim() || !form.current.fullname.trim() || !form.current.email.trim() || !form.current.password.trim() || !form.current.conPassword.trim()) return;
+        if (form.current.password !== form.current.conPassword) {
+            return notify("error", "Password and Confirm Password should be same")
+        }
         await dispatch(registerUser(form.current))
             .then((msg) => {
                 notify('success', msg)
@@ -45,7 +49,7 @@ function Signup() {
 
             <Box sx={{ width: '100%', minHeight: '100vh', backgroundColor: 'var(--bg-color)' }}>
 
-               <LandingNavbar  authBtn={false}/>
+                <LandingNavbar authBtn={false} />
 
 
                 <div style={{ width: "100%", backgroundColor: "var(--bg-color)", display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
@@ -56,17 +60,17 @@ function Signup() {
                         <form className="form signup-form" onSubmit={handleForm}>
                             <div className='form-box-1'>
                                 <div className="flex-column">
-                                    <label>Username </label></div>
+                                    <label>Username* </label></div>
                                 <div className="inputForm">
                                     {/* <PersonOutlineOutlinedIcon /> */}
                                     <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter Username" className="input" type="text" required />
                                 </div>
 
                                 <div className="flex-column">
-                                    <label>FullName </label></div>
+                                    <label>FullName* </label></div>
                                 <div className="inputForm">
                                     {/* <PersonOutlineOutlinedIcon /> */}
-                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter Full Name" className="input" type="text" required />
+                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='fullname' placeholder="Enter Full Name" className="input" type="text" required />
                                 </div>
 
 
@@ -74,13 +78,13 @@ function Signup() {
                                     <label>University </label></div>
                                 <div className="inputForm">
                                     {/* <SchoolIcon /> */}
-                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter University" className="input" type="text" required />
+                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='university' placeholder="Enter University" className="input" type="text" />
                                 </div>
                                 <div className="flex-column">
                                     <label>Field </label></div>
                                 <div className="inputForm">
                                     {/* <SchoolIcon /> */}
-                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter Field" className="input" type="text" required />
+                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='field' placeholder="Enter Field" className="input" type="text" />
                                 </div>
 
                                 {/* <div className="flex-column">
@@ -96,13 +100,13 @@ function Signup() {
                             <div className='form-box-1'>
 
                                 <div className="flex-column">
-                                    <label>Email </label></div>
+                                    <label>Email* </label></div>
                                 <div className="inputForm">
                                     {/* <AlternateEmailIcon /> */}
                                     <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} placeholder="Enter Email" name='email' className="input" type="email" required />
                                 </div>
                                 <div className="flex-column">
-                                    <label>Password </label></div>
+                                    <label>Password* </label></div>
                                 <div className="inputForm">
                                     {/* <LockOutlinedIcon /> */}
                                     <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='password' placeholder="Enter Password" className="input" type={showPass ? "text" : "password"} required />
@@ -111,19 +115,19 @@ function Signup() {
                                     </div>
                                 </div>
                                 <div className="flex-column">
-                                    <label>Confirm Password </label></div>
+                                    <label>Confirm Password* </label></div>
                                 <div className="inputForm">
                                     {/* <LockOutlinedIcon /> */}
-                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='password' placeholder="Enter Confirm Password" className="input" type={showPass ? "text" : "password"} required />
-                                    <div onClick={handleShowPassword} style={{ cursor: 'pointer' }}>
-                                        {showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                    <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='conPassword' placeholder="Enter Confirm Password" className="input" type={showConPass ? "text" : "password"} required />
+                                    <div onClick={() => setShowConPass((prev) => !prev)} style={{ cursor: 'pointer' }}>
+                                        {showConPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                     </div>
                                 </div>
 
                                 <button className="btn">
-                                    {isLoading && <CircularProgress  sx={{color:"var(--text-color)"}} size="20px" />}
+                                    {authLoading && <CircularProgress sx={{ color: "var(--text-color)" }} size="20px" />}
                                     Create Account</button>
-                                {/* {error && <p>{error}</p>} */}
+                                {/* {authError && <p>{authError}</p>} */}
                                 <p className="p">Already have an account? <Link to={'/login'} className="link">Login</Link>
                                 </p>
                             </div>

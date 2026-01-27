@@ -22,6 +22,16 @@ function AddResource() {
 
     const uploadFiles = async () => {
         const formData = new FormData();
+        if (coverFiles.length > 20 && type === 'image') {
+
+            notify("error", "You can upload a maximum of 20 images at one time.")
+            return;
+        } else if (coverFiles  > 5 && type === 'file' ) {
+            notify("error", "You can upload a maximum of 5 files at one time.")
+            return;
+
+
+        }
         coverFiles.forEach((file, index) => {
             formData.append("materials", file);
         });
@@ -29,7 +39,7 @@ function AddResource() {
 
         dispatch(uploadResourceAction(courseId, formData)).then((msg) => {
             notify("success", msg)
-            navigate(`/course/${courseId}`)
+            navigate(`/course/${courseId}/${type}`)
         })
 
     }
@@ -115,9 +125,10 @@ function AddResource() {
                                     <Box
                                         key={index}
                                         sx={{
-                                            width: { xs: "48%", sm: "48%", md: "32%" },
-                                            maxHeight: "250px",
+                                            width: { xs: "31%", sm: "31%", md: "20%" },
+                                            maxHeight: "150px",
                                             position: "relative",
+                                            boxShadow: "2px 2px 10px 3px #ddd"
                                         }}
                                     >
                                         {/* Remove Button */}

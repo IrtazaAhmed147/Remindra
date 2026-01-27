@@ -3,8 +3,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
-function UpdateProfileForm({ university, field, fullname, gender, phone, semester, username, email, profilePic, handleUpdate }) {
+function UpdateProfileForm({ university, field, fullname, gender, phone, semester, username, email, profilePic, handleUpdate,isLoading, error ,theme}) {
 
+    console.log(theme);
+    
     const [genderValue, setGenderValue] = useState(gender || "select gender");
     useEffect(() => {
         if (gender) setGenderValue(gender);
@@ -81,8 +83,9 @@ function UpdateProfileForm({ university, field, fullname, gender, phone, semeste
 
                     </Box>
 
-                    <Typography color='var(--text-color)' fontWeight={'bold'}>{username}</Typography>
-                    <Typography color='#575757dd' fontSize={"13px"}>{email}</Typography>
+                    <Typography sx={{color: theme === 'dark' ? "#101010 !important":"#575757dd"}}  fontWeight={'bold'}>{username}</Typography>
+                    <Typography color={theme === 'dark' ? "#101010 !important":"#575757dd"} fontSize={"13px"}>{email}</Typography>
+                    
 
                 </Box>
                 <Box sx={{ width: { xs: "100%", sm: "90%", md: "70%" }, display: "flex", flexWrap: "wrap", gap: '5px' }}>
@@ -154,8 +157,8 @@ function UpdateProfileForm({ university, field, fullname, gender, phone, semeste
                 </Box>
 
             </form>
-            <button className="btn" style={{ width: "270px" }} onClick={() => handleUpdate(form.current)}>
-                {/* {isLoading && <CircularProgress color="inherit" size="20px" />} */}
+            <button className="btn" style={{ width: "270px" }} disabled={isLoading || error} onClick={() => handleUpdate(form.current)}>
+                {(isLoading )&& <CircularProgress color="inherit" size="20px" />}
 
                 Update Profile</button>
         </>

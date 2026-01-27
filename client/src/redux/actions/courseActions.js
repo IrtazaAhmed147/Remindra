@@ -1,4 +1,5 @@
 import api from "../../utils/common.js";
+import { handleApiError } from "../../utils/HelperFunctions.js";
 import {
     fetchCoursesStart,
     fetchCoursesSuccess,
@@ -28,15 +29,14 @@ export const createCourseAction = (courseData) => async (dispatch) => {
         return res.data.message;
 
     } catch (error) {
-        dispatch(createCourseFailure(error.response.data.message));
-        throw error.response.data.message;
+        handleApiError(error, dispatch, createCourseFailure);
+
     }
 };
 
 
 
 export const getUserCoursesAction = (query = '') => async (dispatch) => {
-    console.log(query);
 
     try {
         dispatch(fetchCoursesStart());
@@ -51,14 +51,11 @@ export const getUserCoursesAction = (query = '') => async (dispatch) => {
 
 
         dispatch(fetchCoursesSuccess(res.data.data));
-        console.log(res.data.data);
 
         return res.data.data;
 
     } catch (error) {
-
-        dispatch(fetchCoursesFailure(error.response.data.message));
-        throw error.response.data.message;
+        handleApiError(error, dispatch, fetchCoursesFailure);
     }
 };
 
@@ -103,8 +100,8 @@ export const getSingleCourseAction = (id) => async (dispatch) => {
         return res.data.data;
 
     } catch (error) {
-        dispatch(fetchSingleCourseFailure(error.response.data.message));
-        throw error.response.data.message;
+        handleApiError(error, dispatch, fetchSingleCourseFailure);
+
     }
 };
 
@@ -126,8 +123,8 @@ export const updateCourseAction = (id, body) => async (dispatch) => {
         return res.data.message;
 
     } catch (error) {
-        dispatch(createCourseFailure(error.response.data.message));
-        throw error.response.data.message;
+        handleApiError(error, dispatch, createCourseFailure);
+
     }
 };
 
@@ -148,8 +145,8 @@ export const disableCourseAction = (id) => async (dispatch) => {
         return res.data.message;
 
     } catch (error) {
-        dispatch(fetchCoursesFailure(error.response.data.message));
-        throw error.response.data.message;
+        handleApiError(error, dispatch, fetchCoursesFailure);
+
     }
 };
 
@@ -168,38 +165,40 @@ export const deleteCourseAction = (id) => async (dispatch) => {
         return res.data.message;
 
     } catch (error) {
-        dispatch(fetchCoursesFailure(error.response.data.message));
-        throw error.response.data.message;
+        handleApiError(error, dispatch, fetchCoursesFailure);
     }
 };
 
-export const handleDownloadAll = async (title,id, selectedids) => {
+export const handleDownloadAll = async (title, id, selectedids) => {
     const token = localStorage.getItem("token");
-
-    const res = await api.post(
-        `course/resources/download/${id}`, {
-        ids: selectedids,
-        title
-    },
-        {
-            responseType: "blob",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        }
-    );
-    console.log(res);
+    try {
 
 
-    const url = window.URL.createObjectURL(new Blob([res.data]));
-    console.log(url);
+        const res = await api.post(
+            `course/resources/download/${id}`, {
+            ids: selectedids,
+            title
+        },
+            {
+                responseType: "blob",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
 
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "course-images.zip";
-    document.body.appendChild(a);
-    a.click();
 
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "course-images.zip";
+        document.body.appendChild(a);
+        a.click();
+
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+
+    }
 };

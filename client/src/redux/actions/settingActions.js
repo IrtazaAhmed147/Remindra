@@ -1,5 +1,6 @@
 import { fetchPermissionFailure, fetchPermissionStart, fetchPermissionSuccess } from "../slices/settingSlice";
 import api from "../../utils/common.js";
+import { handleApiError } from "../../utils/HelperFunctions.js";
 
 
 export const subscribe = (data) => async (dispatch) => {
@@ -16,15 +17,12 @@ export const subscribe = (data) => async (dispatch) => {
                 withCredentials: true,
             }
         );
-        console.log(res);
-        
+
 
         dispatch(fetchPermissionSuccess(res?.data?.data));
         return res.data.message;
     } catch (error) {
-        console.log(error);
+        handleApiError(error, dispatch, fetchPermissionFailure);
 
-        dispatch(fetchPermissionFailure(error?.response?.data?.message));
-        throw error?.response?.data?.message;
     }
 }

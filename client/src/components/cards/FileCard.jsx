@@ -10,7 +10,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useState } from "react";
 
 const menuOptions = ["Download", "Delete"];
-const FileCard = ({ fileName, fileSize, fileUrl, fileType, id, isDownloadBtn, askDelete, handleDownload, }) => {
+const FileCard = ({ fileName, fileSize, fileUrl, fileType, _id, isDownloadBtn, askDelete, handleDownload, }) => {
 
 
   const isPdf = fileType?.includes("pdf") || false;
@@ -72,8 +72,11 @@ const FileCard = ({ fileName, fileSize, fileUrl, fileType, id, isDownloadBtn, as
               {menuOptions.map((option) => (
                 <MenuItem
                   key={option}
-                  onClick={(e) => {
-                    if (option === "Delete") askDelete(id);
+                  onClick={() => {
+                    if (option === "Delete") {
+                      console.log(_id);
+                      
+                      askDelete(_id)};
 
                     if (option === "Download") handleDownload(fileUrl, fileName);
                     setAnchorEl(null);

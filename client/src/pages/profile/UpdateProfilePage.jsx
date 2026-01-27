@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import UpdateProfileForm from '../../components/forms/UpdateProfileForm'
-import { Box, Typography } from '@mui/material'
+import { Box, CircularProgress, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { getSingleUserAction, updateUserAction } from '../../redux/actions/userActions'
@@ -8,32 +8,48 @@ import { notify } from '../../utils/HelperFunctions'
 
 function UpdateProfilePage() {
 
-    const { user } = useSelector((state) => state.auth)
+    const { user, authError } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
-    const { singleUser } = useSelector((state) => state.user)
-    const { username } = useParams()
+    const { singleUser, userIsLoading, userError } = useSelector((state) => state.user)
+    const theme = localStorage.getItem('theme')
+
 
     useEffect(() => {
-        dispatch(getSingleUserAction(user._id)).then((msg) => console.log(msg))
-    }, [])
+        console.log(user);
+
+        if (user) {
+            console.log('chala');
+
+            dispatch(getSingleUserAction(user?._id)).then((msg) => console.log(msg))
+        }
+    }, [user])
 
     const handleUpdate = (data) => {
         const formData = new FormData()
-        if(!data?.fullname?.trim()) {
+        if (!data?.fullname?.trim()) {
             notify('error', "Fullname required")
             return
         }
-        formData.append("fullname", data?.fullname )
+        formData.append("fullname", data?.fullname)
         formData.append("university", data?.university)
         formData.append("field", data?.field)
-        formData.append("gender", data?.gender)
-        formData.append("phone", data?.phone)
-        formData.append("profilePic", data?.profilePic)
+        if (data?.gender) {
 
-        console.log(data);
+            formData.append("gender", data?.gender)
+        }
+        formData.append("phone", data?.phone)
+        if (data?.profilePic) {
+
+            formData.append("profilePic", data?.profilePic)
+        }
+        console.log("asdfsf");
         
 
-        dispatch(updateUserAction(user._id, formData)).then((msg)=> notify('success', msg))
+        if (user) {
+            dispatch(updateUserAction(user._id, formData)).then((msg) => notify('success', msg)).catch((msg) => notify("error", msg))
+        } else {
+            notify("error", "something went wrong")
+        }
     }
 
     return (
@@ -43,7 +59,10 @@ function UpdateProfilePage() {
                 <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
                     Update Profile
                 </Typography>
-                <UpdateProfileForm {...singleUser} handleUpdate={handleUpdate} />
+                {authError && <Typography>{authError}</Typography>}
+                {userIsLoading ? <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh", width: "100%" }} >
+                    <CircularProgress sx={{ color: "var(--text-color)" }} size="30px" />
+                </Box> : <UpdateProfileForm theme={theme} {...singleUser} handleUpdate={handleUpdate} isLoading={userIsLoading} error={authError} />}
             </Box>
 
         </>

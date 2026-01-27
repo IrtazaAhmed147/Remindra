@@ -4,7 +4,7 @@ import course from "../models/courseModel.js"
 import quizModel from "../models/quizModel.js";
 import resourceModel from "../models/resourceModel.js";
 import userModel from "../models/userModel.js";
-import { deleteFromCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
+import { deleteFromCloudinary,  } from "../utils/cloudinary.js";
 import { errorHandler, successHandler } from "../utils/responseHandler.js";
 import archiver from "archiver";
 import axios from "axios";

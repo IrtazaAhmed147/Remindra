@@ -81,7 +81,7 @@ function Otp() {
             <Box sx={{ width: '100%', minHeight: '100vh', backgroundColor: 'var(--bg-color)' }}>
 
 
-                <Typography mb={1} lineHeight={1} fontWeight={'bold'} sx={{ pl: 2,pt:2, fontSize: { xs: "33px", sm: '40px', md: '50px' } }} >My Idea</Typography>
+                <Typography mb={1} lineHeight={1} fontWeight={'bold'} sx={{ pl: 2,pt:2, fontSize: { xs: "33px", sm: '40px', md: '50px' } }} >Remindra</Typography>
                 <Box
                     sx={{
                         minHeight: "80vh",

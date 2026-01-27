@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 function LandingPage() {
 
   const navigate = useNavigate()
+  const theme = localStorage.getItem("theme");
   const { user } = useSelector((state) => state.auth)
   useEffect(() => {
     if (user) {
@@ -95,20 +96,24 @@ function LandingPage() {
               <FeatureCard
                 title="Manage Courses Easily"
                 description="Create, organize, and access all your university courses in one dashboard"
+                theme={theme}
               />
 
               <FeatureCard
                 title="Secure Data"
                 description="All user information is handled with strong security measures."
+                theme={theme}
               />
 
               <FeatureCard
                 title="Upload & Access Resources"
                 description="Keep notes, PDFs, and images safely stored and shared."
+                theme={theme}
               />
               <FeatureCard
                 title="Stay Updated"
                 description="Get notified about tasks and updates instantly."
+                theme={theme}
               />
             </Box>
 
@@ -125,31 +130,31 @@ function LandingPage() {
             </Typography>
 
             <Grid container spacing={2} justifyContent="center">
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-                <Paper elevation={3} sx={{ p: { xs: 2, sm: 2, md: 3 }, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }} >
+                <Paper elevation={3} sx={{ background: theme === 'dark' ? "linear-gradient(135deg, #0B1220, #020617)" : "linear-gradient(135deg, #ffffff, #f3f6f9)", p: { xs: 2, sm: 2, md: 3 }, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
                   <BookIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: '#2A7DE1', }} />
-                  <Typography variant="h6" mb={1}>Courses</Typography>
+                  <Typography variant="h6" mb={1} color='var(--text-color)'>Courses</Typography>
                   <Typography variant="body2" color="textSecondary">All your courses in one place.</Typography>
                 </Paper>
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-                <Paper elevation={3} sx={{ p: { xs: 2, sm: 2, md: 3 }, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
+                <Paper elevation={3} sx={{background: theme === 'dark' ? "linear-gradient(135deg, #0B1220, #020617)" : "linear-gradient(135deg, #ffffff, #f3f6f9)",p: { xs: 2, sm: 2, md: 3 }, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
                   <AssignmentIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: '#2A7DE1', }} />
-                  <Typography variant="h6" mb={1}>Assignments</Typography>
+                  <Typography variant="h6" mb={1} color='var(--text-color)'>Assignments</Typography>
                   <Typography variant="body2" color="textSecondary">Track and manage all your tasks easily.</Typography>
                 </Paper>
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-                <Paper elevation={3} sx={{ p: { xs: 2, sm: 2, md: 3 }, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
+                <Paper elevation={3} sx={{background: theme === 'dark' ? "linear-gradient(135deg, #0B1220, #020617)" : "linear-gradient(135deg, #ffffff, #f3f6f9)", p: { xs: 2, sm: 2, md: 3 }, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
                   <QuizIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: '#2A7DE1', }} />
-                  <Typography variant="h6" mb={1}>Quizzes</Typography>
+                  <Typography variant="h6" mb={1} color='var(--text-color)'>Quizzes</Typography>
                   <Typography variant="body2" color="textSecondary">Prepare and test your knowledge anytime.</Typography>
                 </Paper>
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-                <Paper elevation={3} sx={{ p: { xs: 2, sm: 2, md: 3 }, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
+                <Paper elevation={3} sx={{background: theme === 'dark' ? "linear-gradient(135deg, #0B1220, #020617)" : "linear-gradient(135deg, #ffffff, #f3f6f9)", p: { xs: 2, sm: 2, md: 3 }, textAlign: 'center', borderRadius: 3, transition: '0.3s', "&:hover": { transform: 'translateY(-5px)', boxShadow: 6 } }}>
                   <NoteIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: '#2A7DE1', }} />
-                  <Typography variant="h6" mb={1}>Notes</Typography>
+                  <Typography variant="h6" mb={1} color='var(--text-color)'>Notes</Typography>
                   <Typography variant="body2" color="textSecondary">Keep your study notes organized and accessible.</Typography>
                 </Paper>
               </Grid>

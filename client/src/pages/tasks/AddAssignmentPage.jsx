@@ -22,17 +22,16 @@ import dayjs from "dayjs";
 export default function AddAssignmentPage() {
     const [coverFiles, setCoverFiles] = useState([]);
     const [coverPreviews, setCoverPreviews] = useState([]);
-    const [render, setRender] = useState(false);
-    const {assignmentLoading} = useSelector((state)=> state.assignments)
-    const {courseIsLoading} = useSelector((state)=> state.course)
+    const { assignmentLoading } = useSelector((state) => state.assignments)
+    const { courseIsLoading } = useSelector((state) => state.course)
 
 
     const [dueDate, setDueDate] = useState(null); // local state for picker
     const form = useRef({ task: "" })
-    const formRef = useRef();
     const [courseList, setCourseList] = useState([]);
     const dispatch = useDispatch()
     const [params] = useSearchParams()
+
     useEffect(() => {
 
         if (params.get("type") !== 'edit') {
@@ -57,10 +56,6 @@ export default function AddAssignmentPage() {
                         isOld: true
                     }))
                 );
-
-                setRender((p) => !p);
-                // setDueDate(data.dueDate)
-                console.log(data)
             }).catch((err) => console.log(err))
         }
     }, [])
@@ -68,12 +63,12 @@ export default function AddAssignmentPage() {
 
     const handleCreateAssigment = async () => {
 
-        if((!form.current.title ||!form.current.task ||!form.current.dueDate ||!form.current.course  )  || (!form.current.title.trim() ||!form.current.task.trim())){
-            
-            
-             notify("error", "Please fill in all required fields: Title, Task, Course, and Due Date. Uploading a file is optional.");
+        if ((!form.current.title || !form.current.task || !form.current.dueDate || !form.current.course) || (!form.current.title.trim() || !form.current.task.trim())) {
+
+
+            notify("error", "Please fill in all required fields: Title, Task, Course, and Due Date. Uploading a file is optional.");
             return
-        
+
         }
         const formData = new FormData();
         formData.append("title", form.current.title);
@@ -163,7 +158,7 @@ export default function AddAssignmentPage() {
                         placeholder="Enter title"
                         style={{
                             outline: "none",
-                            background: "#fff",
+                            background: "var(--input-bg-color)",
                             border: "1px solid #cfd3d8",
                             borderRadius: "6px",
                             padding: "6px 10px",
@@ -183,10 +178,11 @@ export default function AddAssignmentPage() {
                             name="course"
                             sx={{
                                 mb: 2,
-                                bgcolor: "#fff",
+                                background: "var(--input-bg-color)",
                                 fontSize: "13px",
                                 borderRadius: "6px",
                                 height: "40px",
+                                color: "var(--text-color)",
                             }}
                             onChange={(e) => {
                                 // setCourseType(e.target.value)
@@ -217,7 +213,7 @@ export default function AddAssignmentPage() {
                         placeholder="Write assignment task..."
                         style={{
                             outline: "none",
-                            background: "#fff",
+                            background: "var(--input-bg-color)",
                             border: "1px solid #cfd3d8",
                             borderRadius: "6px",
                             padding: "8px 10px",
@@ -242,6 +238,18 @@ export default function AddAssignmentPage() {
                                 textField: {
                                     fullWidth: true,
                                     size: "small",
+                                    sx: {
+
+                                        "& .MuiSvgIcon-root": {
+                                            color: "var(--text-color)",
+                                        },
+                                        "& .MuiPickersInputBase-root": {
+                                            border: "1px solid var(--text-color)",
+                                            color: "var(--text-color)",
+                                            fontSize: { xs: 12, sm: 15, md: 15 },
+                                        },
+
+                                    },
                                 },
                             }}
                         />
@@ -260,7 +268,7 @@ export default function AddAssignmentPage() {
                             borderRadius: "10px",
                             padding: 1,
                             cursor: "pointer",
-                            background: "#f8fafc",
+                            background: "var(--input-bg-color)",
                         }}
                         onClick={() => document.getElementById("coverUpload").click()}
                     >
@@ -350,7 +358,7 @@ export default function AddAssignmentPage() {
             {/* BUTTONS */}
             <Box sx={{ mt: 4 }}>
                 <Button
-                disabled={assignmentLoading}
+                    disabled={assignmentLoading}
                     onClick={() => handleCreateAssigment()}
                     sx={{
                         padding: " 5px 10px",
@@ -366,7 +374,7 @@ export default function AddAssignmentPage() {
                         }
                     }}
                 >
-                  Save Assignment
+                    Save Assignment
                 </Button>
             </Box>
         </Box>

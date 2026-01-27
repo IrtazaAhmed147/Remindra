@@ -1,4 +1,5 @@
 import api from "../../utils/common";
+import { handleApiError } from "../../utils/HelperFunctions";
 import {
   fetchUsersStart,
   fetchUsersSuccess,
@@ -27,10 +28,11 @@ export const getAllUsersAction = (query = {}) => async (dispatch) => {
     return res.data.data;
 
   } catch (error) {
-    dispatch(fetchUsersFailure(error.response?.data?.message));
-    throw error.response?.data?.message;
+
+    handleApiError(error, dispatch, fetchUsersFailure);
   }
 };
+
 
 export const getSingleUserAction = (id) => async (dispatch) => {
   try {
@@ -47,8 +49,8 @@ export const getSingleUserAction = (id) => async (dispatch) => {
     return res.data.data;
 
   } catch (error) {
-    dispatch(fetchSingleUserFailure(error.response?.data?.message));
-    throw error.response?.data?.message;
+
+    handleApiError(error, dispatch, fetchSingleUserFailure);
   }
 };
 
@@ -70,8 +72,8 @@ export const updateUserAction = (id, formData) => async (dispatch) => {
     return res.data.message;
 
   } catch (error) {
-    dispatch(updateUserFailure(error.response?.data?.message));
-    throw error.response?.data?.message;
+
+    handleApiError(error, dispatch, updateUserFailure);
   }
 };
 
@@ -89,8 +91,8 @@ export const deleteUserAction = (id) => async (dispatch) => {
     return res.data.message;
 
   } catch (error) {
-    dispatch(fetchUsersFailure(error.response?.data?.message));
-    throw error.response?.data?.message;
+
+    handleApiError(error, dispatch, fetchUsersFailure);
   }
 };
 
@@ -109,18 +111,17 @@ export const deactivateUserAction = (id, body) => async (dispatch) => {
     return res.data.message;
 
   } catch (error) {
-    dispatch(updateUserFailure(error.response?.data?.message));
-    throw error.response?.data?.message;
+
+    handleApiError(error, dispatch, updateUserFailure);
   }
 };
 
-export const suspendUserAction = (id,body) => async (dispatch) => {
+export const suspendUserAction = (id, body) => async (dispatch) => {
   try {
     dispatch(updateUserStart());
 
     const token = localStorage.getItem("token");
-    console.log("actions");
-    
+
     const res = await api.put(`/user/suspend/${id}`, body, {
       headers: { Authorization: `Bearer ${token}` },
       withCredentials: true,
@@ -130,7 +131,7 @@ export const suspendUserAction = (id,body) => async (dispatch) => {
     return res.data.message;
 
   } catch (error) {
-    dispatch(updateUserFailure(error.response?.data?.message));
-    throw error.response?.data?.message;
+
+    handleApiError(error, dispatch, updateUserFailure);
   }
 };

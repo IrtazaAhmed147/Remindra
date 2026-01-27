@@ -102,7 +102,7 @@ function CourseCard({
               <IconButton
                 // sx={{ p:  }}
                 size="small"
-
+                sx={{color:"var(--text-color)"}}
                 onClick={(e) => {
                   e.preventDefault()
                   e.stopPropagation()

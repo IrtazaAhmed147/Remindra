@@ -138,22 +138,23 @@ function CoursePage() {
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: '10px', marginTop: "20px" }}>
                     {error && (<Typography fontSize={"14px"} margin={'auto'} mt={2}>{error}</Typography>)}
                     {courseIsLoading && !error && <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh", width: "100%" }} >
-                        <CircularProgress  sx={{color:"var(--text-color)"}} size="30px" />
+                        <CircularProgress sx={{ color: "var(--text-color)" }} size="30px" />
                     </Box>}
                     {!courseIsLoading && !error && (
                         courses?.length === 0 ?
                             (<Typography fontSize={"14px"} margin={'auto'} mt={2}>You haven't created any courses yet. Start by creating your first course to get started!</Typography>)
                             : (courses?.map((course) => (
 
-                                <CourseCard key={course._id} {...course} setShareModalOpen={(id, members) => {
-                                    dispatch(getAllUsersAction()).then(() => {
-                                        setCourseMembers(members)
+                                <CourseCard key={course._id} {...course} setShareModalOpen={
+                                    (id, members) => {
+                                    // dispatch(getAllUsersAction({ isSuspend: true, isDeactivate: true, members: JSON.stringify(course?.members), limit: 5 })).then(() => {
+                                        
+                                        // })
+                                        setCourseMembers(course?.members)
                                         setSelectedCourseId(id)
-                                        setShareModalOpen(true)
-                                    })
-
-
-                                }}
+                                    setShareModalOpen(true)
+                                    }
+                                }
                                     askDelete={(id) => {
                                         setSelectedCourseId(id);
                                         setRemoveModalState(true);
@@ -174,7 +175,15 @@ function CoursePage() {
                         title='Delete Course Confirmation'
                         description='By deleting this course, all associated materials including assignments, quizzes, and other related content will also be permanently removed. This action cannot be undone'
                     />}
-                    {!userIsLoading && <ShareCourseModal
+                    {<ShareCourseModal
+                        searchUser={(username, members) => {
+                            dispatch(getAllUsersAction({ username: username, isSuspend: true, isDeactivate: true, members: JSON.stringify(members), limit: 8 })).then(() => {
+                                setCourseMembers(members)
+
+                            })
+
+                        }}
+                        loading={userIsLoading}
                         members={courseMembers}
                         userList={users}
                         open={shareModalOpen}

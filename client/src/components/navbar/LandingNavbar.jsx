@@ -13,7 +13,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Menu, MenuItem } from '@mui/material';
 
 
-function LandingNavbar({authBtn = true}) {
+function LandingNavbar({ authBtn = true }) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -37,22 +37,23 @@ function LandingNavbar({authBtn = true}) {
             <Container maxWidth="xl">
                 <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
                     <Link to={'/'}>
+                    {/* <img src="/images/remindraText.png" height={'25px'} alt="" /> */}
                         <Typography
-                            variant="h6"
+                            variant="h5"
                             noWrap
                             sx={{
                                 mr: 2,
                                 display: { xs: 'none', md: 'flex' },
                                 fontWeight: 700,
-                                color: '#000',
+                                color: 'var(--text-color)',
                                 textDecoration: 'none',
                             }}
                         >
-                            My Idea
+                            Remindra
                         </Typography>
 
                     </Link>
-                  {authBtn &&  <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                    {authBtn && <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
@@ -60,6 +61,7 @@ function LandingNavbar({authBtn = true}) {
                             aria-haspopup="true"
                             onClick={handleOpenNavMenu}
                             color="#000"
+                            sx={{color:'var(--text-color)'}}
                         >
                             <MenuIcon />
                         </IconButton>
@@ -81,8 +83,8 @@ function LandingNavbar({authBtn = true}) {
                             sx={{ display: { xs: 'block', md: 'none' }, p: "0px !important" }}
                         >
 
-                            <MenuItem onClick={handleCloseNavMenu} sx={{p:0}}>
-                                <Link to={`/login`} style={{width:'100%'}}>
+                            <MenuItem onClick={handleCloseNavMenu} sx={{ p: 0 }}>
+                                <Link to={`/login`} style={{ width: '100%' }}>
                                     <Button
                                         sx={{
                                             px: 2,
@@ -102,8 +104,8 @@ function LandingNavbar({authBtn = true}) {
                                 </Link>
 
                             </MenuItem>
-                            <MenuItem onClick={handleCloseNavMenu} sx={{ p:0 }}>
-                                <Link to={`/signup`} style={{width:'100%'}}>
+                            <MenuItem onClick={handleCloseNavMenu} sx={{ p: 0 }}>
+                                <Link to={`/signup`} style={{ width: '100%' }}>
                                     <Button
                                         sx={{
                                             px: 2,
@@ -129,26 +131,27 @@ function LandingNavbar({authBtn = true}) {
 
                     </Box>}
 
-                    <Link to={'/'}  style={{width:'100%'}}>
+                    <Link to={'/'} style={{ width: '100%' }}>
                         <Typography
                             variant="h5"
-                            noWrap  
+                            noWrap
                             sx={{
                                 mr: 2,
                                 display: { xs: 'flex', md: 'none' },
                                 flexGrow: 1,
                                 fontWeight: 700,
-                                color: '#000',
+
+                                color: 'var(--text-color)',
                                 textDecoration: 'none',
                             }}
                         >
-                            My Idea
+                            Remindra
                         </Typography>
                     </Link>
 
                     <Box sx={{ flexGrow: 0, display: { xs: "none", sm: "none", md: "flex" } }}>
 
-                      { authBtn && <><Link to={`/login`}>
+                        {authBtn && <><Link to={`/login`}>
                             <Button
                                 sx={{
                                     px: 2,
@@ -156,7 +159,7 @@ function LandingNavbar({authBtn = true}) {
                                     height: "35px",
                                     borderRadius: "6px",
                                     background: "var(--primary-color)",
-                                    transition:"0.3s all ease-in-out",
+                                    transition: "0.3s all ease-in-out",
                                     color: "#fff",
                                     mr: 1,
                                     textTransform: "capitalize",
@@ -167,24 +170,24 @@ function LandingNavbar({authBtn = true}) {
                                 <LoginIcon sx={{ mr: 1 }} />   Sign In
                             </Button>
                         </Link>
-                        <Link to={`/signup`}>
-                            <Button
-                                sx={{
-                                    px: 2,
-                                    width: "120px",
-                                    height: "35px",
-                                    borderRadius: "6px",
-                                    background: "var(--primary-color)",
-                                    color: "#fff",
-                                    transition:"all 0.3s ease-in-out",
-                                    textTransform: "capitalize",
-                                    fontSize: "13px",
-                                    ":hover": { background: "var(--primaryHover-color)" },
-                                }}
-                            >
-                                <PersonAddIcon sx={{ mr: 1 }} />  Sign Up
-                            </Button>
-                        </Link> </>}
+                            <Link to={`/signup`}>
+                                <Button
+                                    sx={{
+                                        px: 2,
+                                        width: "120px",
+                                        height: "35px",
+                                        borderRadius: "6px",
+                                        background: "var(--primary-color)",
+                                        color: "#fff",
+                                        transition: "all 0.3s ease-in-out",
+                                        textTransform: "capitalize",
+                                        fontSize: "13px",
+                                        ":hover": { background: "var(--primaryHover-color)" },
+                                    }}
+                                >
+                                    <PersonAddIcon sx={{ mr: 1 }} />  Sign Up
+                                </Button>
+                            </Link> </>}
                     </Box>
                 </Toolbar>
             </Container>

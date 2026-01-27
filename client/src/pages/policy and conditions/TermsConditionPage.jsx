@@ -27,7 +27,7 @@ function TermsConditionPage() {
             1. Introduction
           </Typography>
           <Typography mb={3} sx={{fontSize:{xs:"14px",sm:"16px",md:"16px"}}} lineHeight={1.7}>
-            Welcome to <strong>My Idea</strong>, a student collaboration and course management
+            Welcome to <strong>Remindra</strong>, a student collaboration and course management
             platform ("the Platform"). By creating an account or using our services, you agree to
             follow these Terms and Conditions. If you do not agree with any part of these Terms,
             please discontinue using the Platform.
@@ -38,7 +38,7 @@ function TermsConditionPage() {
             2. Purpose
           </Typography>
           <Typography mb={3} sx={{fontSize:{xs:"14px",sm:"16px",md:"16px"}}} lineHeight={1.7}>
-            <strong>My Idea</strong> provides a digital space for students to organize, share,
+            <strong>Remindra</strong> provides a digital space for students to organize, share,
             and manage their academic coursework, including quizzes, assignments, resources,
             projects, and discussions.
           </Typography>
@@ -71,7 +71,7 @@ function TermsConditionPage() {
           </Typography>
           <Typography mb={3} sx={{fontSize:{xs:"14px",sm:"16px",md:"16px"}}} lineHeight={1.7}>
             • You retain ownership of the files, notes, and materials you upload.
-            <br />• By uploading content, you grant <strong>My Idea</strong> a non-exclusive,
+            <br />• By uploading content, you grant <strong>Remindra</strong> a non-exclusive,
             royalty-free license to store and display your materials within the Platform.
             <br />• You may not upload copyrighted material without the required permissions.
             <br />• You are solely responsible for the accuracy and legality of your uploaded content.
@@ -105,7 +105,7 @@ function TermsConditionPage() {
             8. Limitation of Liability
           </Typography>
           <Typography mb={3} sx={{fontSize:{xs:"14px",sm:"16px",md:"16px"}}} lineHeight={1.7}>
-            <strong>My Idea</strong> is not responsible for:
+            <strong>Remindra</strong> is not responsible for:
             <br />• Data loss, technical issues, or service interruptions.
             <br />• Damage caused by unauthorized access to your account.
             <br />• Academic consequences resulting from incorrect information shared by users.
