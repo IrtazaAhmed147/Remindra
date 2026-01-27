@@ -9,7 +9,8 @@ import { notify } from '../../utils/HelperFunctions';
 
 function ForgotPass() {
     const [email, setEmail] = useState("");
-    const { isLoading, user } = useSelector((state) => state.auth)
+    const { authLoading, user } = useSelector((state) => state.auth)
+    const [disableBtn, setDisableBtn] = useState(false);
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -22,16 +23,18 @@ function ForgotPass() {
     const handleSubmit = async (e) => {
         try {
             e.preventDefault()
-            console.log(email);
-            dispatch(forgotPassAction(email)).then((msg) => {
+            setDisableBtn(true); // immediately disable
 
-                notify('success', msg)
+            const msg = await dispatch(forgotPassAction(email));
+            notify("success", msg);
 
-            })
-                .catch((err) => notify('error', err))
+            setTimeout(() => {
+                setDisableBtn(false);
+            }, 60000);
 
         } catch (error) {
-
+            setDisableBtn(false); // enable again if error
+            notify("error", error);
         }
     }
 
@@ -94,10 +97,11 @@ function ForgotPass() {
                         <Box className="inputForm" sx={{ mt: 2 }}>
                             <input placeholder="Email Address" name='email' className="input" type="email" onChange={(e) => setEmail(e.target.value)} required />
                         </Box>
-                        <button disabled={isLoading} className="btn">
-                            {isLoading && <CircularProgress  sx={{color:"var(--text-color)"}} size="20px" />}
+                        <button disabled={authLoading || disableBtn} className="btn">
+                            {authLoading && <CircularProgress sx={{ color: "var(--text-color)" }} size="20px" />}
 
                             Send Reset Link</button>
+                        {disableBtn && <Typography textAlign={'start'} fontSize={'12px'}>You can request a new link after 1min</Typography>}
                     </form>
 
                     {/* Back to login */}

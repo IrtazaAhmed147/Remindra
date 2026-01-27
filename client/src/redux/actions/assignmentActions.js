@@ -1,4 +1,5 @@
 import api from "../../utils/common.js";
+import { handleApiError } from "../../utils/HelperFunctions.js";
 import {
     fetchAssignmentsStart,
     fetchAssignmentsSuccess,
@@ -13,9 +14,6 @@ import {
 
 // CREATE ASSIGNMENT
 export const createAssignmentAction = (courseId, assignmentData) => async (dispatch) => {
-        console.log(courseId);
-        console.log(assignmentData);
-        
     try {
         dispatch(createAssignmentStart());
 
@@ -33,8 +31,7 @@ export const createAssignmentAction = (courseId, assignmentData) => async (dispa
         return res.data.message;
 
     } catch (error) {
-        dispatch(createAssignmentFailure(error.response.data.message));
-        throw error.response.data.message;
+         handleApiError(error, dispatch, createAssignmentFailure);
     }
 };
 
@@ -50,16 +47,12 @@ export const getUserAssignmentsAction = (query) => async (dispatch) => {
             withCredentials: true,
             params: query
         });
-        console.log(res);
         
         dispatch(fetchAssignmentsSuccess(res?.data?.data));
         return res?.data?.data;
 
     } catch (error) {
-        console.log(error.message);
-        
-        dispatch(fetchAssignmentsFailure(error.response.data.message));
-        throw error.response.data.message;
+         handleApiError(error, dispatch, fetchAssignmentsFailure);
     }
 };
 
@@ -79,8 +72,7 @@ export const getSingleAssignmentAction = (id) => async (dispatch) => {
         return res.data.data;
 
     } catch (error) {
-        dispatch(fetchSingleAssignmentFailure(error.response.data.message));
-        throw error.response.data.message;
+         handleApiError(error, dispatch, fetchSingleAssignmentFailure);
     }
 };
 
@@ -102,14 +94,12 @@ export const deleteAssignmentAction = (id, courseId) => async (dispatch) => {
         return res.data.message;
 
     } catch (error) {
-        dispatch(fetchAssignmentsFailure(error.response.data.message));
-        throw error.response.data.message;
+         handleApiError(error, dispatch, fetchAssignmentsFailure);
     }
 };
 
 // UPDATE ASSIGNMENT
 export const updateAssignmentAction = (id, assignmentData) => async (dispatch) => {
-    console.log(assignmentData);
     
     try {
         dispatch(createAssignmentStart());
@@ -128,7 +118,6 @@ export const updateAssignmentAction = (id, assignmentData) => async (dispatch) =
         return res.data.message;
 
     } catch (error) {
-        dispatch(createAssignmentFailure(error.response.data.message));
-        throw error.response.data.message;
+         handleApiError(error, dispatch, createAssignmentFailure);
     }
 };

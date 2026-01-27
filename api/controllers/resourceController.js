@@ -21,7 +21,7 @@ export const uploadResource = async (req, res) => {
 
         const uploadPromises = files.map(file => {
             const isImage = file.mimetype.startsWith("image/");
-            const folder = isImage ? "resource-images" : "resource-files";
+            const folder = isImage ? "remindra-resource-images" : "remindra-resource-files";
             if (isImage) {
 
                 return uploadOnCloudinary(file, folder);
@@ -129,11 +129,14 @@ export const getCourseResources = async (req, res) => {
     }
 }
 export const deleteResource = async (req, res) => {
+    const {type} = req.query
+    console.log(type);
+    
     try {
         const resource = await resourceModel.findById(req.params.id);
         if (!resource) return errorHandler(res, 404, "Resource not found");
 
-        await deleteFromCloudinary(resource.publicId);
+        await deleteFromCloudinary(resource.publicId, type);
 
         await resourceModel.findByIdAndDelete(req.params.id);
 
@@ -154,7 +157,7 @@ export const deleteAllResource = async (req, res) => {
         for (const resource of resources) {
 
 
-            await deleteFromCloudinary(resource.publicId);
+            await deleteFromCloudinary(resource.publicId, "image");
             await resourceModel.findByIdAndDelete(resource._id);
            
 

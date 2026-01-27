@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getCourseResourcesAction } from '../../redux/actions/resourceActions';
+import { deleteAllResourceAction, getCourseResourcesAction } from '../../redux/actions/resourceActions';
 import { useParams } from 'react-router-dom';
 import { handleDownloadAll } from '../../redux/actions/courseActions';
 import { PhotoProvider, PhotoView } from 'react-photo-view';

@@ -1,5 +1,6 @@
 import { dashboardStatsFailure, dashboardStatsStart, dashboardStatsSuccess } from "../slices/dashboardSlice";
 import api from "../../utils/common.js";
+import { handleApiError } from "../../utils/HelperFunctions.js";
 
 export const getStats = () => async (dispatch) => {
     try {
@@ -14,15 +15,12 @@ export const getStats = () => async (dispatch) => {
                 withCredentials: true,
             }
         );
-        console.log(res.data?.data);
-        
+
 
         dispatch(dashboardStatsSuccess(res?.data?.data));
         return res.data.message;
     } catch (error) {
-        console.log(error);
 
-        dispatch(dashboardStatsFailure(error?.response?.data?.message));
-        throw error.response.data.message;
+        handleApiError(error, dispatch, dashboardStatsFailure);
     }
 }

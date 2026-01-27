@@ -7,13 +7,32 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { errorHandler, successHandler } from "../utils/responseHandler.js";
 
 export const getAllUsers = async (req, res) => {
-    const { username, email, isAdmin } = req.query;
+    const { username, email, isAdmin, isSuspend, isDeactivate, members, limit } = req.query;
+    console.log(members);
+
     const filter = {};
-    if (username) filter.username = username;
-    if (email) filter.email = email;
-    if (isAdmin !== undefined) filter.isAdmin = isAdmin === 'true';
     try {
-        const userData = await User.find(filter);
+        if (username?.trim()) filter.username = username;
+        console.log("username ==>>",username);
+        
+        if (email) filter.email = email;
+        if (isAdmin !== undefined) filter.isAdmin = isAdmin === 'true';
+        if (isSuspend) filter.isSuspend = false;
+        if (isDeactivate) filter.isDeactivate = false;
+
+        if (members) {
+            const m = JSON.parse(members); 
+            if (Array.isArray(m) && m.length > 0) {
+                filter._id = { $nin: m };  
+            }
+        }
+
+        let query = User.find(filter);
+
+        if (limit) {
+            query = query.limit(Number(limit));
+        }
+        const userData = await query;
         successHandler(res, 200, "All users fetched", userData)
     }
     catch (err) {
@@ -131,7 +150,7 @@ export const updateUser = async (req, res) => {
     try {
         const file = req.file
         if (file) {
-            const url = await uploadOnCloudinary(file, 'user-images');
+            const url = await uploadOnCloudinary(file, 'remindra-user-images');
             req.body.profilePic = url.secure_url
         }
         const userData = await User.findByIdAndUpdate(req.params.id, {

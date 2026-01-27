@@ -59,7 +59,7 @@ function Navbar() {
                 color: '#fff',
               }}
             >
-              <Link to="/" style={{ color: '#fff' }}>My Idea</Link>
+              <Link to="/" style={{ color: '#fff' }}>Remindra</Link>
             </Typography>
 
             {/* Logo Desktop */}
@@ -73,7 +73,7 @@ function Navbar() {
                 color: '#fff',
               }}
             >
-              <Link to="/" style={{ color: '#fff' }}>My Idea</Link>
+              <Link to="/" style={{ color: '#fff' }}>Remindra</Link>
             </Typography>
 
           

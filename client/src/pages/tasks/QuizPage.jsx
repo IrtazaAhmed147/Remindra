@@ -22,6 +22,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import ClearIcon from "@mui/icons-material/Clear";
 
+import QuizOutlinedIcon from "@mui/icons-material/QuizOutlined";
+import GradientBtn from "../../components/common/GradientBtn";
+
 function QuizPage() {
   const dispatch = useDispatch();
   const { quizLoading, quizs } = useSelector((state) => state.quizs);
@@ -89,7 +92,6 @@ function QuizPage() {
       });
   };
 
-  /* ===================== CLEAR DATE ONLY ===================== */
   const clearDate = () => {
     setDueDate(null);
     setFilters(statuss !== "all" ? { status: statuss } : {});
@@ -107,82 +109,103 @@ function QuizPage() {
       }}
     >
       {/* Page Title */}
-      <Typography variant="h4" fontWeight="bold" sx={{ mb: 3 }}>
+      <Typography variant="h4" fontWeight="bold" sx={{ color: "var(--text-color)", mb: 3 }}>
         Quiz
       </Typography>
 
       {/* ===================== FILTERS ===================== */}
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "end",
-          gap: 2,
-          mb: 3,
-        }}
-      >
-        {/* Status */}
-        <Box>
-          <Typography sx={{ mb: 1, fontSize: 12, color: "#6b7280" }}>
-            Status
-          </Typography>
-          <Select
-            value={statuss}
-            onChange={(e) => {
-              setStatuss(e.target.value);
-              handleFilter(e.target.value, dueDate);
-            }}
-            sx={{
-              background: "var(--primary-color)",
-              color: "#fff",
-              height: 40,
-              minWidth: 120,
-            }}
-          >
-            <MenuItem value="all">All</MenuItem>
-            <MenuItem value="Completed">Completed</MenuItem>
-            <MenuItem value="Pending">Pending</MenuItem>
-          </Select>
-        </Box>
+      <Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", alignItems: "center", gap: 2, mb: 3 }}>
 
-        {/* Due Date */}
-        <Box>
-          <Typography sx={{ mb: 1, fontSize: 12, color: "#6b7280" }}>
-            Due Date
-          </Typography>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              value={dueDate}
-              onChange={(newValue) => {
-                setDueDate(newValue);
-                handleFilter(statuss, newValue);
-              }}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  size: "small",
-                },
-              }}
-            />
-          </LocalizationProvider>
-        </Box>
-
-        {/* Clear Date */}
-        <Button
-          startIcon={<ClearIcon />}
-          onClick={clearDate}
+        <GradientBtn text={"Add Quiz"} icon={<QuizOutlinedIcon sx={{ fontSize: 18, color: "#1C5FB8" }} />} url={"/create/quiz"} />
+        <Box
           sx={{
-            height: "35px",
-            background: "var(--primary-color)",
-            color: "#fff",
-            textTransform: "capitalize",
-            ":hover": { backgroundColor: "#1258ad" },
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "end",
+            width: { md: "60%" },
+            gap: 2,
           }}
         >
-          Clear Date
-        </Button>
-      </Box>
+          {/* Status */}
 
+          <Box>
+            <Typography sx={{ mb: 1, fontSize: 12, color: "#6b7280" }}>
+              Status
+            </Typography>
+            <Select
+              value={statuss}
+              onChange={(e) => {
+                setStatuss(e.target.value);
+                handleFilter(e.target.value, dueDate);
+              }}
+              sx={{
+                background: "var(--primary-color)",
+                color: "#fff",
+                height: { xs: 30, sm: 30, md: 40 },
+                fontSize: { xs: 12, sm: 15, md: 15 },
+                minWidth: { xs: 100, sm: 110, md: 120 },
+              }}
+            >
+              <MenuItem value="all">All</MenuItem>
+              <MenuItem value="Completed">Completed</MenuItem>
+              <MenuItem value="Pending">Pending</MenuItem>
+            </Select>
+          </Box>
+
+          {/* Due Date */}
+          <Box sx={{ width: { xs: "50%" } }}>
+            <Typography sx={{ mb: 1, fontSize: 12, color: "#6b7280" }}>
+              Due Date
+            </Typography>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                value={dueDate}
+                onChange={(newValue) => {
+                  setDueDate(newValue);
+                  handleFilter(statuss, newValue);
+                }}
+                slotProps={{ 
+                  textField: {
+                    // width: "40px",
+                    fullWidth: true,
+                    size: "small",
+                    sx: {
+
+                      "& .MuiSvgIcon-root": {
+                        color: "var(--text-color)",
+                      },
+                      "& .MuiPickersInputBase-root": {
+                        border: "1px solid var(--text-color)",
+                        color: "var(--text-color)",
+                        fontSize: { xs: 12, sm: 15, md: 15 },
+                      },
+                      
+                    },
+                  },
+                }}
+              />
+            </LocalizationProvider>
+          </Box>
+
+          {/* Clear Date */}
+          <Button
+            startIcon={<ClearIcon
+              sx={{ fontSize: { xs: 12, sm: 15, md: 15 } }} />}
+            onClick={clearDate}
+            sx={{
+                height: { xs: 30, sm: 30, md: 35 },
+              background: "var(--primary-color)",
+              color: "#fff",
+
+              fontSize: { xs: 12, sm: 15, md: 15 },
+              textTransform: "capitalize",
+              ":hover": { backgroundColor: "#1258ad" },
+            }}
+          >
+            Clear Date
+          </Button>
+        </Box>
+      </Box>
       {/* ===================== TABLE ===================== */}
       <TaskTable
         assignments={quizs}

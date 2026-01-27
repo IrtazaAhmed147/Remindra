@@ -58,8 +58,6 @@ export default function AddQuizPage() {
                 );
 
                 setRender((p) => !p);
-                // setDueDate(data.dueDate)
-                console.log(data)
             }).catch((err) => console.log(err))
         }
     }, [])
@@ -129,7 +127,7 @@ export default function AddQuizPage() {
                     color: "var(--text-color)"
                 }}
             >
-                Create Quiz
+                Add Quiz
             </Typography>
             {(params.get('type') === 'edit') && <Typography sx={{ mt: 2, mb: 1, fontSize: "15px", color: "#6b7280" }}>
                 Course:   <Box
@@ -162,8 +160,10 @@ export default function AddQuizPage() {
                         placeholder="Enter title"
                         style={{
                             outline: "none",
-                            background: "#fff",
+
+                           background: "var(--input-bg-color)",
                             border: "1px solid #cfd3d8",
+                            color: "var(--text-color)",
                             borderRadius: "6px",
                             padding: "6px 10px",
                             width: "100%",
@@ -183,9 +183,11 @@ export default function AddQuizPage() {
                             disabled={courseIsLoading}
                             sx={{
                                 mb: 2,
-                                bgcolor: "#fff",
+                                backgroundColor: "var(--card-bg-color)",
                                 fontSize: "13px",
                                 borderRadius: "6px",
+
+                                color: "var(--text-color)",
                                 height: "40px",
                             }}
                             onChange={(e) => {
@@ -217,10 +219,11 @@ export default function AddQuizPage() {
                         placeholder="Write Quiz task..."
                         style={{
                             outline: "none",
-                            background: "#fff",
+                           background: "var(--input-bg-color)",
                             border: "1px solid #cfd3d8",
                             borderRadius: "6px",
                             padding: "8px 10px",
+                            color: "var(--text-color)",
                             width: "100%",
                             fontSize: "13px",
                         }}
@@ -242,6 +245,18 @@ export default function AddQuizPage() {
                                 textField: {
                                     fullWidth: true,
                                     size: "small",
+                                    sx: {
+
+                                        "& .MuiSvgIcon-root": {
+                                            color: "var(--text-color)",
+                                        },
+                                        "& .MuiPickersInputBase-root": {
+                                            border: "1px solid var(--text-color)",
+                                            color: "var(--text-color)",
+                                            fontSize: { xs: 12, sm: 15, md: 15 },
+                                        },
+
+                                    },
                                 },
                             }}
                         />
@@ -260,7 +275,7 @@ export default function AddQuizPage() {
                             borderRadius: "10px",
                             padding: 1,
                             cursor: "pointer",
-                            background: "#f8fafc",
+                           background: "var(--input-bg-color)",
                         }}
                         onClick={() => document.getElementById("coverUpload").click()}
                     >
@@ -366,7 +381,7 @@ export default function AddQuizPage() {
                         }
                     }}
                 >
-                    Save Quiz
+                    Add Quiz
                 </Button>
             </Box>
         </Box>

@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
 import pkg from 'jsonwebtoken';
-// import rateLimit from "express-rate-limit"
+import rateLimit from "express-rate-limit"
 
 
 dotenv.config();
@@ -24,19 +24,40 @@ export const generateForgotPassEmail = async (mail, link) => {
     from: process.env.PORTAL_EMAIL,
     to: mail,
     subject: 'Forgot Password',
-    html: `<h2>Password Reset Request</h2>
-<p>Hello,</p>
-<p>We received a request to reset your password for your account.</p>
-<p>Please click the button below to reset your password. This link will expire in 10 minutes.</p>
-<a href="${link}" style="
+    html: ` <h2 style="color:#1f2937;">Password Reset Request</h2>
+
+  <p style="color:#374151;">Hello,</p>
+
+  <p style="color:#374151;">
+    We received a request to reset the password for your <strong>Remindra</strong> account.
+  </p>
+
+  <p style="color:#374151;">
+    Click the button below to reset your password. This link will expire in
+    <strong>10 minutes</strong>.
+  </p>
+
+  <a href="${link}" style="
     display: inline-block;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
+    padding: 12px 24px;
+    background-color: #4F8DFF;
+    color: #ffffff;
     text-decoration: none;
-    border-radius: 5px;
-">Reset Password</a>
-<p>Thank you,<br>Your App Team</p>`,
+    border-radius: 6px;
+    font-weight: 600;
+    margin: 16px 0;
+  ">
+    Reset Password
+  </a>
+
+  <p style="color:#374151;">
+    If you did not request a password reset, please ignore this email.
+  </p>
+
+  <p style="color:#374151; margin-top: 24px;">
+    Regards,<br/>
+    <strong>Remindra Team</strong>
+  </p>`,
   };
 
   try {
@@ -54,12 +75,27 @@ export const generateEmail = async (mail, otp) => {
     from: process.env.PORTAL_EMAIL,
     to: mail,
     subject: 'OTP Verification',
-    html: `<h2>OTP Verification</h2>
-      <p>Hello,</p>
-      <p>Your OTP code is:</p>
-      <h1 style="color: #4CAF50;">${otp}</h1>
-      p>This code is valid for 10 minutes. Please do not share it with anyone.</p>
-      <p>Thank you,<br>Your App Team</p>`,
+    html: `<h2 style="color:#1f2937;">OTP Verification</h2>
+
+<p style="color:#374151;">Hello,</p>
+
+<p style="color:#374151;">
+  Use the following One-Time Password (OTP) to verify your <strong>Remindra</strong> account:
+</p>
+
+<h1 style="color:#4F8DFF; letter-spacing: 4px;">
+  ${otp}
+</h1>
+
+<p style="color:#374151;">
+  This OTP is valid for <strong>10 minutes</strong>. For security reasons, please do not share it with anyone.
+</p>
+
+<p style="color:#374151; margin-top: 24px;">
+  Regards,<br/>
+  <strong>Remindra Team</strong>
+</p>
+`,
   };
 
   try {
@@ -91,16 +127,17 @@ export const VerifyEmailToken = (token) => {
 };
 
 // Generic rate limiter function
-// export const createRateLimiter = (windowMs, maxRequests, message) => {
-//   return rateLimit({
-//       windowMs: windowMs,       // Time window in milliseconds
-//       max: maxRequests,         // Maximum number of requests allowed
-//       message: {
-//           status: false,
-//           message: message,
-//           data: null
-//       },
-//       standardHeaders: true,    // Return rate limit info in the `RateLimit-*` headers
-//       legacyHeaders: false      // Disable the `X-RateLimit-*` headers
-//   });
-// };
+
+export const createRateLimiter = (windowMs, maxRequests, message) => {
+  return rateLimit({
+      windowMs: windowMs,       // Time window in milliseconds
+      max: maxRequests,         // Maximum number of requests allowed
+      message: {
+          status: false,
+          message: message,
+          data: null
+      },
+      standardHeaders: true,    // Return rate limit info in the `RateLimit-*` headers
+      legacyHeaders: false      // Disable the `X-RateLimit-*` headers
+  });
+};

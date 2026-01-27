@@ -10,13 +10,12 @@ import { notify } from '../../utils/HelperFunctions'
 function Notification() {
 
   const dispatch = useDispatch();
-  const { invitations, invitationLoading,invitationFetchLoading, error } = useSelector((state) => state.invite)
+  const { invitations, invitationLoading,invitationFetchLoading, invitationError } = useSelector((state) => state.invite)
   useEffect(() => {
     dispatch(getUserInvitesAction()).then((data) => console.log(data))
   }, [])
 
   const responseHandle = (id, data) => {
-    console.log(id, data);
     dispatch(updateInviteAction(id, { status: data })).then((msg) => notify('success', msg))
   }
 
@@ -26,7 +25,8 @@ function Notification() {
       <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
         Notifications
       </Typography>
-      {invitationFetchLoading && !error && <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh", width: "100%" }} >
+      {invitationError && <Box>{invitationError}</Box>}
+      {invitationFetchLoading && !invitationError && <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh", width: "100%" }} >
         <CircularProgress  sx={{color:"var(--text-color)"}} size="30px" />
       </Box>}
       {!invitationFetchLoading && invitations?.map((invite) => (

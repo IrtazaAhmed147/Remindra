@@ -18,7 +18,7 @@ function Login() {
     const navigate = useNavigate();
     const [accStatusModal, setAccStatusModal] = useState({status:false});
     const [showPass, setShowPass] = useState(false)
-    const { isLoading, error, user } = useSelector((state) => state.auth)
+    const { authLoading, authError, user } = useSelector((state) => state.auth)
     const form = useRef({})
 
 
@@ -43,7 +43,10 @@ function Login() {
                 notify('success', msg)
                 navigate(`/${url}`)
             })
-            .catch((err) => notify('error', err))
+            .catch((err) =>{
+                console.log(err);
+                
+                notify('error', err)})
 
 
     }
@@ -83,9 +86,9 @@ function Login() {
                                 <span className="span">Forgot password?</span>
                                 </Link>
                             </Box>
-                            {/* {error && <p>{error}</p>} */}
-                            <button disabled={isLoading} className="btn">
-                                {isLoading && <CircularProgress  sx={{color:"var(--text-color)"}} size="20px" />}
+                            {/* {authError && <p>{authError}</p>} */}
+                            <button disabled={authLoading} className="btn">
+                                {authLoading && <CircularProgress  sx={{color:"var(--text-color)"}} size="20px" />}
 
                                 Sign In</button>
                             <p className="p">Don't have an account? <Link to={'/signup'} className="link">Sign Up</Link>

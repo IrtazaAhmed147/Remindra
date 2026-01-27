@@ -1,4 +1,5 @@
 import api from "../../utils/common.js";
+import { handleApiError } from "../../utils/HelperFunctions.js";
 import {
     fetchInviteStart,
     fetchInviteSuccess,
@@ -12,8 +13,7 @@ import {
 } from "../slices/inviteSlice.js";
 
 export const sendInviteAction = (receiverId, courseId) => async (dispatch) => {
-    console.log(receiverId, courseId);
-    
+
     try {
         dispatch(createInvitetart());
 
@@ -32,8 +32,8 @@ export const sendInviteAction = (receiverId, courseId) => async (dispatch) => {
         return res.data.message;
 
     } catch (error) {
-        dispatch(createInviteFailure(error.response.data.message));
-        throw error.response.data.message;
+
+        handleApiError(error, dispatch, createInviteFailure);
     }
 };
 
@@ -53,8 +53,8 @@ export const getAllInvitesAction = () => async (dispatch) => {
         return res.data.data;
 
     } catch (error) {
-        dispatch(fetchInviteFailure(error.response.data.message));
-        throw error.response.data.message;
+
+        handleApiError(error, dispatch, fetchInviteFailure);
     }
 };
 
@@ -73,8 +73,8 @@ export const getUserInvitesAction = () => async (dispatch) => {
         return res.data.data;
 
     } catch (error) {
-        dispatch(fetchInviteFailure(error.response.data.message));
-        throw error.response.data.message;
+
+        handleApiError(error, dispatch, fetchInviteFailure);
     }
 };
 
@@ -87,7 +87,7 @@ export const updateInviteAction = (inviteId, status) => async (dispatch) => {
 
         const res = await api.put(
             `/invite/${inviteId}`,
-            status ,
+            status,
             {
                 headers: { Authorization: `Bearer ${token}` },
                 withCredentials: true,
@@ -99,7 +99,7 @@ export const updateInviteAction = (inviteId, status) => async (dispatch) => {
         return res.data.message;
 
     } catch (error) {
-        dispatch(updateInviteFailure(error.response.data.message));
-        throw error.response.data.message;
+
+        handleApiError(error, dispatch, updateInviteFailure);
     }
 };

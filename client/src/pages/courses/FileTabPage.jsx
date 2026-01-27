@@ -16,7 +16,6 @@ function FileTabPage() {
     const dispatch = useDispatch()
     const [removeModalState, setRemoveModalState] = useState(false);
     const [selectedCourseId, setSelectedCourseId] = useState(null);
-    const [downloadLoading, setDownloadLoading] = useState(false)
     const { resources, isLoading: resourcesLoading } = useSelector((state) => state.resource)
     const { singleCourse, } = useSelector((state) => state.course)
     const { user } = useSelector((state) => state.auth)
@@ -42,7 +41,7 @@ function FileTabPage() {
         window.location.href = downloadUrl;
     }
     const handleDeleteResources = (id) => {
-        dispatch(deleteResourceAction(id, courseId))
+        dispatch(deleteResourceAction(id, courseId, "raw"))
             .then((msg) => {
                 dispatch(getCourseResourcesAction(courseId, 'file'));
                 notify("success", msg);
@@ -64,24 +63,7 @@ function FileTabPage() {
                 </Typography>
 
                 {isOwner && <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                    {resources?.length == 0 && (
-                        <>
-                            <Button sx={{ minWidth: "auto", bgcolor: "red", borderRadius: "50%", color: "#fff" }} >
-                                <DeleteIcon />
-                            </Button>
-                            <Button disabled={downloadLoading} onClick={async () => {
-                                setDownloadLoading(true);
-                                try {
-                                    // await handleDownloadAll(courseId);
-                                } catch (err) {
-                                    console.error(err);
-                                }
-                                setDownloadLoading(false);
-                            }} sx={{ minWidth: "auto", bgcolor: "var(--primary-color)", borderRadius: "50%", color: "#fff" }}>
-                                <ArrowDownwardIcon />
-                            </Button>
-                        </>
-                    )}
+                    
                     <GradientBtn icon={<AssignmentOutlinedIcon sx={{ fontSize: 18, color: "#4158D0" }} />} text="Add Files" url={`/add/resources/file/${courseId}`} />
                 </Box>}
 
@@ -100,6 +82,8 @@ function FileTabPage() {
                         handleDownload={handleDownload}
                         askDelete={(id) => {
                             setSelectedCourseId(id);
+                            console.log(selectedCourseId);
+                            
                             setRemoveModalState(true);
                         }} />
                 ))}

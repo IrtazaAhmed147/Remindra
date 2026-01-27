@@ -33,6 +33,7 @@ import SingleCourseLayout from './pages/courses/SingleCourse.jsx';
 import ImagesTabPage from './pages/courses/ImagesTabPage.jsx';
 import OverviewTabPage from './pages/courses/OverviewTabPage.jsx';
 import FileTabPage from './pages/courses/FileTabPage.jsx';
+import { notify } from './utils/HelperFunctions.js';
 // import QuizzesTabPage from './pages/courses/QuizzesTabPage.jsx';
 
 function App() {
@@ -46,7 +47,7 @@ function App() {
       document.documentElement.setAttribute("data-theme", "dark");
     }
     if (token) {
-      dispatch(fetchLoggedInUser());
+      dispatch(fetchLoggedInUser())
     } else {
       dispatch(logout());
     }
@@ -81,7 +82,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/profile' element={<ProfilePage />} />
-            <Route path='/update/profile/:username' element={<UpdateProfilePage />} />
+            <Route path='/update/profile' element={<UpdateProfilePage />} />
             <Route path='/courses' element={<CoursePage />} />
             <Route path='/add/course' element={<AddCoursePage />} />
             <Route path='/add/resources/:type/:courseId' element={<AddResource />} />

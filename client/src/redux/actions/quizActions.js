@@ -1,4 +1,5 @@
 import api from "../../utils/common.js";
+import { handleApiError } from "../../utils/HelperFunctions.js";
 import {
     fetchQuizsStart,
     fetchQuizsSuccess,
@@ -13,9 +14,7 @@ import {
 
 // CREATE Quiz
 export const createQuizAction = (courseId, QuizData) => async (dispatch) => {
-        console.log(courseId);
-        console.log(QuizData);
-        
+
     try {
         dispatch(createQuizStart());
 
@@ -33,8 +32,7 @@ export const createQuizAction = (courseId, QuizData) => async (dispatch) => {
         return res.data.message;
 
     } catch (error) {
-        dispatch(createQuizFailure(error.response.data.message));
-        throw error.response.data.message;
+        handleApiError(error, dispatch, createQuizFailure);
     }
 };
 
@@ -55,8 +53,7 @@ export const getUserQuizsAction = (query) => async (dispatch) => {
         return res.data.data;
 
     } catch (error) {
-        dispatch(fetchQuizsFailure(error.response.data.message));
-        throw error.response.data.message;
+        handleApiError(error, dispatch, fetchQuizsFailure);
     }
 };
 
@@ -76,8 +73,7 @@ export const getSingleQuizAction = (id) => async (dispatch) => {
         return res.data.data;
 
     } catch (error) {
-        dispatch(fetchSingleQuizFailure(error.response.data.message));
-        throw error.response.data.message;
+        handleApiError(error, dispatch, fetchSingleQuizFailure);
     }
 };
 
@@ -99,15 +95,13 @@ export const deleteQuizAction = (id, courseId) => async (dispatch) => {
         return res.data.message;
 
     } catch (error) {
-        dispatch(fetchQuizsFailure(error.response.data.message));
-        throw error.response.data.message;
+        handleApiError(error, dispatch, fetchQuizsFailure);
     }
 };
 
 // UPDATE Quiz
 export const updateQuizAction = (id, QuizData) => async (dispatch) => {
-    console.log(QuizData);
-    
+
     try {
         dispatch(createQuizStart());
 
@@ -125,7 +119,6 @@ export const updateQuizAction = (id, QuizData) => async (dispatch) => {
         return res.data.message;
 
     } catch (error) {
-        dispatch(createQuizFailure(error.response.data.message));
-        throw error.response.data.message;
+        handleApiError(error, dispatch, createQuizFailure);
     }
 };

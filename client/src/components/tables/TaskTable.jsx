@@ -40,7 +40,7 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
       <Box
         sx={{
           display: "flex",
-          background: "#f0f4fa",
+          background: "var(--table-header-bgColor)",
           py: { xs: 0.5, sm: 1.5, md: 1.5 },
           px: { xs: 1, sm: 1.5, md: 1.5 },
           borderRadius: "10px",
@@ -63,7 +63,7 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
 
       {/* Rows */}
       {isLoading && <> <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "250px" }}>  <CircularProgress color="inherit" size="30px" /> </Box></>}
-      {!isLoading && (assignments?.length === 0 ? (<Typography fontSize={"14px"} margin={'auto'} mt={2}>No {type === 'quiz' ?'quiz':'assignments'} found.</Typography>) : assignments?.map((item, i) => (
+      {!isLoading && (assignments?.length === 0 ? (<Typography fontSize={"14px"} margin={'auto'} mt={2}>No {type === 'quiz' ? 'quiz' : 'assignments'} found.</Typography>) : assignments?.map((item, i) => (
         <Box
           key={i}
           sx={{
@@ -73,7 +73,7 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
             py: { xs: 0.5, sm: 1.5, md: 1.5 },
             px: { xs: 1, sm: 1.5, md: 1.5 },
             borderRadius: "10px",
-            color:"#fff",
+            color: "#fff",
             mt: 1.2,
             boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
             transition: "0.2s",
@@ -129,13 +129,13 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
 
               px: 2,
               // width: "150px",
-              height: "35px",
+              height: { xs: "30px", sm: "30px", md: "35px" },
               borderRadius: "6px",
               // border: "2px solid #1258ad",
               background: "var(--primary-color)",
               color: "#fff",
               textTransform: "capitalize",
-              fontSize: "13px",
+              fontSize: { xs: "12px", sm: "13px", md: "13px" },
               ":hover": { backgroundColor: "#1258ad" },
             }}
           >
@@ -147,9 +147,12 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
               aria-label="more"
               aria-controls={open ? "menu" : undefined}
               aria-haspopup="true"
+              sx={{
+                color: "var(--text-color)", // IconButton ka color
+              }}
               onClick={(e) => handleClick(e, item)}
             >
-              <MoreVertIcon fontSize="small" />
+              <MoreVertIcon fontSize="small" backgroundColor="white" />
             </IconButton>
 
             <Menu

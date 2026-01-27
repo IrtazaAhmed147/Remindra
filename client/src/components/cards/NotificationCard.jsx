@@ -10,7 +10,7 @@ function NotificationCard({ courseId, senderId, msg, updatedAt ,responseHandle, 
             sx={{
                 mt: 1,
                 p: 1.5,
-                backgroundColor: "#fff",
+                backgroundColor: "var(--card-bg-color)",
                 borderRadius: "8px",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
                 display: "flex",
@@ -43,7 +43,7 @@ function NotificationCard({ courseId, senderId, msg, updatedAt ,responseHandle, 
                         sx={{ fontSize: "14px", fontWeight: 600, color: "#1f1f1f" }}
                     >
                         {senderId?.username}{" "}
-                        <span style={{ fontWeight: 400, color: "#666" }}>
+                        <span style={{ fontWeight: 400, color: "var(--noti-msg-color)" }}>
                             {msg}
                         </span>{" "}
                         <span style={{ fontWeight: 600 }}>
