@@ -166,8 +166,8 @@ export const updatecourse = async (req, res) => {
 
     try {
         const { title, description } = req.body;
-        if (!title.trim() || !description.trim()) {
-            return errorHandler(res, 404, "missing fields")
+        if (!title.trim() ) {
+            return errorHandler(res, 404, "Title is required")
         }
 
         const courseData = await course.findByIdAndUpdate(req.params.id, {

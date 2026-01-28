@@ -2,11 +2,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import FolderCopyOutlinedIcon from "@mui/icons-material/FolderCopyOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
-import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import { CircularProgress, Divider } from "@mui/material";
 import CourseCard from "../../components/cards/CourseCard";
-import TaskTable from "../../components/tables/TaskTable";
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getStats } from "../../redux/actions/dashboardActions";
@@ -15,9 +12,9 @@ import GradientBtn from "../../components/common/GradientBtn";
 import { getUserCoursesAction } from "../../redux/actions/courseActions";
 
 import QuizOutlinedIcon from "@mui/icons-material/QuizOutlined";
+import { notify } from "../../utils/HelperFunctions";
 function Dashboard() {
 
-  const navigate = useNavigate()
 
   const dispatch = useDispatch();
   const { stats, statsLoading,
@@ -25,9 +22,8 @@ function Dashboard() {
   const { courses, courseIsLoading } = useSelector((state) => state.course)
 
   useEffect(() => {
-    dispatch(getStats()).then((msg)=> console.log(msg)
-    );
-    dispatch(getUserCoursesAction({ courseType: 'all', limit: 3 }))
+    dispatch(getStats()).then((msg)=> console.log(msg)).catch((msg) => notify("error",msg))
+    dispatch(getUserCoursesAction({ courseType: 'all', limit: 3 })).catch((msg) => notify("error",msg))
 
 
   }, [])

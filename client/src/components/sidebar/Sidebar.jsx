@@ -15,7 +15,7 @@ import QuizOutlinedIcon from "@mui/icons-material/QuizOutlined";
 
 import { useSelector } from 'react-redux';
 
-function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
+function Sidebar({ collapsed, setCollapsed, mobileSidebar,setMobileSidebar }) {
 
   const location = useLocation();
 
@@ -28,11 +28,11 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
     { name: "Dashboard", icon: <DashboardOutlinedIcon color='var(--text-color)'/>, path: "/dashboard" },
     { name: "Courses", icon: <FolderCopyOutlinedIcon color='var(--text-color)'/>, path: "/courses" },
     // { name: "Friends", icon: <GroupOutlinedIcon />, path: "/friends/123" },
-    { name: "Assignments", icon: <AssignmentOutlinedIcon color='var(--text-color)'/>, path: "/assignment/123" },
-    { name: "Quizs", icon: <QuizOutlinedIcon color='var(--text-color)'/>, path: "/quiz/123" },
+    { name: "Assignments", icon: <AssignmentOutlinedIcon color='var(--text-color)'/>, path: "/assignment" },
+    { name: "Quizs", icon: <QuizOutlinedIcon color='var(--text-color)'/>, path: "/quiz" },
     {
       name: "Notifications", icon: <Badge sx={{ "& .MuiBadge-badge": { top: "-5px", right: "-5px" } }} badgeContent={stats?.notifications} color="primary">
-        <NotificationsNoneOutlinedIcon />  </Badge>, path: "/notification/irtaza"
+        <NotificationsNoneOutlinedIcon />  </Badge>, path: "/notification"
     },
     { name: "Settings", icon: <SettingsOutlinedIcon />, path: "/setting" },
   ];
@@ -42,7 +42,7 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
       sx={{
 
         width: collapsed ? '80px' : '260px',
-        height: mobileSidebar ? '100vh' : "100vh",
+        height: '100vh',
         mt: 0,
         backgroundColor: "var(--sidebar-color)",
         position: 'fixed',
@@ -55,8 +55,10 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
         transition: 'width 0.3s ease-in-out',
       }}
     >
-      <Box
-        onClick={() => setCollapsed(!collapsed)}
+      { <Box
+        onClick={() => {
+          if(mobileSidebar) setMobileSidebar(false)
+          setCollapsed(!collapsed)}}
         sx={{
           transition: '0.3s all ease-in-out',
           ":hover": { backgroundColor: '#959595dd' },
@@ -74,7 +76,7 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
         }}
       >
         {collapsed ? <ChevronRightOutlinedIcon sx={{ color: '#fff' }} /> : <ChevronLeftOutlinedIcon sx={{ color: '#fff' }} />}
-      </Box>
+      </Box>}
 
       {/* -------- List Items -------- */}
       <List>

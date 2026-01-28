@@ -98,7 +98,7 @@ const AssignmentDetailModal = ({ open, handleClose, assignment }) => {
                     <PhotoProvider>
                         <Grid container spacing={2}>
                             {images.map((img, idx) => (
-                                <Grid item xs={12} sm={4} key={idx}>
+                                <Grid   key={idx}>
                                     <PhotoView src={img.url}>
                                         <Box component="img" src={img.url} sx={{ width: "100%", height: 140, objectFit: "cover", borderRadius: "12px", cursor: "pointer" }} />
                                     </PhotoView>

@@ -172,12 +172,12 @@ function CourseCard({
             }}
           >
 
-            <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
+            {/* <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
               <FolderOutlinedIcon sx={{ fontSize: 16, color: "#64748B" }} />
               <Typography fontSize="12px" color="var(--text-color)">
-                {resources?.length || 0} {resources?.length > 1 ? "Rescoures" : "Rescoure"}
+                {resources?.length || 0} {resources?.length > 1 ? "Resources" : "Resource"}
               </Typography>
-            </Box>
+            </Box> */}
 
             <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
               <GroupOutlinedIcon sx={{ fontSize: 16, color: "#64748B" }} />

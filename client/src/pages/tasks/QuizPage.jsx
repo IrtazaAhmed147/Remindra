@@ -39,7 +39,6 @@ function QuizPage() {
   const [dueDate, setDueDate] = useState(null);
   const [statuss, setStatuss] = useState("all");
 
-  /* ===================== INITIAL LOAD ===================== */
   useEffect(() => {
     const status = filters.get("status") || "all";
     const date = filters.get("dueDate");
@@ -52,10 +51,9 @@ function QuizPage() {
         status,
         dueDate: date || undefined,
       })
-    );
+    ).catch((msg) => notify("error",msg))
   }, []);
 
-  /* ===================== FILTER HANDLER ===================== */
   const handleFilter = (status, date) => {
     const params = {};
 
@@ -63,7 +61,7 @@ function QuizPage() {
     if (date) params.dueDate = date.format("YYYY-MM-DD");
 
     setFilters(params);
-    dispatch(getUserQuizsAction(params));
+    dispatch(getUserQuizsAction(params)).catch((msg) => notify("error",msg))
   };
 
   /* ===================== UPDATE ===================== */
@@ -95,7 +93,7 @@ function QuizPage() {
   const clearDate = () => {
     setDueDate(null);
     setFilters(statuss !== "all" ? { status: statuss } : {});
-    dispatch(getUserQuizsAction({ status: statuss }));
+    dispatch(getUserQuizsAction({ status: statuss })).catch((msg) => notify("error",msg))
   };
 
   return (

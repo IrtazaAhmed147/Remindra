@@ -37,7 +37,7 @@ function AssignmentPage() {
     setStatuss(status)
     setDueDate(date ? dayjs(date) : null);
 
-    dispatch(getUserAssignmentsAction({ status: status, dueDate: date || undefined }))
+    dispatch(getUserAssignmentsAction({ status: status, dueDate: date || undefined })).catch((msg) => notify("error",msg))
   }, [])
 
 
@@ -45,7 +45,7 @@ function AssignmentPage() {
     dispatch(updateAssignmentAction(id, data))
       .then((msg) => {
         notify('success', msg);
-        dispatch(getUserAssignmentsAction({ status: statuss, dueDate }));
+        dispatch(getUserAssignmentsAction({ status: statuss, dueDate })).catch((msg) => notify("error",msg))
       })
       .catch((err) => {
 
@@ -60,13 +60,13 @@ function AssignmentPage() {
     dispatch(deleteAssignmentAction(ids._id, ids.courseId))
       .then((msg) => {
         notify('success', msg);
-        dispatch(getUserAssignmentsAction({ statuss, dueDate }));
+        dispatch(getUserAssignmentsAction({ statuss, dueDate })).catch((msg) => notify("error",msg))
       })
       .catch((err) => {
 
         notify('error', err)
 
-        dispatch(getUserAssignmentsAction({ statuss, dueDate }));
+        dispatch(getUserAssignmentsAction({ statuss, dueDate })).catch((msg) => notify("error",msg))
       });
 
 
@@ -80,7 +80,7 @@ function AssignmentPage() {
     setFilters(param);
     // setDueDate(dueDate);
 
-    dispatch(getUserAssignmentsAction(param))
+    dispatch(getUserAssignmentsAction(param)).catch((msg) => notify("error",msg))
 
   }
 
@@ -126,7 +126,7 @@ function AssignmentPage() {
             </Typography>
             <Select
               sx={{
-                background: "var(--primary-color)",
+                bgcolor: "var(--primary-color)",
                 color: "#fff",
                 height: { xs: 30, sm: 30, md: 40 },
                 fontSize: { xs: 12, sm: 15, md: 15 },
@@ -189,18 +189,18 @@ function AssignmentPage() {
             onClick={() => {
               setDueDate(null)
               setFilters({ status: statuss })
-              dispatch(getUserAssignmentsAction({ status: statuss }))
+              dispatch(getUserAssignmentsAction({ status: statuss })).catch((msg) => notify("error",msg))
 
 
             }}
             sx={{
               height: { xs: 30, sm: 30, md: 35 },
-              background: "var(--primary-color)",
+              bgcolor: "var(--primary-color)",
               color: "#fff",
 
               fontSize: { xs: 12, sm: 15, md: 15 },
               textTransform: "capitalize",
-              ":hover": { backgroundColor: "#1258ad" },
+              ":hover": { bgcolor: "#1258ad" },
             }}
 
           >
