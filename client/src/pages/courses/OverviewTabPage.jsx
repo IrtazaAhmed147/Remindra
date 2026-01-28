@@ -1,6 +1,5 @@
 import StatCard from '../../components/cards/StatCard';
 import { Box, CircularProgress } from '@mui/material';
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 

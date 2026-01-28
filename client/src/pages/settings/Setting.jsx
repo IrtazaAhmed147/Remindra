@@ -2,10 +2,10 @@ import { Box, Typography, Button, Switch, FormControlLabel } from "@mui/material
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { subscribe } from "../../redux/actions/settingActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { notify } from "../../utils/HelperFunctions";
 import SettingCard from "../../components/cards/SettingCard";
-import ThemeBtn from "../../components/common/themeBtn";
+import ThemeBtn from "../../components/common/ThemeBtn";
 import NotificationSwitch from "../../components/common/NotificationSwitch";
 
 function Setting() {
@@ -13,15 +13,26 @@ function Setting() {
   const dispatch = useDispatch();
   const [darkTheme, setDarkTheme] = useState(false)
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const { user } = useSelector((state) => state.auth);
 
   // Load initial permission status
   useEffect(() => {
-    if (Notification.permission === "granted") {
-      setNotificationsEnabled(true);
+
+    if (!user || !("Notification" in window)) return;
+
+    const permission = Notification.permission;
+
+    if (permission === "granted") {
+      dispatch(subscribe(user._id, true)).then(() => {
+
+        setNotificationsEnabled(true)
+      }).catch((msg) => notify("error",msg))
     } else {
-      setNotificationsEnabled(false);
+
+      dispatch(subscribe(user._id, false)).then(() => setNotificationsEnabled(false)).catch((msg) => notify("error",msg))
     }
-  }, []);
+
+  }, [user]);
 
 
   useEffect(() => {
@@ -54,39 +65,52 @@ function Setting() {
 
 
   const handleNotification = async () => {
+    if (!user) return;
     if (!("Notification" in window)) {
-      alert("This browser does not support notifications");
-      setNotificationsEnabled(false);
+      notify("error", "Browser does not support notifications");
       return;
     }
 
+    // TURN OFF
     if (notificationsEnabled) {
-      // Switch turned OFF → revoke subscription
-      dispatch(subscribe(false)).then((msg) => notify("success", msg));
+      dispatch(subscribe(user._id, false)).catch((msg) => console.log(msg));
       setNotificationsEnabled(false);
+      notify("success", "Notifications turned off");
+      return;
+    }
+
+    // TURN ON
+    if (Notification.permission === "granted") {
+      await dispatch(subscribe(user._id, true));
+      setNotificationsEnabled(true);
+      notify("success", "Notifications enabled");
+      return;
+    }
+
+    if (Notification.permission === "denied") {
+      await dispatch(subscribe(user._id, false));
+      setNotificationsEnabled(false);
+      notify(
+        "error",
+        "Notifications are blocked. Enable them from browser settings."
+      );
+      return;
+    }
+
+    // DEFAULT → ASK PERMISSION
+    const permission = await Notification.requestPermission();
+
+    if (permission === "granted") {
+       dispatch(subscribe(user._id, true));
+      setNotificationsEnabled(true);
+      notify("success", "Notifications enabled");
     } else {
-      // Switch turned ON → ask permission
-      if (Notification.permission === "granted") {
-        // Already granted → just save subscription
-        dispatch(subscribe(true)).then((msg) => notify("success", msg));
-        setNotificationsEnabled(true);
-      } else if (Notification.permission === "denied") {
-        alert("You have denied notification permission. Please enable it in browser settings.");
-        setNotificationsEnabled(false);
-      } else {
-        // Request permission
-        Notification.requestPermission().then((permission) => {
-          if (permission === "granted") {
-            dispatch(subscribe(true)).then((msg) => notify("success", msg));
-            setNotificationsEnabled(true);
-          } else {
-            setNotificationsEnabled(false);
-            notify("error", "Notification permission denied");
-          }
-        });
-      }
+       dispatch(subscribe(user._id, false));
+      setNotificationsEnabled(false);
+      notify("error", "Notification permission denied");
     }
   };
+
 
   return (
     <Box
@@ -106,10 +130,6 @@ function Setting() {
         Settings
       </Typography>
 
-      {/* ---------------- UPDATE PROFILE ---------------- */}
-
-
-      {/* ---------------- NOTIFICATIONS ---------------- */}
       <SettingCard
         title="Notifications"
         desc="Get alerts for deadlines, quizzes, and announcements"
@@ -117,8 +137,10 @@ function Setting() {
           <NotificationSwitch
             checked={notificationsEnabled}
             onChange={handleNotification}
+            disabled={Notification.permission === "denied"}
             color="primary"
           />
+
         }
       />
 
@@ -139,8 +161,8 @@ function Setting() {
       <Box
         onClick={() => navigate("/update/profile")}
         sx={{
-          p: 3,
-          mb: 3,
+          p: {xs:1.5,sm:2,md:3},
+          mb: {xs:1.5,sm:2,md:3},
           borderRadius: 3,
           bgcolor: "var(--card-bg-color)",
           boxShadow: `
@@ -161,7 +183,7 @@ function Setting() {
       {/* ---------------- DELETE ACCOUNT ---------------- */}
       <Box
         sx={{
-          p: 3,
+          p: {xs:1.5,sm:2,md:3},
           mt: 4,
           borderRadius: 3,
           bgcolor: "rgba(239,68,68,0.08)",
@@ -178,6 +200,7 @@ function Setting() {
 
         <Button
           variant="contained"
+          disabled={true}
           sx={{
             mt: 2,
             backgroundColor: "#ef4444",

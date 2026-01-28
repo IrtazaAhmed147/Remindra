@@ -3,7 +3,7 @@ import api from "../../utils/common.js";
 import { handleApiError } from "../../utils/HelperFunctions.js";
 
 
-export const subscribe = (data) => async (dispatch) => {
+export const subscribe = (userId,data) => async (dispatch) => {
     try {
         dispatch(fetchPermissionStart());
 
@@ -11,7 +11,7 @@ export const subscribe = (data) => async (dispatch) => {
 
         const res = await api.post(
             `/notification/subscribe`,
-            { subscription: data },
+            { subscription: data ,userId},
             {
                 headers: { Authorization: `Bearer ${token}` },
                 withCredentials: true,

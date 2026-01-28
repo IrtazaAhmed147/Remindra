@@ -28,12 +28,12 @@ function ImagesTabPage() {
 
 
     useEffect(() => {
-        dispatch(getCourseResourcesAction(courseId, 'image')).then((msg) => console.log(msg)).catch((msg) => notify(msg))
+        dispatch(getCourseResourcesAction(courseId, 'image')).then((msg) => console.log(msg)).catch((msg) => notify("error", msg))
     }, [])
     const handleDeleteResources = () => {
         dispatch(deleteAllResourceAction(courseId))
             .then((msg) => {
-                dispatch(getCourseResourcesAction(courseId, 'image'));
+                dispatch(getCourseResourcesAction(courseId, 'image')).catch((msg) => notify("error", msg))
                 notify("success", msg);
             })
             .catch((err) => notify("error", err));
@@ -93,6 +93,28 @@ function ImagesTabPage() {
                     {isOwner && <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                         {resources?.length > 0 && (
                             <>
+                               {(selectedIds.length > 0) && <Button
+                                    disabled={selectedIds.length === 0}
+                                    onClick={downloadSelected}
+                                    sx={{
+                                        textTransform: "none",
+                                        px: 3,
+                                        py: 1,
+                                        borderRadius: "10px",
+                                        fontWeight: 600,
+                                        fontSize: "14px",
+                                        bgcolor: "var(--primary-color)",
+                                        color: "#fff",
+                                        boxShadow: "0 2px 6px rgba(42,125,225,0.35)",
+                                        "&:hover": {
+                                            bgcolor: "var(--primaryHover-color)",
+                                            boxShadow: "0 4px 12px rgba(42,125,225,0.45)"
+                                        },
+                                    }}
+                                >
+                                    Download Selected
+                                </Button>}
+
                                 <Button sx={{ minWidth: "auto", bgcolor: "red", borderRadius: "50%", color: "#fff" }} onClick={() => setIsModal(true)}>
                                     <DeleteIcon />
                                 </Button>
@@ -115,7 +137,7 @@ function ImagesTabPage() {
 
                 {resourcesLoading ? (
                     <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "250px" }}>
-                        <CircularProgress  sx={{color:"var(--text-color)"}} size="30px" />
+                        <CircularProgress sx={{ color: "var(--text-color)" }} size="30px" />
                     </Box>
                 ) : (
 
@@ -203,19 +225,14 @@ function ImagesTabPage() {
                 )
                 }
             </Box >
-            <Button
-                disabled={selectedIds.length === 0}
-                onClick={() => downloadSelected()}
-            >
-                Download Selected
-            </Button>
+
 
 
             {isModal && (
                 <RemoveModal
                     open={isModal}
                     onClose={() => setIsModal(false)}
-                    title={"All Photos Delete"}
+                    title={"Delete All Photos"}
                     description={""}
                     onConfirm={() => {
                         handleDeleteResources();

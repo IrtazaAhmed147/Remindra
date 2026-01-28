@@ -22,11 +22,12 @@ function AddResource() {
 
     const uploadFiles = async () => {
         const formData = new FormData();
+        if(coverFiles.length === 0) return notify("error", "Material required");
         if (coverFiles.length > 20 && type === 'image') {
 
             notify("error", "You can upload a maximum of 20 images at one time.")
             return;
-        } else if (coverFiles  > 5 && type === 'file' ) {
+        } else if (coverFiles > 5 && type === 'file') {
             notify("error", "You can upload a maximum of 5 files at one time.")
             return;
 
@@ -39,8 +40,8 @@ function AddResource() {
 
         dispatch(uploadResourceAction(courseId, formData)).then((msg) => {
             notify("success", msg)
-            navigate(`/course/${courseId}/${type}`)
-        })
+            navigate(`/course/${courseId}/resources`)
+        }).catch((msg) => notify("error",msg))
 
     }
     const handleCoverUpload = (e) => {

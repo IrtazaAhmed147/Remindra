@@ -8,7 +8,7 @@ import Footer from '../components/footer/Footer';
 const Layout = () => {
     const [collapsed, setCollapsed] = useState(true);
     return (
-        <>
+        <> 
             <Box sx={{ display: "flex" }}>
                 <Box sx={{ display: { xs: "none", md: "block" } }}>
 

@@ -54,7 +54,7 @@ const FileCard = ({ fileName, fileSize, fileUrl, fileType, _id, isDownloadBtn, a
             <IconButton
               // sx={{ p:  }}
               size="small"
-
+          sx={{color:"var(--text-color)"}}
               onClick={(e) => {
                 e.preventDefault()
                 e.stopPropagation()

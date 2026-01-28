@@ -3,6 +3,7 @@ import { Box, Typography, Tabs, Tab, CircularProgress } from "@mui/material";
 import { Outlet, useParams, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleCourseAction } from "../../redux/actions/courseActions";
+import { notify } from "../../utils/HelperFunctions";
 
 
 const ownerTabs = ["overview", "resources", "files"];
@@ -37,7 +38,7 @@ const SingleCourseLayout = () => {
 
   useEffect(() => {
     if (JSON.stringify(singleCourse) === '{}') {
-      dispatch(getSingleCourseAction(courseId))
+      dispatch(getSingleCourseAction(courseId)).catch((msg) => notify("error",msg))
     }
 
   }, [courseId]);

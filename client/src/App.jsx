@@ -22,7 +22,7 @@ import TermsConditionPage from './pages/policy and conditions/TermsConditionPage
 import Login from './pages/auth/Login.jsx';
 import Signup from './pages/auth/Signup.jsx';
 import Otp from './pages/auth/Otp.jsx';
-import ForgotPass from './pages/auth/forgotPass.jsx';
+import ForgotPass from './pages/auth/ForgotPass.jsx';
 import ResetPass from './pages/auth/ResetPass.jsx';
 import AddResource from './pages/resource/AddResource.jsx';
 import ProtectedRoute from './components/protectedRoute/protectedRoute.jsx';
@@ -91,12 +91,12 @@ function App() {
               <Route path="resources" element={<ImagesTabPage />} />
               <Route path="files" element={<FileTabPage />} />
             </Route>
-            <Route path='/assignment/:aId' element={<AssignmentPage />} />
-            <Route path='/quiz/:aId' element={<QuizPage />} />
+            <Route path='/assignment' element={<AssignmentPage />} />
+            <Route path='/quiz' element={<QuizPage />} />
             <Route path='/create/assignment' element={<AddAssignmentPage />} />
             <Route path='/create/quiz' element={<AddQuizPage />} />
-            <Route path='/friends/:friendId' element={<FriendsPage />} />
-            <Route path='/notification/:userId' element={<Notification />} />
+            {/* <Route path='/friends/:friendId' element={<FriendsPage />} /> */}
+            <Route path='/notification' element={<Notification />} />
             <Route path='/setting' element={<Setting />} />
           </Route>
 

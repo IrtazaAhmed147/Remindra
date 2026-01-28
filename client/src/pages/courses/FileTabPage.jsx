@@ -1,9 +1,7 @@
-import { Box, Button, CircularProgress, Typography } from '@mui/material'
+import { Box,  CircularProgress, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import GradientBtn from '../../components/common/GradientBtn';
 import FileCard from '../../components/cards/FileCard';
@@ -23,7 +21,7 @@ function FileTabPage() {
 
 
     useEffect(() => {
-        dispatch(getCourseResourcesAction(courseId, 'file')).then((msg) => console.log(msg)).catch((msg) => notify(msg))
+        dispatch(getCourseResourcesAction(courseId, 'file')).then((msg) => console.log(msg)).catch((msg) => notify("error",msg))
     }, [])
 
     const handleDownload = (fileUrl, originalName) => {
@@ -43,7 +41,7 @@ function FileTabPage() {
     const handleDeleteResources = (id) => {
         dispatch(deleteResourceAction(id, courseId, "raw"))
             .then((msg) => {
-                dispatch(getCourseResourcesAction(courseId, 'file'));
+                dispatch(getCourseResourcesAction(courseId, 'file')).catch((msg) => notify("error",msg))
                 notify("success", msg);
             })
             .catch((err) => notify("error", err));

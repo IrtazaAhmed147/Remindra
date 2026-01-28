@@ -5,8 +5,8 @@ function SettingCard({ title, desc, action }) {
     return (
         <Box
             sx={{
-                p: 3,
-                mb: 3,
+                p: {xs:1.5,sm:2,md:3},
+                mb: {xs:1.5,sm:2,md:3},
                 borderRadius: 3,
                 bgcolor: "var(--card-bg-color)",
                 boxShadow: `

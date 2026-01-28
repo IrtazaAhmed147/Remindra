@@ -1,6 +1,5 @@
 import { Box, CircularProgress, Typography } from '@mui/material'
-import React from 'react'
-import NotificationCard from '../../components/cards/notificationCard'
+import NotificationCard from '../../components/cards/NotificationCard'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserInvitesAction, updateInviteAction } from '../../redux/actions/inviteActions'
@@ -12,11 +11,11 @@ function Notification() {
   const dispatch = useDispatch();
   const { invitations, invitationLoading,invitationFetchLoading, invitationError } = useSelector((state) => state.invite)
   useEffect(() => {
-    dispatch(getUserInvitesAction()).then((data) => console.log(data))
+    dispatch(getUserInvitesAction()).then((data) => console.log(data)).catch((msg) => notify("error",msg))
   }, [])
 
   const responseHandle = (id, data) => {
-    dispatch(updateInviteAction(id, { status: data })).then((msg) => notify('success', msg))
+    dispatch(updateInviteAction(id, { status: data })).then((msg) => notify('success', msg)).catch((msg) => notify("error",msg))
   }
 
   return (

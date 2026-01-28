@@ -14,7 +14,7 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSingleCourseAction, getUserCoursesAction } from "../../redux/actions/courseActions";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { notify } from "../../utils/HelperFunctions";
 import { createQuizAction, getSingleQuizAction, updateQuizAction } from "../../redux/actions/quizActions";
 import dayjs from "dayjs";
@@ -25,7 +25,7 @@ export default function AddQuizPage() {
     const [render, setRender] = useState(false);
     const { quizLoading } = useSelector((state) => state.quizs)
     const { courseIsLoading } = useSelector((state) => state.course)
-
+    const navigate = useNavigate()
     const [dueDate, setDueDate] = useState(null); // local state for picker
     const form = useRef({ task: "" })
     const formRef = useRef();
@@ -36,7 +36,7 @@ export default function AddQuizPage() {
 
         if (params.get("type") !== 'edit') {
 
-            dispatch(getUserCoursesAction({ courseType: 'mycourses' })).then((data) => setCourseList(data)).catch((err) => console.log(err))
+            dispatch(getUserCoursesAction({ courseType: 'mycourses' })).then((data) => setCourseList(data)).catch((msg) => notify("error", msg))
         }
     }, [])
     useEffect(() => {
@@ -58,13 +58,15 @@ export default function AddQuizPage() {
                 );
 
                 setRender((p) => !p);
-            }).catch((err) => console.log(err))
+            }).catch((msg) => notify("error", msg))
         }
     }, [])
 
 
     const handleCreateQuiz = async () => {
-
+        if (coverFiles.length > 5) {
+            return notify("error", "files maximum length is 5");
+        }
         if ((!form.current.title || !form.current.task || !form.current.dueDate || !form.current.course) || (!form.current.title.trim() || !form.current.task.trim())) {
 
 
@@ -85,9 +87,17 @@ export default function AddQuizPage() {
 
         if (params.get('type') === 'edit' && params.get('id')) {
 
-            dispatch(updateQuizAction(params.get('id'), formData)).then((msg) => notify("success", msg))
+            dispatch(updateQuizAction(params.get('id'), formData)).then((msg) => {
+                
+                notify("success", msg)
+                navigate("/quiz")
+            }).catch((msg) => notify("error", msg))
         } else {
-            dispatch(createQuizAction(form.current.course, formData)).then((msg) => notify("success", msg))
+            dispatch(createQuizAction(form.current.course, formData)).then((msg) => {
+                
+                notify("success", msg)
+                navigate("/quiz")
+            }).catch((msg) => notify("error", msg))
 
         }
 
@@ -160,10 +170,9 @@ export default function AddQuizPage() {
                         placeholder="Enter title"
                         style={{
                             outline: "none",
-
-                           background: "var(--input-bg-color)",
-                            border: "1px solid #cfd3d8",
                             color: "var(--text-color)",
+                            background: "var(--input-bg-color)",
+                            border: "1px solid #cfd3d8",
                             borderRadius: "6px",
                             padding: "6px 10px",
                             width: "100%",
@@ -218,12 +227,12 @@ export default function AddQuizPage() {
                         rows={6}
                         placeholder="Write Quiz task..."
                         style={{
+                            color: "var(--text-color)",
                             outline: "none",
-                           background: "var(--input-bg-color)",
+                            background: "var(--input-bg-color)",
                             border: "1px solid #cfd3d8",
                             borderRadius: "6px",
-                            padding: "8px 10px",
-                            color: "var(--text-color)",
+                            padding: "8px 10px",    
                             width: "100%",
                             fontSize: "13px",
                         }}
@@ -275,7 +284,7 @@ export default function AddQuizPage() {
                             borderRadius: "10px",
                             padding: 1,
                             cursor: "pointer",
-                           background: "var(--input-bg-color)",
+                            background: "var(--input-bg-color)",
                         }}
                         onClick={() => document.getElementById("coverUpload").click()}
                     >
