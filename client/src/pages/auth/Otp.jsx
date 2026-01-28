@@ -54,7 +54,7 @@ function Otp() {
 
         try {
             const res = await axios.post(
-                "http://localhost:3200/api/auth/verifyEmail",
+                `${import.meta.env.VITE_BACKEND_URL}/auth/verifyEmail`,
                 { otp: filledOtp },
                 {
                     withCredentials: true,
