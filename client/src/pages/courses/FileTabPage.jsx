@@ -23,7 +23,7 @@ function FileTabPage() {
 
 
     useEffect(() => {
-        dispatch(getCourseResourcesAction(courseId, 'file')).then((msg) => console.log(msg)).catch((msg) => notify(msg))
+        dispatch(getCourseResourcesAction(courseId, 'file')).then((msg) => console.log(msg)).catch((msg) => notify("error",msg))
     }, [])
 
     const handleDownload = (fileUrl, originalName) => {
@@ -43,7 +43,7 @@ function FileTabPage() {
     const handleDeleteResources = (id) => {
         dispatch(deleteResourceAction(id, courseId, "raw"))
             .then((msg) => {
-                dispatch(getCourseResourcesAction(courseId, 'file'));
+                dispatch(getCourseResourcesAction(courseId, 'file')).catch((msg) => notify("error",msg))
                 notify("success", msg);
             })
             .catch((err) => notify("error", err));

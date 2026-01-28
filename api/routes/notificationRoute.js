@@ -13,16 +13,16 @@ const notificationRouter = express.Router();
 // Save user subscription
 notificationRouter.post("/subscribe", async (req, res) => {
     try {
-        const { subscription } = req.body;
+        const { subscription, userId } = req.body;
         console.log(req.body);
         
-        await SubscriptionModel.findOneAndUpdate(
-            { userId: req?.user?.id },
+       const data = await SubscriptionModel.findOneAndUpdate(
+            { userId: userId },
             { subscription },
             { upsert: true }
         );
 
-        return successHandler(res, 200, "Acess updated");
+        return successHandler(res, 200, data);
 
     } catch (err) {
         console.log(err);

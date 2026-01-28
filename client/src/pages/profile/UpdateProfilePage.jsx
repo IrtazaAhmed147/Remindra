@@ -15,12 +15,8 @@ function UpdateProfilePage() {
 
 
     useEffect(() => {
-        console.log(user);
-
         if (user) {
-            console.log('chala');
-
-            dispatch(getSingleUserAction(user?._id)).then((msg) => console.log(msg))
+            dispatch(getSingleUserAction(user?._id)).catch((msg) => notify("error",msg))
         }
     }, [user])
 

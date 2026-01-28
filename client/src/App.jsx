@@ -91,12 +91,12 @@ function App() {
               <Route path="resources" element={<ImagesTabPage />} />
               <Route path="files" element={<FileTabPage />} />
             </Route>
-            <Route path='/assignment/:aId' element={<AssignmentPage />} />
-            <Route path='/quiz/:aId' element={<QuizPage />} />
+            <Route path='/assignment' element={<AssignmentPage />} />
+            <Route path='/quiz' element={<QuizPage />} />
             <Route path='/create/assignment' element={<AddAssignmentPage />} />
             <Route path='/create/quiz' element={<AddQuizPage />} />
-            <Route path='/friends/:friendId' element={<FriendsPage />} />
-            <Route path='/notification/:userId' element={<Notification />} />
+            {/* <Route path='/friends/:friendId' element={<FriendsPage />} /> */}
+            <Route path='/notification' element={<Notification />} />
             <Route path='/setting' element={<Setting />} />
           </Route>
 

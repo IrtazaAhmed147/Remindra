@@ -12,7 +12,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { createCourseAction, getSingleCourseAction, updateCourseAction } from "../../redux/actions/courseActions";
 import { useDispatch, useSelector } from "react-redux";
 import { notify } from "../../utils/HelperFunctions";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const categories = [
     "Select Category",
@@ -27,7 +27,7 @@ export default function AddCoursePage() {
 
     const form = useRef({ description: "" })
     const [render, setRender] = useState(false);
-
+    const navigate = useNavigate()
     const formRef = useRef();
 
     const dispatch = useDispatch()
@@ -63,6 +63,7 @@ export default function AddCoursePage() {
                     // formRef.current.reset();
                     // form.current = {};
                     notify('success', msg)
+                    navigate("/courses")
                 })
                 .catch((err) => notify('error', err))
 
@@ -77,6 +78,7 @@ export default function AddCoursePage() {
                     description: ""
                     };
                     notify('success', msg)
+                    navigate("/courses")
                 })
                 .catch((err) => notify('error', err))
 
@@ -118,6 +120,7 @@ export default function AddCoursePage() {
                             onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }}
                             style={{
                                 outline: "none",
+                                color:"var(--text-color)",
                                 background: "var(--input-bg-color)",
                                 border: "1px solid #cfd3d8",
                                 borderRadius: "6px",
@@ -163,6 +166,7 @@ export default function AddCoursePage() {
                             placeholder="Write something about your course..."
                             style={{
                                 outline: "none",
+                                color:"var(--text-color)",
                                 background: "var(--input-bg-color)",
                                 border: "1px solid #cfd3d8",
                                 borderRadius: "6px",

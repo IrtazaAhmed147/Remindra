@@ -12,11 +12,11 @@ function Notification() {
   const dispatch = useDispatch();
   const { invitations, invitationLoading,invitationFetchLoading, invitationError } = useSelector((state) => state.invite)
   useEffect(() => {
-    dispatch(getUserInvitesAction()).then((data) => console.log(data))
+    dispatch(getUserInvitesAction()).then((data) => console.log(data)).catch((msg) => notify("error",msg))
   }, [])
 
   const responseHandle = (id, data) => {
-    dispatch(updateInviteAction(id, { status: data })).then((msg) => notify('success', msg))
+    dispatch(updateInviteAction(id, { status: data })).then((msg) => notify('success', msg)).catch((msg) => notify("error",msg))
   }
 
   return (

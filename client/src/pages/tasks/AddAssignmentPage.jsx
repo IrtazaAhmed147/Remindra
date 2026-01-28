@@ -14,7 +14,7 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSingleCourseAction, getUserCoursesAction } from "../../redux/actions/courseActions";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { notify } from "../../utils/HelperFunctions";
 import { createAssignmentAction, getSingleAssignmentAction, updateAssignmentAction } from "../../redux/actions/assignmentActions";
 import dayjs from "dayjs";
@@ -31,12 +31,11 @@ export default function AddAssignmentPage() {
     const [courseList, setCourseList] = useState([]);
     const dispatch = useDispatch()
     const [params] = useSearchParams()
+    const navigate = useNavigate();
 
     useEffect(() => {
-
         if (params.get("type") !== 'edit') {
-
-            dispatch(getUserCoursesAction({ courseType: 'mycourses' })).then((data) => setCourseList(data)).catch((err) => console.log(err))
+            dispatch(getUserCoursesAction({ courseType: 'mycourses' })).then((data) => setCourseList(data)).catch((msg) => notify("error",msg))
         }
     }, [])
     useEffect(() => {
@@ -48,6 +47,7 @@ export default function AddAssignmentPage() {
                     task: data.description,
                     dueDate: data.dueDate,
                     course: data.courseId.title
+
                 }
                 setDueDate(data.dueDate ? dayjs(data.dueDate) : null);
                 setCoverPreviews(
@@ -56,13 +56,17 @@ export default function AddAssignmentPage() {
                         isOld: true
                     }))
                 );
-            }).catch((err) => console.log(err))
+
+            }).catch((msg) => notify("error",msg))
         }
     }, [])
 
 
     const handleCreateAssigment = async () => {
 
+        if(coverFiles.length > 5) {
+            return notify("error", "files maximum length is 5");
+        }
         if ((!form.current.title || !form.current.task || !form.current.dueDate || !form.current.course) || (!form.current.title.trim() || !form.current.task.trim())) {
 
 
@@ -75,7 +79,6 @@ export default function AddAssignmentPage() {
         formData.append("description", form.current.task);
         formData.append("dueDate", form.current.dueDate);
         formData.append("status", "Pending");
-
         coverFiles.forEach((file, index) => {
             formData.append("attachments", file);
         });
@@ -83,9 +86,17 @@ export default function AddAssignmentPage() {
 
         if (params.get('type') === 'edit' && params.get('id')) {
 
-            dispatch(updateAssignmentAction(params.get('id'), formData)).then((msg) => notify("success", msg)).catch((msg) => notify("error", msg))
+            dispatch(updateAssignmentAction(params.get('id'), formData)).then((msg) => {
+                
+                notify("success", msg)
+                navigate("/assignment")
+            }).catch((msg) => notify("error", msg))
         } else {
-            dispatch(createAssignmentAction(form.current.course, formData)).then((msg) => notify("success", msg)).catch((msg) => notify("error", msg))
+            dispatch(createAssignmentAction(form.current.course, formData)).then((msg) => {
+                
+                notify("success", msg)
+                navigate("/assignment")
+            }).catch((msg) => notify("error", msg))
 
         }
 
@@ -157,6 +168,7 @@ export default function AddAssignmentPage() {
                         onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }}
                         placeholder="Enter title"
                         style={{
+                            color:"var(--text-color)",
                             outline: "none",
                             background: "var(--input-bg-color)",
                             border: "1px solid #cfd3d8",
@@ -206,12 +218,14 @@ export default function AddAssignmentPage() {
                         Task
                     </Typography>
                     <textarea
+                    
                         defaultValue={form.current.task}
                         name="task"
                         onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }}
                         rows={6}
                         placeholder="Write assignment task..."
                         style={{
+                            color:"var(--text-color)",
                             outline: "none",
                             background: "var(--input-bg-color)",
                             border: "1px solid #cfd3d8",

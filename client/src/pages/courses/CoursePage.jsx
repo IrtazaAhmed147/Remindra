@@ -1,14 +1,12 @@
-import { Box, Button, CircularProgress, MenuItem, Select, Typography } from '@mui/material'
+import { Box, CircularProgress, MenuItem, Select, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import CourseCard from '../../components/cards/CourseCard'
 import FolderCopyOutlinedIcon from "@mui/icons-material/FolderCopyOutlined";
 import SearchIcon from '@mui/icons-material/Search';
-import AddIcon from '@mui/icons-material/Add';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteCourseAction, disableCourseAction, getUserCoursesAction } from '../../redux/actions/courseActions';
+import { disableCourseAction, getUserCoursesAction } from '../../redux/actions/courseActions';
 import { notify } from '../../utils/HelperFunctions';
-import SuccessModal from '../../components/modal/SuccessModal';
 import RemoveModal from '../../components/modal/RemoveModal';
 import ShareCourseModal from '../../components/modal/ShareCourseModal';
 import { getAllUsersAction, suspendUserAction } from '../../redux/actions/userActions';
@@ -39,7 +37,7 @@ function CoursePage() {
         setSearchName(name);
         setCourseType(type);
 
-        dispatch(getUserCoursesAction({ courseName: name, courseType: type }));
+        dispatch(getUserCoursesAction({ courseName: name, courseType: type })).catch((msg) => notify("error", msg))
 
     }, []);
 
@@ -51,7 +49,7 @@ function CoursePage() {
                 dispatch(getUserCoursesAction({
                     courseName: searchName,
                     courseType: courseType
-                }));
+                })).catch((msg) => notify("error", msg))
             })
             .catch((err) => {
 
@@ -60,7 +58,7 @@ function CoursePage() {
                 dispatch(getUserCoursesAction({
                     courseName: searchName,
                     courseType: courseType
-                }));
+                })).catch((msg) => notify("error", msg))
             });
 
 
@@ -77,10 +75,10 @@ function CoursePage() {
         setSearchParams(params);
 
         // API call
-        dispatch(getUserCoursesAction(params));
+        dispatch(getUserCoursesAction(params)).catch((msg) => notify("error", msg))
     };
     const handleShare = (userIds) => {
-        dispatch(sendInviteAction(userIds[0], selectedCourseId)).then((msg) => notify('success', msg))
+        dispatch(sendInviteAction(userIds[0], selectedCourseId)).then((msg) => notify('success', msg)).catch((msg) => notify("error", msg))
     };
 
     return (
@@ -147,12 +145,12 @@ function CoursePage() {
 
                                 <CourseCard key={course._id} {...course} setShareModalOpen={
                                     (id, members) => {
-                                    // dispatch(getAllUsersAction({ isSuspend: true, isDeactivate: true, members: JSON.stringify(course?.members), limit: 5 })).then(() => {
-                                        
+                                        // dispatch(getAllUsersAction({ isSuspend: true, isDeactivate: true, members: JSON.stringify(course?.members), limit: 5 })).then(() => {
+
                                         // })
                                         setCourseMembers(course?.members)
                                         setSelectedCourseId(id)
-                                    setShareModalOpen(true)
+                                        setShareModalOpen(true)
                                     }
                                 }
                                     askDelete={(id) => {
@@ -180,7 +178,7 @@ function CoursePage() {
                             dispatch(getAllUsersAction({ username: username, isSuspend: true, isDeactivate: true, members: JSON.stringify(members), limit: 8 })).then(() => {
                                 setCourseMembers(members)
 
-                            })
+                            }).catch((msg) => notify("error",msg))
 
                         }}
                         loading={userIsLoading}

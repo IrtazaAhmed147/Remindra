@@ -19,8 +19,8 @@ export const dashboardStats = async (req, res) => {
             completedQuizzes,
             notifications
         ] = await Promise.all([
-            courseModel.countDocuments({ owner: req?.user?.id }),
-            courseModel.countDocuments({ members: req?.user?.id }),
+            courseModel.countDocuments({ owner: req?.user?.id ,disable:false}),
+            courseModel.countDocuments({ members: req?.user?.id ,disable:false}),
             assignmentsModel.countDocuments({ createdBy: req?.user?.id }),
             assignmentsModel.countDocuments({ createdBy: req?.user?.id, status: "Pending" }),
             assignmentsModel.countDocuments({ createdBy: req?.user?.id, status: "Completed" }),
@@ -34,6 +34,6 @@ export const dashboardStats = async (req, res) => {
         successHandler(res, 200, "Dashboard stats fetched", { totalCourses, sharedCourses, totalAssignments, totalQuizzes, pendingAssignments, completedAssignments, pendingQuizzes, completedQuizzes ,notifications});
 
     } catch (error) {
-        errorHandler(res, 400, err.message);
+        errorHandler(res, 400, error.message);
     }
 }
