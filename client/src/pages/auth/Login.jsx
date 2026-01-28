@@ -1,6 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom'
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import './login.css'

@@ -22,7 +22,7 @@ import TermsConditionPage from './pages/policy and conditions/TermsConditionPage
 import Login from './pages/auth/Login.jsx';
 import Signup from './pages/auth/Signup.jsx';
 import Otp from './pages/auth/Otp.jsx';
-import ForgotPass from './pages/auth/forgotPass.jsx';
+import ForgotPass from './pages/auth/ForgotPass.jsx';
 import ResetPass from './pages/auth/ResetPass.jsx';
 import AddResource from './pages/resource/AddResource.jsx';
 import ProtectedRoute from './components/protectedRoute/protectedRoute.jsx';

@@ -7,7 +7,7 @@ import CourseCard from "../../components/cards/CourseCard";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getStats } from "../../redux/actions/dashboardActions";
-import DashStatCard from "../../components/cards/dashStatCard";
+import DashStatCard from "../../components/cards/DashStatCard";
 import GradientBtn from "../../components/common/GradientBtn";
 import { getUserCoursesAction } from "../../redux/actions/courseActions";
 

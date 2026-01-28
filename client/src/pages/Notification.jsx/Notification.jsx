@@ -1,6 +1,5 @@
 import { Box, CircularProgress, Typography } from '@mui/material'
-import React from 'react'
-import NotificationCard from '../../components/cards/notificationCard'
+import NotificationCard from '../../components/cards/NotificationCard'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserInvitesAction, updateInviteAction } from '../../redux/actions/inviteActions'

@@ -2,13 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import {
     Box,
     Typography,
-    MenuItem,
     Button,
-    Paper,
-    Select,
     CircularProgress
 } from "@mui/material";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { createCourseAction, getSingleCourseAction, updateCourseAction } from "../../redux/actions/courseActions";
 import { useDispatch, useSelector } from "react-redux";
 import { notify } from "../../utils/HelperFunctions";
