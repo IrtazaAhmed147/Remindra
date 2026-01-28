@@ -1,9 +1,7 @@
 import { Box, CircularProgress, List, ListItem, Typography } from '@mui/material'
-import React, { useEffect } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { getSingleUserAction } from '../../redux/actions/userActions';
-import { useNavigate, useParams } from "react-router-dom";
+import {  useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 function ProfilePage() {
 
   const navigate= useNavigate()

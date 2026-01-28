@@ -5,7 +5,7 @@ import { subscribe } from "../../redux/actions/settingActions";
 import { useDispatch, useSelector } from "react-redux";
 import { notify } from "../../utils/HelperFunctions";
 import SettingCard from "../../components/cards/SettingCard";
-import ThemeBtn from "../../components/common/themeBtn";
+import ThemeBtn from "../../components/common/ThemeBtn";
 import NotificationSwitch from "../../components/common/NotificationSwitch";
 
 function Setting() {

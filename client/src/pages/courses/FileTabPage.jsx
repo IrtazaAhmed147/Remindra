@@ -1,9 +1,7 @@
-import { Box, Button, CircularProgress, Typography } from '@mui/material'
+import { Box,  CircularProgress, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import GradientBtn from '../../components/common/GradientBtn';
 import FileCard from '../../components/cards/FileCard';

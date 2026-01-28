@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import UpdateProfileForm from '../../components/forms/UpdateProfileForm'
 import { Box, CircularProgress, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
 import { getSingleUserAction, updateUserAction } from '../../redux/actions/userActions'
 import { notify } from '../../utils/HelperFunctions'
 
