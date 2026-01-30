@@ -44,7 +44,7 @@ notificationRouter.post("/notify/:userId", async (req, res) => {
 });
 
 
-notificationRouter.post("/notifyassignments", async (req, res) => {
+notificationRouter.get("/notifyassignments", async (req, res) => {
     try {
 
         const now = new Date();
@@ -145,7 +145,7 @@ notificationRouter.post("/notifyassignments", async (req, res) => {
           errorHandler(res, 500, error.message);
     }
 });
-notificationRouter.post("/notifyquiz", async (req, res) => {
+notificationRouter.get("/notifyquiz", async (req, res) => {
     try {
         const now = new Date();
 
