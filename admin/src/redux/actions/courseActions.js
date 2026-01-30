@@ -1,0 +1,204 @@
+import api from "../../utils/common.js";
+import { handleApiError } from "../../utils/HelperFunctions.js";
+import {
+    fetchCoursesStart,
+    fetchCoursesSuccess,
+    fetchCoursesFailure,
+    fetchSingleCourseStart,
+    fetchSingleCourseSuccess,
+    fetchSingleCourseFailure,
+    createCourseStart,
+    createCourseSuccess,
+    createCourseFailure,
+} from "../slices/courseSlice";
+
+
+
+export const createCourseAction = (courseData) => async (dispatch) => {
+    try {
+        dispatch(createCourseStart());
+
+        const token = localStorage.getItem("token");
+
+        const res = await api.post("/course/create", courseData, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+        });
+
+        dispatch(createCourseSuccess(res.data.data));
+        return res.data.message;
+
+    } catch (error) {
+        handleApiError(error, dispatch, createCourseFailure);
+
+    }
+};
+
+
+
+export const getUserCoursesAction = (query = '') => async (dispatch) => {
+
+    try {
+        dispatch(fetchCoursesStart());
+
+        const token = localStorage.getItem("token");
+
+        const res = await api.get(`/course`, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+            params: query
+        });
+
+
+        dispatch(fetchCoursesSuccess(res.data.data));
+
+        return res.data.data;
+
+    } catch (error) {
+        handleApiError(error, dispatch, fetchCoursesFailure);
+    }
+};
+
+
+
+
+// export const getAllCoursesAction = () => async (dispatch) => {
+//     try {
+//         dispatch(fetchCoursesStart());
+
+//         const token = localStorage.getItem("token");
+
+//         const res = await api.get("/course/all", {
+//             headers: { Authorization: `Bearer ${token}` },
+//             withCredentials: true,
+//         });
+
+//         dispatch(fetchCoursesSuccess(res.data.data));
+//         return res.data.data;
+
+//     } catch (error) {
+//         dispatch(fetchCoursesFailure(error.response.data.message));
+//         throw error.response.data.message;
+//     }
+// };
+
+
+
+
+export const getSingleCourseAction = (id) => async (dispatch) => {
+    try {
+        dispatch(fetchSingleCourseStart());
+
+        const token = localStorage.getItem("token");
+
+        const res = await api.get(`/course/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+        });
+
+        dispatch(fetchSingleCourseSuccess(res.data.data));
+        return res.data.data;
+
+    } catch (error) {
+        handleApiError(error, dispatch, fetchSingleCourseFailure);
+
+    }
+};
+
+
+
+
+export const updateCourseAction = (id, body) => async (dispatch) => {
+    try {
+        dispatch(createCourseStart()); // reusing same loading style
+
+        const token = localStorage.getItem("token");
+
+        const res = await api.put(`/course/${id}`, body, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+        });
+
+        dispatch(createCourseSuccess(res.data.data)); // updated data
+        return res.data.message;
+
+    } catch (error) {
+        handleApiError(error, dispatch, createCourseFailure);
+
+    }
+};
+
+
+
+export const disableCourseAction = (id) => async (dispatch) => {
+    try {
+        dispatch(fetchCoursesStart());
+
+        const token = localStorage.getItem("token");
+
+        const res = await api.put(`/course/disable/${id}`, {}, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+        });
+
+        dispatch(fetchCoursesSuccess()); // you may remove from list in UI manually
+        return res.data.message;
+
+    } catch (error) {
+        handleApiError(error, dispatch, fetchCoursesFailure);
+
+    }
+};
+
+export const deleteCourseAction = (id) => async (dispatch) => {
+    try {
+        dispatch(fetchCoursesStart());
+
+        const token = localStorage.getItem("token");
+
+        const res = await api.delete(`/course/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+        });
+
+        dispatch(fetchCoursesSuccess()); // you may remove from list in UI manually
+        return res.data.message;
+
+    } catch (error) {
+        handleApiError(error, dispatch, fetchCoursesFailure);
+    }
+};
+
+export const handleDownloadAll = async (title, id, selectedids) => {
+    const token = localStorage.getItem("token");
+    try {
+
+
+        const res = await api.post(
+            `course/resources/download/${id}`, {
+            ids: selectedids,
+            title
+        },
+            {
+                responseType: "blob",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "course-images.zip";
+        document.body.appendChild(a);
+        a.click();
+
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+
+    }
+};

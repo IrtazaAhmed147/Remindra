@@ -4,8 +4,6 @@ import { handleApiError } from "../../utils/HelperFunctions.js";
 
 
 export const subscribe = (userId,data) => async (dispatch) => {
-    console.log(data);
-    
     try {
         dispatch(fetchPermissionStart());
 
