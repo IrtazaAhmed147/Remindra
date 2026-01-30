@@ -14,19 +14,19 @@
   ],
   "crons": [
     {
-      "path": "/api/notifycheck",
+      "path": "/api/notification/notifyquiz",
       "schedule": "0 3 * * *"
     },
     {
-      "path": "/api/notifycheck",
+      "path": "/api/notification/notifyquiz",
       "schedule": "0 15 * * *"
     },
     {
-      "path": "/api/notifyassignments",
+      "path": "/api/notification/notifyassignments",
       "schedule": "0 3 * * *"
     },
     {
-      "path": "/api/notifyassignments",
+      "path": "/api/notification/notifyassignments",
       "schedule": "0 15 * * *"
     }
   ]

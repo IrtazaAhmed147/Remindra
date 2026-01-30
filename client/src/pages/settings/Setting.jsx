@@ -7,32 +7,31 @@ import { notify } from "../../utils/HelperFunctions";
 import SettingCard from "../../components/cards/SettingCard";
 import ThemeBtn from "../../components/common/ThemeBtn";
 import NotificationSwitch from "../../components/common/NotificationSwitch";
+import usePushNotifications from "../../hooks/usePushNotifications.jsx";
 
 function Setting() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [darkTheme, setDarkTheme] = useState(false)
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  // const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const { user } = useSelector((state) => state.auth);
+  const { notificationsEnabled, toggleNotifications } =
+    usePushNotifications(user);
 
-  // Load initial permission status
+
+  
+
+
   useEffect(() => {
-
-    if (!user || !("Notification" in window)) return;
-
-    const permission = Notification.permission;
-
-    if (permission === "granted") {
-      dispatch(subscribe(user._id, true)).then(() => {
-
-        setNotificationsEnabled(true)
-      }).catch((msg) => notify("error",msg))
-    } else {
-
-      dispatch(subscribe(user._id, false)).then(() => setNotificationsEnabled(false)).catch((msg) => notify("error",msg))
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then(reg => console.log("SW registered:", reg.scope))
+        .catch(err => console.error("SW error:", err));
     }
+  }, []);
 
-  }, [user]);
 
 
   useEffect(() => {
@@ -64,54 +63,6 @@ function Setting() {
 
 
 
-  const handleNotification = async () => {
-    if (!user) return;
-    if (!("Notification" in window)) {
-      notify("error", "Browser does not support notifications");
-      return;
-    }
-
-    // TURN OFF
-    if (notificationsEnabled) {
-      dispatch(subscribe(user._id, false)).catch((msg) => console.log(msg));
-      setNotificationsEnabled(false);
-      notify("success", "Notifications turned off");
-      return;
-    }
-
-    // TURN ON
-    if (Notification.permission === "granted") {
-      await dispatch(subscribe(user._id, true));
-      setNotificationsEnabled(true);
-      notify("success", "Notifications enabled");
-      return;
-    }
-
-    if (Notification.permission === "denied") {
-      await dispatch(subscribe(user._id, false));
-      setNotificationsEnabled(false);
-      notify(
-        "error",
-        "Notifications are blocked. Enable them from browser settings."
-      );
-      return;
-    }
-
-    // DEFAULT → ASK PERMISSION
-    const permission = await Notification.requestPermission();
-
-    if (permission === "granted") {
-       dispatch(subscribe(user._id, true));
-      setNotificationsEnabled(true);
-      notify("success", "Notifications enabled");
-    } else {
-       dispatch(subscribe(user._id, false));
-      setNotificationsEnabled(false);
-      notify("error", "Notification permission denied");
-    }
-  };
-
-
   return (
     <Box
       sx={{
@@ -134,12 +85,17 @@ function Setting() {
         title="Notifications"
         desc="Get alerts for deadlines, quizzes, and announcements"
         action={
+          // <NotificationSwitch
+          //   checked={notificationsEnabled}
+          //   onChange={handleNotification}
+          //   // disabled={Notification.permission === "denied"}
+          // />
           <NotificationSwitch
             checked={notificationsEnabled}
-            onChange={handleNotification}
+            onChange={toggleNotifications}
             disabled={Notification.permission === "denied"}
-            color="primary"
           />
+
 
         }
       />
@@ -161,8 +117,8 @@ function Setting() {
       <Box
         onClick={() => navigate("/update/profile")}
         sx={{
-          p: {xs:1.5,sm:2,md:3},
-          mb: {xs:1.5,sm:2,md:3},
+          p: { xs: 1.5, sm: 2, md: 3 },
+          mb: { xs: 1.5, sm: 2, md: 3 },
           borderRadius: 3,
           bgcolor: "var(--card-bg-color)",
           boxShadow: `
@@ -183,7 +139,7 @@ function Setting() {
       {/* ---------------- DELETE ACCOUNT ---------------- */}
       <Box
         sx={{
-          p: {xs:1.5,sm:2,md:3},
+          p: { xs: 1.5, sm: 2, md: 3 },
           mt: 4,
           borderRadius: 3,
           bgcolor: "rgba(239,68,68,0.08)",

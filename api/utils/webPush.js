@@ -10,6 +10,8 @@ webpush.setVapidDetails(
 );
 
 export const sendPushNotification = async (subscription, payload) => {
+    console.log(subscription);
+    
     try {
         await webpush.sendNotification(subscription, JSON.stringify(payload));
         console.log("Push notification sent!");

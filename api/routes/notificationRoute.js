@@ -1,12 +1,9 @@
 import express from "express";
 import { sendPushNotification } from "../utils/webPush.js";
-// import SubscriptionModel from "../models/SubscriptionModel.js";
 import quizModel from "../models/quizModel.js";
 import assignmentsModel from "../models/assignmentsModel.js";
 import { errorHandler, successHandler } from "../utils/responseHandler.js";
 import SubscriptionModel from "../models/SubscriptionModel.js";
-// import SubscriptionModel from "../models/SubscriptionModel.js";
-// import SubscriptionModel from "../models/SubscriptionModel.js"; // store subscriptions in DB
 
 const notificationRouter = express.Router();
 
@@ -14,9 +11,8 @@ const notificationRouter = express.Router();
 notificationRouter.post("/subscribe", async (req, res) => {
     try {
         const { subscription, userId } = req.body;
-        console.log(req.body);
-        
-       const data = await SubscriptionModel.findOneAndUpdate(
+
+        const data = await SubscriptionModel.findOneAndUpdate(
             { userId: userId },
             { subscription },
             { upsert: true }
@@ -26,7 +22,7 @@ notificationRouter.post("/subscribe", async (req, res) => {
 
     } catch (err) {
         console.log(err);
-        
+
         return errorHandler(res, 500, "Something went wrong", err);
     }
 });
@@ -48,8 +44,9 @@ notificationRouter.post("/notify/:userId", async (req, res) => {
 });
 
 
-notificationRouter.get("/notifyassignments", async (req, res) => {
+notificationRouter.post("/notifyassignments", async (req, res) => {
     try {
+
         const now = new Date();
 
         const todayStart = new Date(now);
@@ -77,9 +74,7 @@ notificationRouter.get("/notifyassignments", async (req, res) => {
             dueDate: { $gte: twoDaysAfterStart, $lte: twoDaysAfterEnd }
         });
 
-        // ---------------------------------
-        // 2) Assignments due tomorrow (Night Reminder)
-        // ---------------------------------
+
         let assignmentsNight = [];
         if (now.getHours() >= 20) {
             assignmentsNight = await assignmentsModel.find({
@@ -95,23 +90,26 @@ notificationRouter.get("/notifyassignments", async (req, res) => {
             assignmentsTodayMorning = await assignmentsModel.find({
                 dueDate: { $gte: todayStart, $lte: todayEnd }
             });
+
         }
 
         // Send function
         const sendReminder = async (assignment, message) => {
-            for (let userId of assignment.assignedUsers) {
-                const subscription = await SubscriptionModel.findOne({ userId });
-                if (!subscription) continue;
+            const userId = assignment.createdBy;
 
-                await sendPushNotification(subscription.subscription, {
-                    title: "Assignment Reminder",
-                    message
-                });
-            }
-        };
+            const subscription = await SubscriptionModel.findOne({ userId });
+            
+            if (!subscription) return;
+
+            await sendPushNotification(subscription.subscription, {
+                title: "Assignment Reminder",
+                message
+            });
+                  };
 
         // 2 Days before
         for (let assignment of assignmentsTwoDays) {
+
             await sendReminder(
                 assignment,
                 `${assignment.title} is due in 2 days! Complete it early.`
@@ -120,6 +118,7 @@ notificationRouter.get("/notifyassignments", async (req, res) => {
 
         // Tomorrow night
         for (let assignment of assignmentsNight) {
+
             await sendReminder(
                 assignment,
                 `${assignment.title} is due tomorrow! Don't forget to finish it.`
@@ -128,6 +127,7 @@ notificationRouter.get("/notifyassignments", async (req, res) => {
 
         // Today morning
         for (let assignment of assignmentsTodayMorning) {
+
             await sendReminder(
                 assignment,
                 `${assignment.title} is due today! Submit before the deadline.`
@@ -139,15 +139,13 @@ notificationRouter.get("/notifyassignments", async (req, res) => {
             message: "Assignment reminders processed successfully"
         });
 
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({
-            success: false,
-            error: err.message
-        });
+    } catch (error) {
+        console.log(error);
+       
+          errorHandler(res, 500, error.message);
     }
 });
-notificationRouter.get("/notifycheck", async (req, res) => {
+notificationRouter.post("/notifyquiz", async (req, res) => {
     try {
         const now = new Date();
 
@@ -202,19 +200,22 @@ notificationRouter.get("/notifycheck", async (req, res) => {
         // SEND NOTIFICATIONS
         // ------------------------------
         const sendReminder = async (quiz, message) => {
-            for (let userId of quiz.assignedUsers) {
-                const subscription = await SubscriptionModel.findOne({ userId });
-                if (!subscription) continue;
+            
+            const userId = quiz.createdBy;
 
-                await sendPushNotification(subscription.subscription, {
-                    title: "Quiz Reminder",
-                    message
-                });
-            }
+            const subscription = await SubscriptionModel.findOne({ userId });
+            
+            if (!subscription) return;
+
+            await sendPushNotification(subscription.subscription, {
+                title: "Quiz Reminder",
+                message
+            });
         };
 
         // 2 Days Before
         for (let quiz of quizzesTwoDays) {
+            
             await sendReminder(quiz, `${quiz.title} is due in 2 days!`);
         }
 
@@ -233,13 +234,28 @@ notificationRouter.get("/notifycheck", async (req, res) => {
             message: "All reminders processed successfully"
         });
 
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({
-            success: false,
-            error: err.message
-        });
+    } catch (error) {
+        console.log(error);
+          errorHandler(res, 500, error.message);
     }
+});
+
+
+notificationRouter.post("/send-test", async (req, res) => {
+  try {
+    const subscriptions = await SubscriptionModel.find();
+
+    for (let sub of subscriptions) {
+      await sendPushNotification(sub.subscription, {
+        title: "Reminder",
+        message: "Assignment deadline aa rahi hai!",
+      });
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 
