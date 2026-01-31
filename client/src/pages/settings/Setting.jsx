@@ -7,7 +7,7 @@ import { notify } from "../../utils/HelperFunctions";
 import SettingCard from "../../components/cards/SettingCard";
 import ThemeBtn from "../../components/common/ThemeBtn";
 import NotificationSwitch from "../../components/common/NotificationSwitch";
-import usePushNotifications from "../../hooks/usePushNotifications.jsx";
+// import usePushNotifications from "../../hooks/usePushNotifications.jsx";
 
 function Setting() {
   const navigate = useNavigate();
@@ -16,21 +16,21 @@ function Setting() {
   const [darkTheme, setDarkTheme] = useState(false)
   // const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  const { notificationsEnabled, toggleNotifications } =
-    usePushNotifications(user);
+  // const { notificationsEnabled, toggleNotifications } =
+  //   usePushNotifications(user);
 
 
   
 
 
-  useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("/sw.js")
-        .then(reg => console.log("SW registered:", reg.scope))
-        .catch(err => console.error("SW error:", err));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if ("serviceWorker" in navigator) {
+  //     navigator.serviceWorker
+  //       .register("/sw.js")
+  //       .then(reg => console.log("SW registered:", reg.scope))
+  //       .catch(err => console.error("SW error:", err));
+  //   }
+  // }, []);
 
 
 
@@ -85,16 +85,17 @@ function Setting() {
         title="Notifications"
         desc="Get alerts for deadlines, quizzes, and announcements"
         action={
+          <></>
           // <NotificationSwitch
           //   checked={notificationsEnabled}
           //   onChange={handleNotification}
           //   // disabled={Notification.permission === "denied"}
           // />
-          <NotificationSwitch
-            checked={notificationsEnabled}
-            onChange={toggleNotifications}
-            disabled={Notification.permission === "denied"}
-          />
+          // <NotificationSwitch
+          //   checked={notificationsEnabled}
+          //   onChange={toggleNotifications}
+          //   disabled={Notification.permission === "denied"}
+          // />
 
 
         }
