@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { fetchLoggedInUser } from './redux/actions/authActions.js';
 import { logout } from './redux/slices/authSlice.js';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Layout from './layout/Layout';
@@ -35,11 +35,13 @@ import OverviewTabPage from './pages/courses/OverviewTabPage.jsx';
 import FileTabPage from './pages/courses/FileTabPage.jsx';
 import { notify } from './utils/HelperFunctions.js';
 import OneSignal from 'react-onesignal';
+import { subscribe } from './redux/actions/settingActions.js';
 // import QuizzesTabPage from './pages/courses/QuizzesTabPage.jsx';
 
 function App() {
 
   const dispatch = useDispatch()
+  const {user} = useSelector((state)=> state.auth)
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -55,19 +57,52 @@ function App() {
 
   }, []);
 
-  useEffect(() => {
-    // Ensure this code runs only on the client side
-    if (typeof window !== 'undefined') {
-      console.log("window");
-       OneSignal.init({
-        appId: "00a88109-ebb1-4624-889f-0799c9897862",
-        safari_web_id: "web.onesignal.auto.220e9b0b-02d4-465b-a5d3-49d3d287ceee",
-        notifyButton: { enable: true },
-      });
-    }
-    console.log("chala");
+  // useEffect(() => {
+  //   // Ensure this code runs only on the client side
+  //   if (typeof window !== 'undefined') {
+  //     console.log("window");
+  //      OneSignal.init({
+  //       appId: "00a88109-ebb1-4624-889f-0799c9897862",
+  //       safari_web_id: "web.onesignal.auto.220e9b0b-02d4-465b-a5d3-49d3d287ceee",
+  //       notifyButton: { enable: true },
+  //     });
+  //   }
+  //   console.log("chala");
 
-  }, []);
+  // }, []);
+
+  useEffect(() => {
+  const initOneSignal = async () => {
+    await OneSignal.init({
+      appId: "00a88109-ebb1-4624-889f-0799c9897862",
+      safari_web_id: "web.onesignal.auto.220e9b0b-02d4-465b-a5d3-49d3d287ceee",
+      notifyButton: { enable: true },
+      allowLocalhostAsSecureOrigin: true,
+    });
+
+    OneSignal.showSlidedownPrompt();
+    console.log(user);
+    
+    // 🔥 THIS IS THE IMPORTANT PART
+    OneSignal.User.PushSubscription.addEventListener("change", async () => {
+      const subscriptionId = OneSignal.User.PushSubscription.id;
+
+      if (subscriptionId && user?._id) {
+        console.log("Subscription Ready:", subscriptionId);
+
+        dispatch(subscribe(user._id, subscriptionId));
+      }
+    });
+
+    // Agar pehle se subscribed hai to yeh turant run ho
+    const existingId = OneSignal.User.PushSubscription.id;
+    if (existingId && user?._id) {
+      dispatch(subscribe(user._id, existingId));
+    }
+  };
+
+  initOneSignal();
+}, [user]);
 
   return (
     <>
