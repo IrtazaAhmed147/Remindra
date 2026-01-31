@@ -77,32 +77,36 @@ function App() {
       appId: "00a88109-ebb1-4624-889f-0799c9897862",
       safari_web_id: "web.onesignal.auto.220e9b0b-02d4-465b-a5d3-49d3d287ceee",
       notifyButton: { enable: true },
-      allowLocalhostAsSecureOrigin: true,
+      // allowLocalhostAsSecureOrigin: true,
     });
 
-    OneSignal.showSlidedownPrompt();
+    // OneSignal.showSlidedownPrompt();
     console.log(user);
+    console.log(OneSignal.User);
     
     // 🔥 THIS IS THE IMPORTANT PART
     OneSignal.User.PushSubscription.addEventListener("change", async () => {
       const subscriptionId = OneSignal.User.PushSubscription.id;
-
-      if (subscriptionId && user?._id) {
+      console.log(subscriptionId);
+      
+      if (subscriptionId ) {
         console.log("Subscription Ready:", subscriptionId);
 
-        dispatch(subscribe(user._id, subscriptionId));
+        dispatch(subscribe(user?._id, subscriptionId));
       }
     });
 
     // Agar pehle se subscribed hai to yeh turant run ho
     const existingId = OneSignal.User.PushSubscription.id;
-    if (existingId && user?._id) {
-      dispatch(subscribe(user._id, existingId));
+    console.log(existingId);
+    
+    if (existingId ) {
+      dispatch(subscribe(user?._id, existingId));
     }
   };
 
   initOneSignal();
-}, [user]);
+}, []);
 
   return (
     <>
