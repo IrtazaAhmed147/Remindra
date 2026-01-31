@@ -34,6 +34,7 @@ import ImagesTabPage from './pages/courses/ImagesTabPage.jsx';
 import OverviewTabPage from './pages/courses/OverviewTabPage.jsx';
 import FileTabPage from './pages/courses/FileTabPage.jsx';
 import { notify } from './utils/HelperFunctions.js';
+import OneSignal from 'react-onesignal';
 // import QuizzesTabPage from './pages/courses/QuizzesTabPage.jsx';
 
 function App() {
@@ -52,6 +53,22 @@ function App() {
       dispatch(logout());
     }
 
+  }, []);
+
+   useEffect(() => {
+    // Ensure this code runs only on the client side
+    if (typeof window !== 'undefined') {
+      console.log("window");
+      OneSignal.init({
+        appId: '00a88109-ebb1-4624-889f-0799c9897862',
+        // You can add other initialization options here
+        notifyButton: {
+          enable: true,
+        }
+      });
+    }
+    console.log("chala");
+    
   }, []);
 
   return (
