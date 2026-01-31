@@ -55,21 +55,21 @@ function App() {
 
   }, []);
 
-   useEffect(() => {
-    // Ensure this code runs only on the client side
-    if (typeof window !== 'undefined') {
-      console.log("window");
-      OneSignal.init({
-        appId: '00a88109-ebb1-4624-889f-0799c9897862',
-        // You can add other initialization options here
-        notifyButton: {
-          enable: true,
-        }
-      });
-    }
-    console.log("chala");
+  //  useEffect(() => {
+  //   // Ensure this code runs only on the client side
+  //   if (typeof window !== 'undefined') {
+  //     console.log("window");
+  //     OneSignal.init({
+  //       appId: '00a88109-ebb1-4624-889f-0799c9897862',
+  //       // You can add other initialization options here
+  //       notifyButton: {
+  //         enable: true,
+  //       }
+  //     });
+  //   }
+  //   console.log("chala");
     
-  }, []);
+  // }, []);
 
   return (
     <>
