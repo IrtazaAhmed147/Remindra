@@ -38,9 +38,12 @@ const AdminDashboard = () => {
     // return;
     try {
               const token = localStorage.getItem("token");
+              // const subscriptionId = OneSignal.User.PushSubscription.id;
+
       
               const res = await axios.post(
-                  `http://localhost:3200/api/notification/notifyquiz`,
+                  `http://localhost:3200/api/notification/send-test`,
+                  {message: "Hey! Check your tasks."},
                   {
                       headers: { Authorization: `Bearer ${token}` },
                       withCredentials: true,

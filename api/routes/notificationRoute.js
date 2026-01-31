@@ -11,7 +11,8 @@ const notificationRouter = express.Router();
 notificationRouter.post("/subscribe", async (req, res) => {
     try {
         const { subscription, userId } = req.body;
-
+        console.log(subscription);
+        
         const data = await SubscriptionModel.findOneAndUpdate(
             { userId: userId },
             { subscription },
@@ -242,21 +243,54 @@ notificationRouter.get("/notifyquiz", async (req, res) => {
 
 
 notificationRouter.post("/send-test", async (req, res) => {
+  const {  message } = req.body;
+    // console.log(subscriptionId);
+    
   try {
-    const subscriptions = await SubscriptionModel.find();
+    
+            const subscription = await SubscriptionModel.findOne({ userId });
+            console.log(subscription);
+            
+            if(!subscription) return;
 
-    for (let sub of subscriptions) {
-      await sendPushNotification(sub.subscription, {
-        title: "Reminder",
-        message: "Assignment deadline aa rahi hai!",
-      });
-    }
+    const response = await fetch("https://api.onesignal.com/notifications?c=push", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Key ${process.env.ONESIGNAL_API_KEY}`,
+      },
+      body: JSON.stringify({
+        app_id: process.env.ONESIGNAL_APP_ID,
+        headings: { en: "Reminder" },
+        contents: { en: message },
+        include_subscription_ids: [subscription.subscription], // 🔥 main cheez
+        target_channel: "push",
+      }),
+    });
 
-    res.json({ success: true });
+    const data = await response.json();
+    res.status(200).json(data);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error(err);
+    res.status(500).json({ success: false, error: "Failed to send notification" });
   }
-});
+
+    // const subscriptions = await SubscriptionModel.find();
+
+    // for (let sub of subscriptions) {
+    //   await sendPushNotification(sub.subscription, {
+    //     title: "Reminder",
+    //     message: "Assignment deadline aa rahi hai!",
+    //   }); 
+    // }
+
+    // res.json({ success: true });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+}
+
+);
 
 
 export default notificationRouter;
