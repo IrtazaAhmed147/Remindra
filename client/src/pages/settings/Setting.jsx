@@ -7,7 +7,8 @@ import { notify } from "../../utils/HelperFunctions";
 import SettingCard from "../../components/cards/SettingCard";
 import ThemeBtn from "../../components/common/ThemeBtn";
 import NotificationSwitch from "../../components/common/NotificationSwitch";
-// import usePushNotifications from "../../hooks/usePushNotifications.jsx";
+import OneSignal from 'react-onesignal';
+import usePushNotifications from "../../hooks/usePushNotifications.jsx";
 
 function Setting() {
   const navigate = useNavigate();
@@ -16,11 +17,12 @@ function Setting() {
   const [darkTheme, setDarkTheme] = useState(false)
   // const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  // const { notificationsEnabled, toggleNotifications } =
-  //   usePushNotifications(user);
+  const { notificationsEnabled, toggleNotifications } =
+    usePushNotifications(user);
 
 
-  
+
+
 
 
   // useEffect(() => {
@@ -32,6 +34,46 @@ function Setting() {
   //   }
   // }, []);
 
+
+  // useEffect(() => {
+  //   const initOneSignal = async () => {
+  //     await OneSignal.init({
+  //       appId: "00a88109-ebb1-4624-889f-0799c9897862",
+  //       safari_web_id: "web.onesignal.auto.220e9b0b-02d4-465b-a5d3-49d3d287ceee",
+  //       // notifyButton: { enable: true },
+  //       // allowLocalhostAsSecureOrigin: true,
+  //     });
+
+  //     // OneSignal.showSlidedownPrompt();
+  //     console.log(user);
+  //     console.log(OneSignal.User);
+
+  //     // 🔥 THIS IS THE IMPORTANT PART
+  //     OneSignal.User.PushSubscription.addEventListener("change", async () => {
+  //       const subscriptionId = OneSignal.User.PushSubscription.id;
+  //       console.log(subscriptionId);
+
+  //       if (subscriptionId) {
+  //         console.log("Subscription Ready:", subscriptionId);
+
+  //         dispatch(subscribe(user?._id, subscriptionId));
+  //       }
+  //     });
+
+  //     // Agar pehle se subscribed hai to yeh turant run ho
+  //     const existingId = OneSignal.User.PushSubscription.id;
+  //     console.log(existingId);
+
+  //     if (existingId) {
+  //       dispatch(subscribe(user?._id, existingId));
+  //     }
+  //   };
+
+  //   initOneSignal();
+  // }, []);
+
+
+  
 
 
   useEffect(() => {
@@ -85,17 +127,12 @@ function Setting() {
         title="Notifications"
         desc="Get alerts for deadlines, quizzes, and announcements"
         action={
-          <></>
-          // <NotificationSwitch
-          //   checked={notificationsEnabled}
-          //   onChange={handleNotification}
-          //   // disabled={Notification.permission === "denied"}
-          // />
-          // <NotificationSwitch
-          //   checked={notificationsEnabled}
-          //   onChange={toggleNotifications}
-          //   disabled={Notification.permission === "denied"}
-          // />
+          // <></>
+          <NotificationSwitch
+            checked={notificationsEnabled}
+            onChange={(e) => toggleNotifications(e.target.checked)}
+            // disabled={Notification.permission === "denied"}
+          />
 
 
         }
