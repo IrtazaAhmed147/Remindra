@@ -41,9 +41,9 @@ const AdminDashboard = () => {
               // const subscriptionId = OneSignal.User.PushSubscription.id;
 
       
-              const res = await axios.post(
-                  `http://localhost:3200/api/notification/send-test`,
-                  {message: "Hey! Check your tasks."},
+              const res = await axios.get(
+                  `http://localhost:3200/api/notification/notifyassignments`,
+                  // {message: "Hey! Check your tasks.",userId: "697a6067690049ddbd2fc805"},
                   {
                       headers: { Authorization: `Bearer ${token}` },
                       withCredentials: true,
