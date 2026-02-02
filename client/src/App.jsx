@@ -64,7 +64,7 @@ function App() {
        OneSignal.init({
         appId: "00a88109-ebb1-4624-889f-0799c9897862",
         safari_web_id: "web.onesignal.auto.220e9b0b-02d4-465b-a5d3-49d3d287ceee",
-        // notifyButton: { enable: true },
+        notifyButton: { enable: true },
       });
     }
     console.log("chala");
