@@ -4,6 +4,7 @@ import quizModel from "../models/quizModel.js";
 import assignmentsModel from "../models/assignmentsModel.js";
 import { errorHandler, successHandler } from "../utils/responseHandler.js";
 import SubscriptionModel from "../models/SubscriptionModel.js";
+import { sendPushNotification } from "../utils/webPush.js";
 
 const notificationRouter = express.Router();
 
@@ -147,28 +148,6 @@ notificationRouter.post("/notify/:userId", async (req, res) => {
 //     }
 // });
 
-
-const sendPushNotification = async (subscriptionId, { title, message }) => {
-  if (!subscriptionId) return;
-
-  const response = await fetch("https://api.onesignal.com/notifications?c=push", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Key ${process.env.ONESIGNAL_API_KEY}`,
-    },
-    body: JSON.stringify({
-      app_id: process.env.ONESIGNAL_APP_ID,
-      headings: { en: title },
-      contents: { en: message },
-      include_subscription_ids: [subscriptionId],
-      target_channel: "push",
-    }),
-  });
-
-  const data = await response.json();
-  console.log("Push result:", data);
-};
 
 // ---------------------------------
 notificationRouter.get("/notifyassignments", async (req, res) => {
