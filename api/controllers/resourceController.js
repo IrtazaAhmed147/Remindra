@@ -59,7 +59,9 @@ export const uploadResource = async (req, res) => {
             if (memberId.toString() === req.user.id) continue;
 
             const sub = await SubscriptionModel.findOne({ userId: memberId });
-            if (sub) {
+            if (sub && sub?.subscription) {
+                console.log(sub);
+                
                 await sendPushNotification(sub.subscription, {
                     title: "New Course Material",
                     message: `${files.length} new materials added to the course.`
@@ -70,6 +72,8 @@ export const uploadResource = async (req, res) => {
         successHandler(res, 200, "resources uploaded successfully", savedResources);
 
     } catch (error) {
+        console.log(error);
+        
         errorHandler(res, 400, error.message);
     }
 };
