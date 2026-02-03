@@ -45,12 +45,12 @@ app.use('/api/notification', notificationRouter);
 app.use('/api/dashboard', dashboardRouter);
 
 
-if (process.env.NODE_ENV !== 'production') {
+// if (process.env.NODE_ENV !== 'production') {
     const port = process.env.PORT || 6500;
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     });
-}
+// }
 
 // For Vercel (not used locally)
 export default app;
