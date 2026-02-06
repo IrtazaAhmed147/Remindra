@@ -22,7 +22,20 @@ dotenv.config();
 const app = express();
 
 // DB
-connectDB();
+// await connectDB();
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error("DB Connection Error:", err.message);
+    return res.status(500).json({
+      success: false,
+      message: "Database connection failed",
+    });
+  }
+});
+
 
 // Middlewares
 app.use(express.json());
@@ -45,12 +58,12 @@ app.use('/api/notification', notificationRouter);
 app.use('/api/dashboard', dashboardRouter);
 
 
-// if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
     const port = process.env.PORT || 6500;
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     });
-// }
+}
 
 // For Vercel (not used locally)
 export default app;
