@@ -1,12 +1,399 @@
-import express from 'express'
-import {  login, logout, register, verifyEmail } from '../controllers/courseController.js'
-import { verifyToken } from '../middleware/verifyToken.js'
+import express from "express";
+// import { sendPushNotification } from "../utils/webPush.js";
+import quizModel from "../models/quizModel.js";
+import assignmentsModel from "../models/assignmentsModel.js";
+import { errorHandler, successHandler } from "../utils/responseHandler.js";
+import SubscriptionModel from "../models/SubscriptionModel.js";
+import { sendPushNotification } from "../utils/webPush.js";
 
-const notificationRouter = express.Router()
+const notificationRouter = express.Router();
 
-notificationRouter.get("/users/:id/calendar", auth, getCalendarEvents);
-notificationRouter.get("/users/:id/notifications", auth, getUserNotifications);
-notificationRouter.put("/:id/read", auth, markNotificationRead);
+// Save user subscription
+notificationRouter.post("/subscribe", async (req, res) => {
+    try {
+        const { subscription, userId } = req.body;
+        console.log(subscription);
+        
+        const data = await SubscriptionModel.findOneAndUpdate(
+            { userId: userId },
+            { subscription },
+            { upsert: true }
+        );
+
+        return successHandler(res, 200, data);
+
+    } catch (err) {
+        console.log(err);
+
+        return errorHandler(res, 500, "Something went wrong", err);
+    }
+});
+
+// Trigger notification (example: after uploading resource)
+notificationRouter.post("/notify/:userId", async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { title, message } = req.body;
+
+        const sub = await SubscriptionModel.findOne({ userId });
+        if (!sub) return res.status(404).json({ error: "User subscription not found" });
+
+        await sendPushNotification(sub.subscription, { title, message });
+        res.status(200).json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 
 
-export {notificationRouter}
+// notificationRouter.get("/notifyassignments", async (req, res) => {
+//     try {
+
+//         const now = new Date();
+
+//         const todayStart = new Date(now);
+//         todayStart.setHours(0, 0, 0, 0);
+
+//         const todayEnd = new Date(now);
+//         todayEnd.setHours(23, 59, 59, 999);
+
+//         const tomorrowStart = new Date(todayStart);
+//         tomorrowStart.setDate(todayStart.getDate() + 1);
+
+//         const tomorrowEnd = new Date(todayEnd);
+//         tomorrowEnd.setDate(todayEnd.getDate() + 1);
+
+//         const twoDaysAfterStart = new Date(todayStart);
+//         twoDaysAfterStart.setDate(todayStart.getDate() + 2);
+
+//         const twoDaysAfterEnd = new Date(todayEnd);
+//         twoDaysAfterEnd.setDate(todayEnd.getDate() + 2);
+
+//         // ---------------------------------
+//         // 1) Assignments due in 2 days
+//         // ---------------------------------
+//         const assignmentsTwoDays = await assignmentsModel.find({
+//             dueDate: { $gte: twoDaysAfterStart, $lte: twoDaysAfterEnd }
+//         });
+
+
+//         let assignmentsNight = [];
+//         if (now.getHours() >= 20) {
+//             assignmentsNight = await assignmentsModel.find({
+//                 dueDate: { $gte: tomorrowStart, $lte: tomorrowEnd }
+//             });
+//         }
+
+//         // ---------------------------------
+//         // 3) Assignments due today (Morning Reminder)
+//         // ---------------------------------
+//         let assignmentsTodayMorning = [];
+//         if (now.getHours() >= 8 && now.getHours() <= 12) {
+//             assignmentsTodayMorning = await assignmentsModel.find({
+//                 dueDate: { $gte: todayStart, $lte: todayEnd }
+//             });
+
+//         }
+
+//         // Send function
+//         const sendReminder = async (assignment, message) => {
+//             const userId = assignment.createdBy;
+
+//             const subscription = await SubscriptionModel.findOne({ userId });
+            
+//             if (!subscription) return;
+
+//             await sendPushNotification(subscription.subscription, {
+//                 title: "Assignment Reminder",
+//                 message
+//             });
+//                   };
+
+//         // 2 Days before
+//         for (let assignment of assignmentsTwoDays) {
+
+//             await sendReminder(
+//                 assignment,
+//                 `${assignment.title} is due in 2 days! Complete it early.`
+//             );
+//         }
+
+//         // Tomorrow night
+//         for (let assignment of assignmentsNight) {
+
+//             await sendReminder(
+//                 assignment,
+//                 `${assignment.title} is due tomorrow! Don't forget to finish it.`
+//             );
+//         }
+
+//         // Today morning
+//         for (let assignment of assignmentsTodayMorning) {
+
+//             await sendReminder(
+//                 assignment,
+//                 `${assignment.title} is due today! Submit before the deadline.`
+//             );
+//         }
+
+//         return res.status(200).json({
+//             success: true,
+//             message: "Assignment reminders processed successfully"
+//         });
+
+//     } catch (error) {
+//         console.log(error);
+       
+//           errorHandler(res, 500, error.message);
+//     }
+// });
+
+
+// ---------------------------------
+notificationRouter.get("/notifyassignments", async (req, res) => {
+  try {
+    const now = new Date();
+
+    const todayStart = new Date(now);
+    todayStart.setHours(0, 0, 0, 0);
+
+    const todayEnd = new Date(now);
+    todayEnd.setHours(23, 59, 59, 999);
+
+    const tomorrowStart = new Date(todayStart);
+    tomorrowStart.setDate(todayStart.getDate() + 1);
+
+    const tomorrowEnd = new Date(todayEnd);
+    tomorrowEnd.setDate(todayEnd.getDate() + 1);
+
+    const twoDaysAfterStart = new Date(todayStart);
+    twoDaysAfterStart.setDate(todayStart.getDate() + 2);
+
+    const twoDaysAfterEnd = new Date(todayEnd);
+    twoDaysAfterEnd.setDate(todayEnd.getDate() + 2);
+
+    // ---------------------------------
+    // Assignments due in 2 days
+    // ---------------------------------
+    const assignmentsTwoDays = await assignmentsModel.find({
+      dueDate: { $gte: twoDaysAfterStart, $lte: twoDaysAfterEnd },
+    });
+
+    // Tomorrow night assignments (after 8 PM)
+    let assignmentsNight = [];
+    if (now.getHours() >= 20) {
+      assignmentsNight = await assignmentsModel.find({
+        dueDate: { $gte: tomorrowStart, $lte: tomorrowEnd },
+      });
+    }
+
+    // Today morning assignments (8 AM - 12 PM)
+    let assignmentsTodayMorning = [];
+    if (now.getHours() >= 8 && now.getHours() <= 12) {
+      assignmentsTodayMorning = await assignmentsModel.find({
+        dueDate: { $gte: todayStart, $lte: todayEnd },
+      });
+    }
+
+    // ---------------------------------
+    // Send function
+    // ---------------------------------
+    const sendReminder = async (assignment, message) => {
+        console.log(assignment);
+        
+      const userId = assignment.createdBy;
+
+      // DB se subscription
+      const subscription = await SubscriptionModel.findOne({ userId });
+
+      if (!subscription) return;
+
+      // OneSignal push
+      await sendPushNotification(subscription.subscription, {
+        title: "Assignment Reminder",
+        message,
+      });
+    };
+
+    // ----------------------
+    // Send notifications
+    // ----------------------
+    for (let assignment of assignmentsTwoDays) {
+      await sendReminder(
+        assignment,
+        `${assignment.title} is due in 2 days! Complete it early.`
+      );
+    }
+
+    for (let assignment of assignmentsNight) {
+      await sendReminder(
+        assignment,
+        `${assignment.title} is due tomorrow! Don't forget to finish it.`
+      );
+    }
+
+    for (let assignment of assignmentsTodayMorning) {
+      await sendReminder(
+        assignment,
+        `${assignment.title} is due today! Submit before the deadline.`
+      );
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Assignment reminders processed successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+});
+notificationRouter.get("/notifyquiz", async (req, res) => {
+    try {
+        const now = new Date();
+
+        const todayStart = new Date(now);
+        todayStart.setHours(0, 0, 0, 0);
+
+        const todayEnd = new Date(now);
+        todayEnd.setHours(23, 59, 59, 999);
+
+        const tomorrowStart = new Date(todayStart);
+        tomorrowStart.setDate(todayStart.getDate() + 1);
+
+        const tomorrowEnd = new Date(todayEnd);
+        tomorrowEnd.setDate(todayEnd.getDate() + 1);
+
+        const twoDaysAfterStart = new Date(todayStart);
+        twoDaysAfterStart.setDate(todayStart.getDate() + 2);
+
+        const twoDaysAfterEnd = new Date(todayEnd);
+        twoDaysAfterEnd.setDate(todayEnd.getDate() + 2);
+
+        // ------------------------------
+        // 1) QUIZZES DUE IN 2 DAYS
+        // ------------------------------
+        const quizzesTwoDays = await quizModel.find({
+            dueDate: { $gte: twoDaysAfterStart, $lte: twoDaysAfterEnd }
+        });
+
+        // ------------------------------
+        // 2) QUIZZES DUE TOMORROW (Night Reminder)
+        // Send only after 8 PM
+        // ------------------------------
+        let quizzesNight = [];
+        if (now.getHours() >= 20) {
+            quizzesNight = await quizModel.find({
+                dueDate: { $gte: tomorrowStart, $lte: tomorrowEnd }
+            });
+        }
+
+        // ------------------------------
+        // 3) QUIZZES DUE TODAY (Morning Reminder)
+        // Send between 8 AM – 12 PM only
+        // ------------------------------
+        let quizzesTodayMorning = [];
+        if (now.getHours() >= 8 && now.getHours() <= 12) {
+            quizzesTodayMorning = await quizModel.find({
+                dueDate: { $gte: todayStart, $lte: todayEnd }
+            });
+        }
+
+        // ------------------------------
+        // SEND NOTIFICATIONS
+        // ------------------------------
+        const sendReminder = async (quiz, message) => {
+            
+            const userId = quiz.createdBy;
+
+            const subscription = await SubscriptionModel.findOne({ userId });
+            
+            if (!subscription) return;
+
+            await sendPushNotification(subscription.subscription, {
+                title: "Quiz Reminder",
+                message
+            });
+        };
+
+        // 2 Days Before
+        for (let quiz of quizzesTwoDays) {
+            
+            await sendReminder(quiz, `${quiz.title} is due in 2 days!`);
+        }
+
+        // 1 Day Before – Night Reminder
+        for (let quiz of quizzesNight) {
+            await sendReminder(quiz, `${quiz.title} is due tomorrow! Don't forget.`);
+        }
+
+        // Today Morning Reminder
+        for (let quiz of quizzesTodayMorning) {
+            await sendReminder(quiz, `${quiz.title} is due today! Complete it soon.`);
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "All reminders processed successfully"
+        });
+
+    } catch (error) {
+        console.log(error);
+          errorHandler(res, 500, error.message);
+    }
+});
+
+
+notificationRouter.post("/send-test", async (req, res) => {
+  const { userId, message } = req.body;
+    // console.log(subscriptionId);
+    
+  try {
+    
+            const subscriptions = await SubscriptionModel.find();
+            const subscriptionIds = subscriptions.map(sub => sub.subscription);
+            console.log(subscriptionIds);
+            
+            if(!subscriptions) return;
+
+    const response = await fetch("https://api.onesignal.com/notifications?c=push", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Key ${process.env.ONESIGNAL_API_KEY}`,
+      },
+      body: JSON.stringify({
+        app_id: process.env.ONESIGNAL_APP_ID,
+        headings: { en: "Reminder" },
+        contents: { en: message },
+        include_subscription_ids: subscriptionIds, // 🔥 main cheez
+        target_channel: "push",
+      }),
+    });
+
+    const data = await response.json();
+    res.status(200).json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: "Failed to send notification" });
+  }
+
+    // const subscriptions = await SubscriptionModel.find();
+
+    // for (let sub of subscriptions) {
+    //   await sendPushNotification(sub.subscription, {
+    //     title: "Reminder",
+    //     message: "Assignment deadline aa rahi hai!",
+    //   }); 
+    // }
+
+    // res.json({ success: true });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+}
+
+);
+
+
+export default notificationRouter;

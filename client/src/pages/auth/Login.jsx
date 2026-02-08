@@ -1,0 +1,104 @@
+import { Link, useNavigate } from 'react-router-dom'
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import './login.css'
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../redux/actions/authActions';
+import { Box, CircularProgress, Typography } from '@mui/material';
+import { notify } from '../../utils/HelperFunctions';
+import { useState } from 'react';
+import LandingNavbar from '../../components/navbar/LandingNavbar';
+import AccountStatusCard from '../../components/cards/AccountStatusCard';
+function Login() {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [accStatusModal, setAccStatusModal] = useState({status:false});
+    const [showPass, setShowPass] = useState(false)
+    const { authLoading, authError, user } = useSelector((state) => state.auth)
+    const form = useRef({})
+
+
+    useEffect(() => {
+        if (user) {
+            navigate('/dashboard')
+        }
+    }, [user])
+
+    const handleForm = async (e) => {
+        e.preventDefault()
+
+        if (!form.current.username.trim() || !form.current.password.trim()) return;
+
+        dispatch(loginUser(form.current))
+            .then(({msg, url}) => {
+                if(msg.includes("suspended") || msg.includes("deactivated")) {
+
+                    setAccStatusModal({status:true, msg});
+                    return;
+                }
+                notify('success', msg)
+                navigate(`/${url}`)
+            })
+            .catch((err) =>{
+                console.log(err);
+                
+                notify('error', err)})
+
+
+    }
+    const handleShowPassword = () => {
+        setShowPass((prev) => !prev)
+    }
+
+
+    return (
+        <>
+
+            <Box sx={{ width: '100%', minHeight: '100vh', backgroundColor: 'var(--bg-color)', position:"relative"}}>
+
+                 <LandingNavbar  authBtn={false}/>
+                <Box sx={{ width: '100%', height: '85vh', backgroundColor: 'var(--bg-color)', display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
+
+                    <Box sx={{ width: { xs: '90%', md: '450px', sm: '450px' }, backgroundColor: 'var(--bg-color)' }}>
+                        <h1 style={{ color: "var(--text-color)" }}>Welcome Back</h1>
+                        <form className="form" onSubmit={handleForm}  >
+                            <Box className="flex-column">
+                                <label>Username </label></Box>
+                            <Box className="inputForm">
+                                <input placeholder="Enter your username" name='username' className="input" type="text" onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} required />
+                            </Box>
+
+                            <Box className="flex-column">
+                                <label>Password </label></Box>
+                            <Box className="inputForm">
+                                <input placeholder="Enter your Password" name='password' onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} className="input" type={showPass ? "text" : "password"} required />
+                                <Box onClick={handleShowPassword} sx={{ cursor: 'pointer' }}>
+                                    {showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                </Box>
+                            </Box>
+
+                            <Box className="flex-row">
+                                <Link to={'/forgot-password'}>
+                                <span className="span">Forgot password?</span>
+                                </Link>
+                            </Box>
+                            {/* {authError && <p>{authError}</p>} */}
+                            <button disabled={authLoading} className="btn">
+                                {authLoading && <CircularProgress  sx={{color:"var(--text-color)"}} size="20px" />}
+
+                                Sign In</button>
+                            <p className="p">Don't have an account? <Link to={'/signup'} className="link">Sign Up</Link>
+                            </p>
+                        </form>
+                    </Box>
+                </Box>
+
+                {accStatusModal?.status && <AccountStatusCard open={accStatusModal?.status} status={accStatusModal?.msg}/>}
+            </Box>
+        </>
+    )
+}
+
+export default Login

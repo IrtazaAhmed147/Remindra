@@ -24,7 +24,6 @@ function Navbar() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
     localStorage.removeItem('token');
     dispatch(userReset());
     navigate('/login');
@@ -60,7 +59,7 @@ function Navbar() {
                 color: '#fff',
               }}
             >
-              <Link to="/" style={{ color: '#fff' }}>My Idea</Link>
+              <Link to="/" style={{ color: '#fff' }}>Remindra</Link>
             </Typography>
 
             {/* Logo Desktop */}
@@ -74,7 +73,7 @@ function Navbar() {
                 color: '#fff',
               }}
             >
-              <Link to="/" style={{ color: '#fff' }}>My Idea</Link>
+              <Link to="/" style={{ color: '#fff' }}>Remindra</Link>
             </Typography>
 
           
@@ -107,7 +106,7 @@ function Navbar() {
         sx={{ display: { xs: "block", md: "none" } }}
       >
         <Box sx={{ width: 260, height: "100vh", bgcolor: "var(--bg-color)" }}>
-          <Sidebar collapsed={false} mobileSidebar={mobileSidebar} />
+          <Sidebar collapsed={false} mobileSidebar={mobileSidebar} setMobileSidebar={setMobileSidebar} />
         </Box>
       </Drawer>
     </>

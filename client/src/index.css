@@ -1,26 +1,95 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
- font-family: "Inter", sans-serif !important;
+  font-family: "Inter", sans-serif !important;
 }
 
-a{
+a {
   text-decoration: none !important;
 }
 
 :root {
   --primary-color: #2A7DE1;
-  /* --primary-color: linear-gradient(135deg, #2A7DE1, #6BB7FF); */
   --primaryHover-color: #1f6dcb;
   --secondary-color: #1AC8DB ;
   --notification-color: #F4B400 ;
+  --card-bg-color: #fff; 
   --bg-color: #F8FAFC ;
   --text-color: #1E293B  ;
+  --sidebar-color: #fff  ;
+  --table-header-bgColor: #f0f4fa  ;
+  --sidebar-btn-color: #fff  ; 
+  --gradientBtn-color: linear-gradient(135deg, #E7F1FD, #F3F8FF)  ; 
+  --gradientBtn-hover-color: linear-gradient(135deg, #ffffff, #f2f8ff) ; 
+  --noti-msg-color: #181818;
+   --input-bg-color: #e1e1e11f; 
+   --share-box-bg: #fff;   
+
+
 }
+
+/* 
+[data-theme="dark"] {
+  --primary-color: #4F8DFF;
+  --primaryHover-color: #3B7CFF;
+  --secondary-color: #22D3EE;
+  --notification-color: #FBBF24;
+  
+  --card-bg-color: #0F172A;
+  --bg-color: #020617;
+  --text-color: #E5E7EB;
+  
+  --sidebar-color: #020617;
+  --sidebar-btn-color: #0B1220;
+  
+  --gradientBtn-color: linear-gradient(135deg, #1E293B, #020617);
+  --gradientBtn-hover-color: linear-gradient(135deg, #334155, #020617);
+  
+  --table-header-bgColor: #1e293b;
+  
+  --noti-msg-color: #d8d8d8;
+
+   --input-bg-color: #00030e; 
+
+   --share-box-bg: #0B1220;   
+} */
+[data-theme="dark"] {
+  /* Brand */
+  --primary-color: #6EA8FE;          /* soft royal blue */
+  --primaryHover-color: #5A95F5;
+  --secondary-color: #4FD1C5;        /* elegant teal */
+  --notification-color: #F6C453;    /* premium amber */
+
+  /* Backgrounds */
+  --bg-color: #0B0F1A;               /* luxury deep navy */
+  --card-bg-color: #121826;          /* rich surface */
+  --sidebar-color: #0B0F1A;
+  --sidebar-btn-color: #121826;
+
+  /* Text */
+  --text-color: #E6EAF2;             /* soft white */
+  --text-muted-color: #9AA4B2;
+  --noti-msg-color: #F8FAFC;
+
+  /* UI elements */
+  --table-header-bgColor: #0F1629;
+  --input-bg-color: rgba(255, 255, 255, 0.08);
+  --share-box-bg: #121826;
+
+  /* Borders & hover */
+  --border-color: rgba(255,255,255,0.06);
+  --hover-bg-color: rgba(255,255,255,0.04);
+
+  /* Buttons */
+  --gradientBtn-color: linear-gradient(135deg, #1E3A8A, #2563EB);
+  --gradientBtn-hover-color: linear-gradient(135deg, #2563EB, #3B82F6);
+}
+
+
 html {
   scroll-behavior: smooth;
 }

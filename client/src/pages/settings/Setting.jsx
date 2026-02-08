@@ -1,10 +1,109 @@
 import { Box, Typography, Button, Switch, FormControlLabel } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { subscribe } from "../../redux/actions/settingActions";
+import { useDispatch, useSelector } from "react-redux";
+import { notify } from "../../utils/HelperFunctions";
+import SettingCard from "../../components/cards/SettingCard";
+import ThemeBtn from "../../components/common/ThemeBtn";
+import NotificationSwitch from "../../components/common/NotificationSwitch";
+import OneSignal from 'react-onesignal';
+import usePushNotifications from "../../hooks/usePushNotifications.jsx";
 
 function Setting() {
   const navigate = useNavigate();
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const dispatch = useDispatch();
+
+  const [darkTheme, setDarkTheme] = useState(false)
+  // const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const { user } = useSelector((state) => state.auth);
+  const { notificationsEnabled, toggleNotifications } =
+    usePushNotifications(user);
+
+
+
+
+
+
+  // useEffect(() => {
+  //   if ("serviceWorker" in navigator) {
+  //     navigator.serviceWorker
+  //       .register("/sw.js")
+  //       .then(reg => console.log("SW registered:", reg.scope))
+  //       .catch(err => console.error("SW error:", err));
+  //   }
+  // }, []);
+
+
+  // useEffect(() => {
+  //   const initOneSignal = async () => {
+  //     await OneSignal.init({
+  //       appId: "00a88109-ebb1-4624-889f-0799c9897862",
+  //       safari_web_id: "web.onesignal.auto.220e9b0b-02d4-465b-a5d3-49d3d287ceee",
+  //       // notifyButton: { enable: true },
+  //       // allowLocalhostAsSecureOrigin: true,
+  //     });
+
+  //     // OneSignal.showSlidedownPrompt();
+  //     console.log(user);
+  //     console.log(OneSignal.User);
+
+  //     // 🔥 THIS IS THE IMPORTANT PART
+  //     OneSignal.User.PushSubscription.addEventListener("change", async () => {
+  //       const subscriptionId = OneSignal.User.PushSubscription.id;
+  //       console.log(subscriptionId);
+
+  //       if (subscriptionId) {
+  //         console.log("Subscription Ready:", subscriptionId);
+
+  //         dispatch(subscribe(user?._id, subscriptionId));
+  //       }
+  //     });
+
+  //     // Agar pehle se subscribed hai to yeh turant run ho
+  //     const existingId = OneSignal.User.PushSubscription.id;
+  //     console.log(existingId);
+
+  //     if (existingId) {
+  //       dispatch(subscribe(user?._id, existingId));
+  //     }
+  //   };
+
+  //   initOneSignal();
+  // }, []);
+
+
+  
+
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+      setDarkTheme(true);
+    }
+  }, []);
+
+
+
+  const toggleTheme = () => {
+    const isDark =
+      document.documentElement.getAttribute("data-theme") === "dark";
+
+    if (isDark) {
+      // switch OFF dark mode
+      document.documentElement.removeAttribute("data-theme");
+      localStorage.setItem("theme", "light");
+      setDarkTheme(false);
+    } else {
+      // switch ON dark mode
+      document.documentElement.setAttribute("data-theme", "dark");
+      localStorage.setItem("theme", "dark");
+      setDarkTheme(true);
+    }
+  };
+
+
 
   return (
     <Box
@@ -13,7 +112,7 @@ function Setting() {
         minHeight: "100vh",
         backgroundColor: "var(--bg-color)",
         padding: { xs: "10px", sm: "20px", md: "30px" },
-        pt:"5px !important",
+        pt: "5px !important",
       }}
     >
       <Typography
@@ -24,105 +123,89 @@ function Setting() {
         Settings
       </Typography>
 
-      {/* ---------------- UPDATE PROFILE ---------------- */}
+      <SettingCard
+        title="Notifications"
+        desc="Get alerts for deadlines, quizzes, and announcements"
+        action={
+          // <></>
+          <NotificationSwitch
+            checked={notificationsEnabled}
+            onChange={(e) => toggleNotifications(e.target.checked)}
+            // disabled={Notification.permission === "denied"}
+          />
+
+
+        }
+      />
+
+
+      <SettingCard
+        title="Dark Mode"
+        desc="Reduce eye strain and save battery"
+        action={
+          <ThemeBtn
+            checked={darkTheme}
+            onChange={toggleTheme}
+            color="primary"
+          />
+        }
+      />
+
+
       <Box
-        onClick={() => navigate("/update/profile/123")}
+        onClick={() => navigate("/update/profile")}
         sx={{
-          p: 3,
-          mb: 3,
-          borderRadius: 2,
-          bgcolor: "#fff",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+          p: { xs: 1.5, sm: 2, md: 3 },
+          mb: { xs: 1.5, sm: 2, md: 3 },
+          borderRadius: 3,
+          bgcolor: "var(--card-bg-color)",
+          boxShadow: `
+  0 1px 2px rgba(0, 0, 0, 0.08),
+  0 4px 12px rgba(0, 0, 0, 0.06)
+`,
           cursor: "pointer",
-          transition: "0.2s all",
-          "&:hover": { boxShadow: "0 4px 20px rgba(0,0,0,0.12)" },
+          "&:hover": { backgroundColor: "rgba(255,255,255,0.04)" },
         }}
       >
-        <Typography
-          variant="subtitle1"
-          fontWeight="bold"
-          sx={{ fontSize: { xs: 13, sm: 14, md: 15 } }}
-        >
-          Update Profile
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{ fontSize: { xs: 11, sm: 12, md: 13 }, color: "#555", mt: 0.5 }}
-        >
-          Click to update your profile information.
+        <Typography fontWeight={600} color="var(--text-color)">Update Profile</Typography>
+        <Typography fontSize={12} color="var(--text-muted-color)">
+          Edit your personal information
         </Typography>
       </Box>
 
-      {/* ---------------- NOTIFICATIONS ---------------- */}
-      <Box
-        sx={{
-          p: 3,
-          mb: 3,
-          borderRadius: 2,
-          bgcolor: "#fff",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-        }}
-      >
-        <Typography
-          variant="subtitle1"
-          fontWeight="bold"
-          sx={{ fontSize: { xs: 13, sm: 14, md: 15 }, mb: 1 }}
-        >
-          Notification Access
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{ fontSize: { xs: 11, sm: 12, md: 13 }, color: "#555", mb: 1 }}
-        >
-          Allow this app to send you notifications about assignments, quizzes, and announcements.
-        </Typography>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={notificationsEnabled}
-              onChange={() => setNotificationsEnabled(!notificationsEnabled)}
-              color="primary"
-            />
-          }
-          label="Enable Notifications"
-          sx={{ fontSize: { xs: 12, sm: 13, md: 14 } }}
-        />
-      </Box>
 
       {/* ---------------- DELETE ACCOUNT ---------------- */}
       <Box
         sx={{
-          p: 3,
-          mb: 3,
-          borderRadius: 2,
-          bgcolor: "#fff",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+          p: { xs: 1.5, sm: 2, md: 3 },
+          mt: 4,
+          borderRadius: 3,
+          bgcolor: "rgba(239,68,68,0.08)",
+          boxShadow: `
+  0 1px 2px rgba(0, 0, 0, 0.08),
+  0 4px 12px rgba(0, 0, 0, 0.06)
+`,
+          border: "1px solid rgba(239,68,68,0.3)",
         }}
       >
-        <Typography
-          variant="subtitle1"
-          sx={{ mb: 1, color: "var(--text-color)", fontSize: { xs: 13, sm: 14, md: 15 } }}
-        >
-          Delete Account
+        <Typography fontWeight={600} color="#ef4444">
+          Danger Zone
         </Typography>
-        <Typography
-          sx={{ mb: 2, color: "red", fontSize: { xs: 12, sm: 13, md: 14 } }}
-        >
-          Warning: This action is permanent and cannot be undone.
-        </Typography>
+
         <Button
           variant="contained"
+          disabled={true}
           sx={{
-            backgroundColor: "red",
-            color: "#fff",
+            mt: 2,
+            backgroundColor: "#ef4444",
+            "&:hover": { backgroundColor: "#dc2626" },
             textTransform: "none",
-            "&:hover": { backgroundColor: "#cc0000" },
-            fontSize: { xs: 12, sm: 13, md: 14 },
           }}
         >
-          Delete My Account
+          Deactivate Account
         </Button>
       </Box>
+
     </Box>
   );
 }

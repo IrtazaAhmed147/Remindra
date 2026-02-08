@@ -7,29 +7,18 @@ cloudinary.config({
   api_secret: process.env.API_SECRET
 });
 
-// export const uploadOnCloudinary = async (file, folder = 'default') => {
-//   try {
-//     const result = await cloudinary.uploader.upload(file,{
-//       folder: folder 
-//     });
-
-//     // Delete the file from local storage
-//     // setTimeout(() => fs.unlink(file.path, (err) => {
-//     //   if (err) console.error('Error deleting local file:', err);
-//     // }), 5000);
-    
-//     return result.secure_url; 
-//   } catch (err) {
-//     console.error('Cloudinary upload failed:', err);
-//     return null;
-//   }
-// }
-export const uploadOnCloudinary = async (file,folder = 'default') => {
+export const uploadOnCloudinary = async (file, folder = 'default') => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
-      { resource_type: 'image',
+      {
+        resource_type: 'image',
+        type: 'private',
         folder,
-       },
+        quality: "auto",       // automatic compression
+        fetch_format: "auto",
+        width: 1024,      // max width 1024px
+        crop: "limit"
+      },
       (error, result) => {
         if (error) return reject(error);
         resolve(result);
@@ -39,4 +28,40 @@ export const uploadOnCloudinary = async (file,folder = 'default') => {
     streamifier.createReadStream(file.buffer).pipe(uploadStream);
 
   })
+};
+
+export const uploadFileOnCloudinary = async (file, folder = "default") => {
+  return new Promise((resolve, reject) => {
+
+    const originalName = file.originalname.replace(/\s+/g, "_");
+    const extension = originalName.split(".").pop();
+    const fileNameWithoutExt = originalName.replace(`.${extension}`, "");
+
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        resource_type: "raw",
+        folder,
+        public_id: `${fileNameWithoutExt}.${extension}`, // 👈 KEY FIX
+        use_filename: false,
+        unique_filename: false
+      },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+
+    streamifier.createReadStream(file.buffer).pipe(uploadStream);
+  });
+};
+
+
+
+export const deleteFromCloudinary = async (publicId, type) => {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.destroy(publicId, { resource_type: type }, (error, result) => {
+      if (error) return reject(error);
+      resolve(result);
+    });
+  });
 };

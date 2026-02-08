@@ -10,8 +10,8 @@ function NotFound() {
     <div style={{textAlign: 'center', display:'flex' }}>
         <div style={{margin: 'auto'}}>
 
-        <h1 style={{fontSize: '50px'}}>404</h1>
-        <h1 style={{fontSize: '30px', marginBottom: '10px'}}>Oops! The page you're looking for does not exist.</h1>
+        <h1 style={{fontSize: '50px',color:"var(--text-color)"}}>404</h1>
+        <h1 style={{fontSize: '30px', marginBottom: '10px',color:"var(--text-color)"}}>Oops! The page you're looking for does not exist.</h1>
         <Button variant="contained">
             <Link to='/' style={{color:'white', textDecoration: 'none'}}>Go Back Home</Link>
         </Button>

@@ -1,126 +1,233 @@
-import { Box, Typography, IconButton, Menu, MenuItem } from "@mui/material";
-import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
+import {
+  Box,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem,
+  Chip,
+  Divider,
+} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import React from "react";
-import { Link } from "react-router-dom";
+import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
+import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
+import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
+import UpdateOutlinedIcon from "@mui/icons-material/UpdateOutlined";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { formatDate } from "../../utils/HelperFunctions";
+import { useSelector } from "react-redux";
 
-const menuOptions = [
-  "Edit Course",
-  "Share",
-  "Delete",
-];
+const menuOptions = ["Edit Course", "Share", "Delete"];
 
-const ITEM_HEIGHT = 48;
+function CourseCard({
+  title,
+  description,
+  members,
+  isShow = true,
+  resources,
+  updatedAt,
+  _id,
+  owner,
+  askDelete,
+  setShareModalOpen,
+}) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
-function CourseCard() {
- const [anchorEl, setAnchorEl] = React.useState(null);
-const open = Boolean(anchorEl);
-
-const handleClick = (event) => {
-  setAnchorEl(event.currentTarget);
-};
-
-const handleClose = () => {
-  setAnchorEl(null);
-};
-
+  const isOwner = owner?._id === user?._id;
 
   return (
     <Box
       sx={{
+        position: "relative",
         width: { xs: "100%", sm: "48%", md: "32%" },
-        backgroundColor: "#fff",
-        borderRadius: "12px",
-        padding: "20px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
+        backgroundColor: "var(--card-bg-color)",
+        borderRadius: "16px",
+        p: 2,
+        boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
         transition: "0.3s",
+        overflow: "hidden",
         "&:hover": {
-          boxShadow: "0px 6px 20px rgba(0,0,0,0.18)",
-          transform: "translateY(-4px)",
+          transform: "translateY(-6px)",
+          boxShadow: "0 12px 28px rgba(0,0,0,0.18)",
         },
       }}
     >
-      <Link to={`/course/123`}>
-
-      {/* Title */}
-      <Typography
-        fontSize="18px"
-        fontWeight="bold"
-        color="var(--text-color)"
-        sx={{ mb: 1, width: "85%" }}
-      >
-        Beginner's Guide to Figma
-      </Typography>
-
-      {/* Description */}
-      <Typography fontSize="13px" color="#555" sx={{ mb: 2 }}>
-        Learn how to design a beautiful and engaging mobile app with Figma.
-      </Typography>
-
-      {/* META INFO (3 Lines) */}
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-        <Typography fontSize="13px" color="var(--text-color)">
-          Materials: <b>12</b>
-        </Typography>
-
-        <Typography fontSize="13px" color="var(--text-color)">
-          Shared With: <b>3 Members</b>
-        </Typography>
-
-        <Typography fontSize="13px" color="var(--text-color)">
-          Last Updated: <b>03-12-2025</b>
-        </Typography>
-      </Box>
-
-      </Link>
-      {/* Bottom Bar */}
+      {/* LEFT ROLE INDICATOR */}
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: "15px",
-          paddingTop: "10px",
-          borderTop: "1px solid #e5e5e5",
+          position: "absolute",
+          left: 0,
+          top: 0,
+          height: "100%",
+          width: "5px",
+          backgroundColor: isOwner
+            ? "var(--primary-color)"
+            : "#7C3AED",
         }}
-        >
-        {/* Left Icon */}
-        <BookmarkBorderOutlinedIcon sx={{ color: "#666", cursor: "pointer" }} />
+      />
 
-        {/* More Options */}
-        <IconButton
-          aria-label="more"
-          id="dashboard-card-menu-btn"
-          aria-controls={open ? "dashboard-card-menu" : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
-          onClick={handleClick}
-          >
-          <MoreVertIcon />
-        </IconButton>
 
-        <Menu
-          id="dashboard-card-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          slotProps={{
-            paper: {
-              style: {
-                maxHeight: ITEM_HEIGHT * 4.5,
-                width: "20ch",
-              },
-            },
+      <Box sx={{ height: '100%', display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+        {/* HEADER */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            mb: 1,
           }}
+        >
+          <Box sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            mb: 1,
+          }}>
+
+            <Typography
+              fontSize="17px"
+              fontWeight={700}
+              color="var(--text-color)"
+              sx={{ pr: 1 }}
+            >
+              {title}
+            </Typography>
+
+          </Box>
+
+          {(isOwner && isShow) && (
+            <Box sx={{ display: "flex", justifyContent: "flex-end", }}>
+              <IconButton
+                // sx={{ p:  }}
+                size="small"
+                sx={{color:"var(--text-color)"}}
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  setAnchorEl(e.currentTarget)
+                }}
+              >
+                <MoreVertIcon />
+              </IconButton>
+
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={() => setAnchorEl(null)}
+              >
+                {menuOptions.map((option) => (
+                  <MenuItem
+                    key={option}
+                    onClick={(e) => {
+                      if (option === "Delete") askDelete(_id);
+                      if (option === "Edit Course")
+                        navigate(`/add/course?id=${_id}&type=edit`);
+                      if (option === "Share") setShareModalOpen(_id);
+                      setAnchorEl(null);
+                    }}
+                  >
+                    {option}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
+        </Box>
+        <Link
+          to={isOwner ? `/course/${_id}/` : `/course/${_id}/resources`}
+          style={{ textDecoration: "none", height: '100%', display: "flex", flexDirection: "column", justifyContent: 'space-between' }}
+        >
+          {/* OWNER INFO */}
+          {!isOwner && (
+            <Typography
+              fontSize="11px"
+              color="#6b7280"
+              sx={{ mb: 1 }}
+            >
+              Shared By: <b>{owner?.username}</b>
+            </Typography>
+          )}
+
+          {/* DESCRIPTION */}
+          <Typography
+            // minHeight={'90px'}
+            fontSize="13px"
+            color="#6b7280"
+            sx={{ mb: 1 }}
           >
-          {menuOptions.map((option) => (
-            <MenuItem key={option} onClick={handleClose}>
-              {option}
-            </MenuItem>
-          ))}
-        </Menu>
+            {description?.slice(0, 90)}
+          </Typography>
+
+
+          {/* STATS */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              mt: 1,
+              borderTop: "1px solid var(--text-color)",
+              pt: 1,
+            }}
+          >
+
+            {/* <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
+              <FolderOutlinedIcon sx={{ fontSize: 16, color: "#64748B" }} />
+              <Typography fontSize="12px" color="var(--text-color)">
+                {resources?.length || 0} {resources?.length > 1 ? "Resources" : "Resource"}
+              </Typography>
+            </Box> */}
+
+            <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
+              <GroupOutlinedIcon sx={{ fontSize: 16, color: "#64748B" }} />
+              <Typography fontSize="12px" color="var(--text-color)">
+                {members?.length || 0} {members?.length > 1 ? "Members" : "Member"}
+              </Typography>
+            </Box>
+
+            <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
+              <UpdateOutlinedIcon sx={{ fontSize: 16, color: "#64748B" }} />
+              <Typography fontSize="12px" color="var(--text-color)">
+                {formatDate(updatedAt)}
+              </Typography>
+            </Box>
+          </Box>
+        </Link>
       </Box>
 
+      {/* ACTIONS */}
+      {/* {isOwner && (
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
+          <IconButton
+            size="small"
+            onClick={(e) => setAnchorEl(e.currentTarget)}
+          >
+            <MoreVertIcon />
+          </IconButton>
+
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={() => setAnchorEl(null)}
+          >
+            {menuOptions.map((option) => (
+              <MenuItem
+                key={option}
+                onClick={() => {
+                  if (option === "Delete") askDelete(_id);
+                  if (option === "Edit Course")
+                    navigate(`/add/course?id=${_id}&type=edit`);
+                  if (option === "Share") setShareModalOpen(_id);
+                  setAnchorEl(null);
+                }}
+              >
+                {option}
+              </MenuItem>
+            ))}
+          </Menu>
+        </Box>
+      )} */}
     </Box>
   );
 }

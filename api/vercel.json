@@ -11,5 +11,23 @@
       "src": "/(.*)",
       "dest": "app.js"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/notification/notifyquiz",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/notification/notifyquiz",
+      "schedule": "0 15 * * *"
+    },
+    {
+      "path": "/api/notification/notifyassignments",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/notification/notifyassignments",
+      "schedule": "0 15 * * *"
+    }
   ]
 }

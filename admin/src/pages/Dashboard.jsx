@@ -1,5 +1,3 @@
-// AdminDashboard.jsx
-import React from "react";
 import {
   Box,
   Card,
@@ -14,11 +12,11 @@ import {
   Paper,
   Button,
 } from "@mui/material";
+import api from "../utils/common.js";
 
-import { LineChart } from "@mui/x-charts/LineChart";
-import { BarChart } from "@mui/x-charts/BarChart";
 
 import UserTable from "../components/tables/userTable";
+import axios from "axios";
 
 const AdminDashboard = () => {
   // Hardcoded data
@@ -35,16 +33,29 @@ const AdminDashboard = () => {
     { id: 2, title: "JS Fundamentals", creator: "Sara", materials: 8, sharedWith: 5 },
     { id: 3, title: "Python Intro", creator: "Ahmed", materials: 3, sharedWith: 2 },
   ];
+  const handleReminder = async ()=> {
+    console.log("remidner");
+    // return;
+    try {
+              const token = localStorage.getItem("token");
+              // const subscriptionId = OneSignal.User.PushSubscription.id;
 
-  const weeklyActivity = [
-    { day: "Mon", users: 10, uploads: 5 },
-    { day: "Tue", users: 15, uploads: 8 },
-    { day: "Wed", users: 7, uploads: 4 },
-    { day: "Thu", users: 12, uploads: 9 },
-    { day: "Fri", users: 20, uploads: 15 },
-    { day: "Sat", users: 5, uploads: 2 },
-    { day: "Sun", users: 8, uploads: 3 },
-  ];
+      
+              const res = await axios.get(
+                  `http://localhost:3200/api/notification/notifyassignments`,
+                  // {message: "Hey! Check your tasks.",userId: "697a6067690049ddbd2fc805"},
+                  {
+                      headers: { Authorization: `Bearer ${token}` },
+                      withCredentials: true,
+                  }
+              );
+      console.log(res);
+      
+    } catch (error) {
+        console.log(error);
+        
+    }
+  }
 
   return (
     <Box sx={{ p: 4, backgroundColor: "#f4f6f8", minHeight: "100vh" }}>
@@ -77,7 +88,7 @@ const AdminDashboard = () => {
         ))}
       </Box>
 
-    
+        <Button variant="contained" color="primary" onClick={()=> handleReminder()}>Send Reminder</Button>
 
       {/* User Management */}
       <Box sx={{ mb: 4 }}>

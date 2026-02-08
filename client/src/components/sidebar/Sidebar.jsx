@@ -11,22 +11,28 @@ import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import { Link, useLocation } from 'react-router-dom';
+import QuizOutlinedIcon from "@mui/icons-material/QuizOutlined";
 
-function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
+import { useSelector } from 'react-redux';
+
+function Sidebar({ collapsed, setCollapsed, mobileSidebar,setMobileSidebar }) {
 
   const location = useLocation();
 
   // console.log(location.pathname);
-
-
+  const {user} = useSelector((state)=> state.auth)
+    const { stats, statsLoading,
+    statsError } = useSelector((state) => state.dashboard)
+ 
   const listItems = [
-    { name: "Dashboard", icon: <DashboardOutlinedIcon />, path: "/dashboard" },
-    { name: "Courses", icon: <FolderCopyOutlinedIcon />, path: "/courses" },
-    { name: "Friends", icon: <GroupOutlinedIcon />, path: "/friends/123" },
-    { name: "Tasks", icon: <AssignmentOutlinedIcon />, path: "/task/123" },
+    { name: "Dashboard", icon: <DashboardOutlinedIcon color='var(--text-color)'/>, path: "/dashboard" },
+    { name: "Courses", icon: <FolderCopyOutlinedIcon color='var(--text-color)'/>, path: "/courses" },
+    // { name: "Friends", icon: <GroupOutlinedIcon />, path: "/friends/123" },
+    { name: "Assignments", icon: <AssignmentOutlinedIcon color='var(--text-color)'/>, path: "/assignment" },
+    { name: "Quizs", icon: <QuizOutlinedIcon color='var(--text-color)'/>, path: "/quiz" },
     {
-      name: "Notifications", icon: <Badge sx={{ "& .MuiBadge-badge": { top: "-5px", right: "-5px" } }} badgeContent={6} color="primary">
-        <NotificationsNoneOutlinedIcon />  </Badge>, path: "/notification/irtaza"
+      name: "Notifications", icon: <Badge sx={{ "& .MuiBadge-badge": { top: "-5px", right: "-5px" } }} badgeContent={stats?.notifications} color="primary">
+        <NotificationsNoneOutlinedIcon />  </Badge>, path: "/notification"
     },
     { name: "Settings", icon: <SettingsOutlinedIcon />, path: "/setting" },
   ];
@@ -36,9 +42,9 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
       sx={{
 
         width: collapsed ? '80px' : '260px',
-        height: mobileSidebar ? '100vh' : "100vh",
+        height: '100vh',
         mt: 0,
-        backgroundColor: "#fff",
+        backgroundColor: "var(--sidebar-color)",
         position: 'fixed',
         zIndex: 0,
         boxShadow: "6px 11px 20px rgba(0,0,0,0.15)",
@@ -49,8 +55,10 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
         transition: 'width 0.3s ease-in-out',
       }}
     >
-      <Box
-        onClick={() => setCollapsed(!collapsed)}
+      { <Box
+        onClick={() => {
+          if(mobileSidebar) setMobileSidebar(false)
+          setCollapsed(!collapsed)}}
         sx={{
           transition: '0.3s all ease-in-out',
           ":hover": { backgroundColor: '#959595dd' },
@@ -68,7 +76,7 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
         }}
       >
         {collapsed ? <ChevronRightOutlinedIcon sx={{ color: '#fff' }} /> : <ChevronLeftOutlinedIcon sx={{ color: '#fff' }} />}
-      </Box>
+      </Box>}
 
       {/* -------- List Items -------- */}
       <List>
@@ -79,8 +87,8 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
               padding: '0px',
               transition: '0.3s all ease-in-out',
               backgroundColor: location.pathname === item.path
-                ? "#f2f8ff"
-                : "#fff",
+                ? "var(--bg-color)"
+                : "var(--sidebar-btn-color)",
               color: location.pathname === item.path ? "#fff" : "var(--text-color)",
               "&:hover": {
                 backgroundColor: "var(--bg-color)",
@@ -116,7 +124,7 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
 
       {/* -------- User Info -------- */}
 
-      <Link to={`/profile/123`}>
+      <Link to={`/profile`}>
         <Box
           sx={{
             border: '1px solid #ddd',
@@ -133,16 +141,16 @@ function Sidebar({ collapsed, setCollapsed, mobileSidebar }) {
         >
           <img
             style={{ borderRadius: '50%', height: '100%' }}
-            src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+            src={user?.profilePic || '/images/defaultProfilePic.jpg'}
             alt=""
           />
           {!collapsed && (
             <Box sx={{ marginLeft: '8px', overflow: 'hidden' }}>
               <Typography color='var(--text-color)' fontSize={'15px'} fontWeight={'bold'} >
-                user example
+                {user?.username}
               </Typography>
               <Typography color='#6d6d6dff' fontSize={'12px'}>
-                example@gmail.com
+                {user?.email}
               </Typography>
             </Box>
           )}

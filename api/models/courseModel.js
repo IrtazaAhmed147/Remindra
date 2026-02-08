@@ -8,22 +8,26 @@ const courseSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true,
         lowercase: true,
     },
     courseCode: {
         type: String,
+        trim: true,
     },
+
     owner: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true,
-    }, assignments: {
-        type: [String],
-    }, quizzes: {
-        type: [String],
-    }, materials: {
-        type: [String],
     },
+    members: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        }
+    ],
+   
+    disable: { type: Boolean, default: false },
 },
     { timestamps: true }
 )
