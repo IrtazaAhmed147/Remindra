@@ -17,43 +17,52 @@ import api from "../utils/common.js";
 
 import UserTable from "../components/tables/userTable";
 import axios from "axios";
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from "react";
+import { getStats } from "../redux/actions/dashboardActions.js";
 
 const AdminDashboard = () => {
   // Hardcoded data
-  const stats = {
-    totalUsers: 120,
-    totalCourses: 45,
-    totalMaterials: 200,
-    last24hUsers: 3,
-    last24hCourses: 2,
-  };
+  // const stats = {
+  //   totalUsers: 120,
+  //   totalCourses: 45,
+  //   totalMaterials: 200,
+  //   last24hUsers: 3,
+  //   last24hCourses: 2,
+  // };
+  const dispatch = useDispatch()
+  const {stats} = useSelector((state)=> state.dashboard)
+  useEffect(() => {
+    dispatch(getStats()).then((msg) => console.log(msg)
+    )
 
+  }, [])
   const coursesData = [
     { id: 1, title: "React Basics", creator: "Ali", materials: 5, sharedWith: 3 },
     { id: 2, title: "JS Fundamentals", creator: "Sara", materials: 8, sharedWith: 5 },
     { id: 3, title: "Python Intro", creator: "Ahmed", materials: 3, sharedWith: 2 },
   ];
-  const handleReminder = async ()=> {
+  const handleReminder = async () => {
     console.log("remidner");
     // return;
     try {
-              const token = localStorage.getItem("token");
-              // const subscriptionId = OneSignal.User.PushSubscription.id;
+      const token = localStorage.getItem("token");
+      // const subscriptionId = OneSignal.User.PushSubscription.id;
 
-      
-              const res = await axios.get(
-                  `http://localhost:3200/api/notification/notifyassignments`,
-                  // {message: "Hey! Check your tasks.",userId: "697a6067690049ddbd2fc805"},
-                  {
-                      headers: { Authorization: `Bearer ${token}` },
-                      withCredentials: true,
-                  }
-              );
+
+      const res = await axios.get(
+        `http://localhost:3200/api/notification/notifyassignments`,
+        // {message: "Hey! Check your tasks.",userId: "697a6067690049ddbd2fc805"},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        }
+      );
       console.log(res);
-      
+
     } catch (error) {
-        console.log(error);
-        
+      console.log(error);
+
     }
   }
 
@@ -65,10 +74,10 @@ const AdminDashboard = () => {
 
       {/* Summary Cards */}
       <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mb: 4 }}>
-        {[ 
-          { label: "Total Users", value: stats.totalUsers },
+        {[
+          { label: "Total Users", value: stats.users },
           { label: "Total Courses", value: stats.totalCourses },
-          { label: "Total Materials", value: stats.totalMaterials },
+          { label: "Total Materials", value: stats.materials },
           { label: "New Users (24h)", value: stats.last24hUsers },
           { label: "New Courses (24h)", value: stats.last24hCourses },
         ].map((item) => (
@@ -88,18 +97,18 @@ const AdminDashboard = () => {
         ))}
       </Box>
 
-        <Button variant="contained" color="primary" onClick={()=> handleReminder()}>Send Reminder</Button>
+      <Button variant="contained" color="primary" onClick={() => handleReminder()}>Send Reminder</Button>
 
       {/* User Management */}
-      <Box sx={{ mb: 4 }}>
+      {/* <Box sx={{ mb: 4 }}>
         <Typography variant="h6" sx={{ mb: 1 }}>
           User Management
         </Typography>
         <UserTable />
-      </Box>
+      </Box> */}
 
       {/* Course Management */}
-      <Box>
+      {/* <Box>
         <Typography variant="h6" sx={{ mb: 1 }}>
           Course Management
         </Typography>
@@ -139,7 +148,7 @@ const AdminDashboard = () => {
 
           </Table>
         </TableContainer>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

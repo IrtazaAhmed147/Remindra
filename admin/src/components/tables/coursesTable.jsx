@@ -11,12 +11,11 @@ import {
   Button,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Link, useNavigate } from 'react-router-dom'
 
-const options = ["View Courses", "Block/Unblock", "Delete","Send Email"];
+const options = ["View Courses", "Block/Unblock", "Delete"];
 const ITEM_HEIGHT = 48;
 
-export default function UserTable({users}) {
+export default function coursesTable({courses}) {
   // const users = [
   //   { id: 1, name: "Ali", email: "ali@example.com", courses: 3, materials:34,status: "Active" },
   //   { id: 2, name: "Sara", email: "sara@example.com", courses: 5, materials:34,status: "Blocked" },
@@ -25,17 +24,16 @@ export default function UserTable({users}) {
   // ];
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const navigate = useNavigate()
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedCourse, setSelectedCourse] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event, user) => {
+  const handleClick = (event,course) => {
     setAnchorEl(event.currentTarget);
-    setSelectedUser(user);
+    setSelectedCourse(course);
   };
   const handleClose = () => {
     setAnchorEl(null);
-    setSelectedUser(null);
+    setSelectedCourse(null);
   };
 
   return (
@@ -55,19 +53,19 @@ export default function UserTable({users}) {
         }}
       >
         {/* <HeaderCell label="ID" /> */}
-        <HeaderCell label="UserName" />
-        <HeaderCell label="FullName" />
-        <HeaderCell label="Email" />
-        <HeaderCell label="isVerfied" />
+        <HeaderCell label="Title" />
+        <HeaderCell label="Owner" />
+        <HeaderCell label="Members" />
+        {/* <HeaderCell label="isVerfied" /> */}
         {/* <HeaderCell label="Materials" /> */}
         <HeaderCell label="Status"  width="15%" />
         <HeaderCell label=" " width="15%" />
       </Box>
 
       {/* Rows */}
-      {users?.map((user) => (
+      {courses?.map((course) => (
         <Box
-          key={user._id}
+          key={course?._id}
           sx={{
             display: "flex",
             gap: "5px",
@@ -84,15 +82,15 @@ export default function UserTable({users}) {
           }}
         >
           {/* <RowCell>{user?._id}</RowCell> */}
-          <RowCell>{user?.username}</RowCell>
-          <RowCell>{user?.fullname}</RowCell>
-          <RowCell>{user?.email}</RowCell>
-          <RowCell>{user?.isVerified  ? 'true' :"false"}</RowCell>
+          <RowCell>{course?.title}</RowCell>
+          <RowCell>{course?.owner?.username}</RowCell>
+          <RowCell>{course?.members?.length}</RowCell>
+          {/* <RowCell>{course?.isVerified  ? 'true' :"false"}</RowCell> */}
           {/* <RowCell>{user.materials}</RowCell> */}
 
           {/* Status Chip */}
           <Box sx={{ width: "15%", display: "flex" }}>
-            {!user.isSuspend  ? (
+            {!course?.disable  ? (
               <Chip
                 icon={<CheckCircleOutlineIcon sx={{ fontSize: "16px" }} />}
                 label="Active"
@@ -123,7 +121,7 @@ export default function UserTable({users}) {
               aria-label="more"
               aria-controls={open ? "menu" : undefined}
               aria-haspopup="true"
-              onClick={(e) => handleClick(e, user)}
+              onClick={(e) => handleClick(e, course)}
             >
               <MoreVertIcon fontSize="small" />
             </IconButton>
@@ -131,7 +129,7 @@ export default function UserTable({users}) {
             <Menu
               id="menu"
               anchorEl={anchorEl}
-              open={open && selectedUser?._id === user._id}
+              open={open && selectedCourse?.id === course?.id}
               onClose={handleClose}
               PaperProps={{
                 style: {
@@ -142,14 +140,7 @@ export default function UserTable({users}) {
               }}
             >
               {options.map((option) => (
-                <MenuItem key={option} onClick={()=> {
-
-                  if(option === 'Send Email' ) {
-                    navigate(`/send-email/${user._id}`)
-                  }
-                  handleClose()
-
-                }} >
+                <MenuItem key={option} onClick={handleClose}>
                   {option}
                 </MenuItem>
               ))}

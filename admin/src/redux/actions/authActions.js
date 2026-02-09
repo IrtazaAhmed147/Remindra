@@ -28,23 +28,15 @@ export const loginUser = (credentials) => async (dispatch) => {
     try {
         dispatch(loginStart())
 
-        const res = await api.post('/auth/login', credentials, {
+        const res = await api.post('/auth/admin-login', credentials, {
             withCredentials: true
         })
 
-        if (res?.data?.data?.tempToken) {
-
-            localStorage.setItem("tempToken", res?.data?.data?.tempToken)
-            dispatch(otpSuccess())
-            return { msg: res.data.message, url: "otp" }
-
-        } else {
 
             localStorage.setItem("token", res?.data?.token)
 
             dispatch(loginSuccess(res?.data.data))
             return { msg: res.data.message, url: "dashboard" }
-        }
     } catch (error) {
         console.log(error);
         

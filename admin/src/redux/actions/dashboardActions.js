@@ -9,7 +9,7 @@ export const getStats = () => async (dispatch) => {
         const token = localStorage.getItem("token");
 
         const res = await api.get(
-            `/dashboard/stats`,
+            `/admin/stats/all`,
             {
                 headers: { Authorization: `Bearer ${token}` },
                 withCredentials: true,

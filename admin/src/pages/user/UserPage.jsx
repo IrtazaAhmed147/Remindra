@@ -1,5 +1,5 @@
 // UserManagement.jsx
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     Box,
     Typography,
@@ -11,10 +11,13 @@ import {
     Grid,
     Divider,
     Select,
-
+ 
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import UserTable from "../../components/tables/userTable";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllUsersAction } from "../../redux/actions/userActions";
+import { notify } from "../../utils/HelperFunctions";
 // import UserTable from "../components/tables/userTable";
 
 const UserPage = () => {
@@ -22,6 +25,27 @@ const UserPage = () => {
     const [status, setStatus] = useState("All");
     const [sort, setSort] = useState("Newest");
 
+    const form = useRef({});
+    
+  const dispatch = useDispatch()
+  const {users,userIsLoading} = useSelector((state)=> state.users)
+  useEffect(() => {
+    dispatch(getAllUsersAction()).then((msg) => console.log(msg)
+)
+
+}, [])
+
+const handleSubmit = ()=> {
+    try {
+
+        dispatch(getAllUsersAction({...form?.current})).then((msg) => console.log(msg))
+
+    } catch (error) {
+            // notify("error", error)
+            console.log(error);
+            
+    }
+  }
     return (
         <Box sx={{ p: 4, backgroundColor: "#f4f6f8", minHeight: "100vh" }}>
             <Typography variant="h4" sx={{ mb: 3 }}>
@@ -32,10 +56,10 @@ const UserPage = () => {
             
             <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mb: 4 }}>
                 {[
-                    { label: "Total Users", value: 120 },
-                    { label: "Active Users", value: 98 },
-                    { label: "Blocked Users", value: 12 },
-                    { label: "New Users (24h)", value: 3 },
+                    { label: "Total Users", value: users?.length },
+                    // { label: "Active Users", value: 98 },
+                    // { label: "Blocked Users", value: 12 },
+                    // { label: "New Users (24h)", value: 3 },
                 ].map((item) => (
                     <Card
                         key={item.label}
@@ -63,23 +87,14 @@ const UserPage = () => {
                 }}
             >
 
-                 <Box sx={{ display: "flex", width: { xs: "100%", sm: "100px", md: "100px" }, }}>
-                    <Typography fontWeight={'bold'} p={1}>ID: </Typography>
-                    <input type="number" style={{
-                        outline: "none",
-                        background: "#fff",
-                        border: "1px solid #2A7DE1",
-                        borderRadius: "5px",
-                        padding: "5px 10px",
-                        width: "100%",
-                        height: "34px"
-                    }} />
-                    
-                </Box>
+               
 
                 <Box sx={{ display: "flex", width: { xs: "100%", sm: "25%", md: "25%" }, }}>
 
-                    <input type="text" placeholder='Search user' style={{
+                    <input type="text" placeholder='Search user' 
+                    name="username"
+                     onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }}
+                    style={{
                         outline: "none",
                         background: "#fff",
                         border: "1px solid #2A7DE1",
@@ -92,7 +107,8 @@ const UserPage = () => {
                 </Box>
                 <Box sx={{ display: "flex", width: { xs: "100%", sm: "25%", md: "25%" }, }}>
 
-                    <input type="text" placeholder='Search by email' style={{
+                    <input type="text" placeholder='Search by email' name="email"
+                     onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} style={{
                         outline: "none",
                         background: "#fff",
                         border: "1px solid #2A7DE1",
@@ -102,6 +118,7 @@ const UserPage = () => {
                         height: "34px"
                     }} />
                 </Box>
+                <Button variant="contained" color="primary" onClick={()=> handleSubmit()}> Search</Button>
                
                 {/* Task Type */}
 
@@ -185,7 +202,7 @@ const UserPage = () => {
             <Typography variant="h6" sx={{ mb: 1 }}>
                 All Users
             </Typography>
-            <UserTable search={search} status={status} sort={sort} />
+           {!userIsLoading && <UserTable users={users} search={search} status={status} sort={sort} />}
         </Box>
     );
 };

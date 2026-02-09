@@ -10,20 +10,30 @@ export const getAllUsers = async (req, res) => {
     const { username, email, isAdmin, isSuspend, isDeactivate, members, limit } = req.query;
     console.log(members);
 
-    const filter = {};
+    const filter = {isAdmin: false};
     try {
-        if (username?.trim()) filter.username = username;
-        console.log("username ==>>",username);
-        
-        if (email) filter.email = email;
-        if (isAdmin !== undefined) filter.isAdmin = isAdmin === 'true';
+        if (username?.trim()) {
+            filter.username = {
+                $regex: username.trim(),
+                $options: "i"   // case-insensitive
+            };
+        }
+        console.log("username ==>>", username);
+
+        if (email?.trim()) {
+            filter.email = {
+                $regex: email.trim(),
+                $options: "i"
+            };
+        }
+        // if (isAdmin !== undefined) filter.isAdmin = isAdmin === 'true';
         if (isSuspend) filter.isSuspend = false;
         if (isDeactivate) filter.isDeactivate = false;
 
         if (members) {
-            const m = JSON.parse(members); 
+            const m = JSON.parse(members);
             if (Array.isArray(m) && m.length > 0) {
-                filter._id = { $nin: m };  
+                filter._id = { $nin: m };
             }
         }
 

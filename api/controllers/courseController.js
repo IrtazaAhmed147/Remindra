@@ -33,9 +33,24 @@ export const createCourse = async (req, res) => {
 }
 
 export const getAllcourses = async (req, res) => {
-    const { courseName, } = req.query;
+    const { courseName, username} = req.query;
+    console.log(req.query);
+    
     const filter = {};
-    if (courseName) filter.title = courseName;
+    // if (courseName) filter.title = courseName;
+
+        if (courseName?.trim()) {
+            filter.title = {
+                $regex: courseName.trim(),
+                $options: "i"
+            };
+        }
+        // if (username?.trim()) {
+        //     filter["owner.username"] = {
+        //         $regex: username?.trim(),
+        //         $options: "i"
+        //     };
+        // }
     try {
         const courseData = await course.find(filter).populate({
             path: "owner",

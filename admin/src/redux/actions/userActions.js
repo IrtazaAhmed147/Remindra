@@ -14,6 +14,8 @@ import {
 
 export const getAllUsersAction = (query = {}) => async (dispatch) => {
   try {
+    console.log(query);
+    
     dispatch(fetchUsersStart());
 
     const token = localStorage.getItem("token");

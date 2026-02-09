@@ -59,6 +59,52 @@ export const register = async (req, res, next) => {
     }
 }
 
+export const adminLogin = async (req, res) => {
+    try {
+        const { username, password} = req.body;
+        
+
+
+        // 1. Check missing fields
+        if (!username || !password) {
+            return errorHandler(res, 400, "Missing fields");
+        }
+
+        // 2. Check user exists
+        const user = await User.findOne({ username, isAdmin:true });
+        if (!user) {
+            return errorHandler(res, 400, "only admin allowed");
+        }
+
+        // 3. Check password
+        const isPasswordCorrect = await compare(password, user.password);
+        if (!isPasswordCorrect) {
+            return errorHandler(res, 400, "only admin allowed");
+        }
+        
+        // 5. If verified → generate login token
+        const token = jwt.sign(
+            { id: user._id, username: user.username, isAdmin: user.isAdmin },
+            process.env.JWT,
+            { expiresIn: "7d" }
+        );
+
+        // Remove password before sending
+        const { password: _, ...otherDetails } = user._doc;
+
+        return res.status(200).json({
+            success: true,
+            status: 200,
+            token,
+            data: otherDetails,
+            message: "User logged in successfully"
+        });
+
+    } catch (error) {
+        return errorHandler(res, 500, error.message);
+    }
+};
+
 export const login = async (req, res) => {
     try {
         const { username, password } = req.body;

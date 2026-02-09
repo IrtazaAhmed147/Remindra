@@ -16,6 +16,7 @@ import { resourceRouter } from './routes/resourceRoute.js'
 import { inviteRouter } from './routes/InviteRoute.js'
 import notificationRouter from './routes/notificationRoute.js';
 import { dashboardRouter } from './routes/dashboardRoute.js';
+import { adminRouter } from './routes/adminRoute.js';
 
 dotenv.config();
 
@@ -23,18 +24,18 @@ const app = express();
 
 // DB
 // await connectDB();
-app.use(async (req, res, next) => {
-  try {
-    await connectDB();
-    next();
-  } catch (err) {
-    console.error("DB Connection Error:", err.message);
-    return res.status(500).json({
-      success: false,
-      message: "Database connection failed",
-    });
-  }
-});
+connectDB();
+// app.use(async (req, res, next) => {
+//   try {
+//     next();
+//   } catch (err) {
+//     console.error("DB Connection Error:", err.message);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Database connection failed",
+//     });
+//   }
+// });
 
 
 // Middlewares
@@ -56,6 +57,7 @@ app.use('/api/resource', resourceRouter);
 app.use('/api/invite', inviteRouter);
 app.use('/api/notification', notificationRouter);
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/admin', adminRouter);
 
 
 if (process.env.NODE_ENV !== 'production') {

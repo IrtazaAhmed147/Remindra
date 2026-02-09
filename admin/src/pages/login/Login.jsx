@@ -30,7 +30,7 @@ function Login() {
         e.preventDefault()
 
         if (!form.current.username.trim() || !form.current.password.trim()) return;
-
+        form.current.admin = true;
         dispatch(loginUser(form.current))
             .then((msg) => notify('success', msg))
             .catch((err) => notify('error', err))
