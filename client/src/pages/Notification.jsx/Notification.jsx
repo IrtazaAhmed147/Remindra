@@ -29,7 +29,7 @@ function Notification() {
         <CircularProgress  sx={{color:"var(--text-color)"}} size="30px" />
       </Box>}
       {!invitationFetchLoading && invitations?.map((invite) => (
-        <NotificationCard key={invite._id} responseHandle={responseHandle} {...invite} msg={' has invited you to access the course '} />
+        <NotificationCard key={invite?._id} responseHandle={responseHandle} {...invite} msg={' has invited you to access the course '} />
       ))}
       {invitationLoading && <FullPageLoader />}
     </Box>

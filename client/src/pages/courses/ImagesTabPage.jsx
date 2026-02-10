@@ -85,7 +85,7 @@ function ImagesTabPage() {
 
         <>
             <Box>
-                <Box sx={{ position: "sticky", top: 0, backgroundColor: "var(--bg-color)", display: "flex", mb: 2, justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: 1 }}>
+                <Box sx={{ position: "sticky", zIndex:99,top: 0, backgroundColor: "var(--bg-color)", display: "flex", mb: 2, justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: 1 }}>
                     <Typography fontSize="24px" fontWeight="bold" sx={{ color: "#334155" }}>
                         Images  {`(${resources.length})`}
                     </Typography>
