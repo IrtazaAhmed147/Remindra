@@ -53,11 +53,15 @@ export const getAllcourses = async (req, res) => {
 
 export const getSinglecourse = async (req, res) => {
     try {
-        const courseData = await course.findById(req.params.id).populate({
+        const courseData = await course.findById(req.params.id).populate([{
             path: "owner",
             select: "username",
             model: "User",
-        })
+        },{
+        path: "members",
+        select: "username",
+        model: "User",
+    }])
 
         if (!courseData) return errorHandler(res, 404, "course not found")
         successHandler(res, 200, "course found successfully", courseData)

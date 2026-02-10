@@ -9,7 +9,7 @@ import { notify } from "../../utils/HelperFunctions";
 const ownerTabs = ["overview", "resources", "files"];
 const sharedTabs = ["resources", "files"];
 
-const tabs = ["resources", "files"];
+// const tabs = ["resources", "files"];
 
 
 const SingleCourseLayout = () => {
@@ -29,7 +29,7 @@ const SingleCourseLayout = () => {
   const isOwner = courseReady && singleCourse.owner._id === user._id;
 
 
-  const activeTabs = tabs;
+  const activeTabs = isOwner ? ownerTabs: sharedTabs;
   const currentTab = activeTabs.findIndex(tab =>
     location.pathname.includes(tab)
   );
@@ -45,24 +45,24 @@ const SingleCourseLayout = () => {
 
   useEffect(() => {
     if (!courseReady) return;
-    const basePath = `/course/${courseId}/resources`;
-    if (location.pathname === `/course/${courseId}` || location.pathname === `/course/${courseId}/`) {
+    const basePath = `/course/${courseId}`;
+    // if (location.pathname === `/course/${courseId}` || location.pathname === `/course/${courseId}/`) {
+      // navigate("resources", { replace: true });
+    // }
+    if (!isOwner && location.pathname === basePath) {
       navigate("resources", { replace: true });
     }
-    // if (!isOwner && location.pathname === basePath) {
-    //   navigate("resources", { replace: true });
-    // }
   }, [courseReady, isOwner, location.pathname]);
 
 
   const handleTabChange = (e, newValue) => {
 
     const path = activeTabs[newValue];
-    // if (path === "overview") {
-    //   navigate("");
-    // } else {
+    if (path === "overview") {
+      navigate("");
+    } else {
       navigate(path);
-    // }
+    }
   };
 
 

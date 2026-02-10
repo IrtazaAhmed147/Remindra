@@ -1,16 +1,34 @@
 import courseInviteModel from "../models/courseInviteModel.js";
 import courseModel from "../models/courseModel.js";
+import SubscriptionModel from "../models/SubscriptionModel.js";
 import { errorHandler, successHandler } from "../utils/responseHandler.js";
+import { sendPushNotification } from "../utils/webPush.js";
 
 export const sendInvite = async (req, res) => {
     try {
 
+        const { receiverIds } = req.body
 
-        let invite = await courseInviteModel({
-            senderId: req.user.id, receiverId: req.params.id, courseId: req.params.courseId, status: "pending"
-        })
-        let savedInvite = await invite.save();
-        successHandler(res, 200, "invitation send successfully", savedInvite)
+        const course = await courseModel.findById(req.params.courseId);
+        for (const id of receiverIds) {
+
+            let invite = await courseInviteModel({
+                senderId: req.user.id, receiverId: id, courseId: req.params.courseId, status: "pending"
+            })
+            await invite.save();
+        }
+        for (const id of receiverIds) {
+            const sub = await SubscriptionModel.findOne({ userId: id });
+            if (sub && sub?.subscription) {
+                await sendPushNotification(sub.subscription, {
+                    title: "You're Invited!",
+                    message: `${req?.user?.username} invited you to join "${course?.title}".`
+                });
+            }
+
+        }
+        return successHandler(res, 200, "invitations send successfully")
+        // successHandler(res, 200, "invitation send successfully")
 
     } catch (error) {
         errorHandler(res, 400, error.message)
@@ -67,7 +85,7 @@ export const getAllInvitations = async (req, res) => {
 export const getUserInvitations = async (req, res) => {
     try {
 
-        const invites = await courseInviteModel.find({ receiverId: req.user.id,status:'pending' }).populate([
+        const invites = await courseInviteModel.find({ receiverId: req.user.id, status: 'pending' }).populate([
             {
                 path: "senderId",
                 select: ["username", "profilePic"],

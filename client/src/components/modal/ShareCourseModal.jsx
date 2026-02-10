@@ -118,7 +118,7 @@ export default function ShareCourseModal({
         />
 
         {loading ? (
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Box sx={{ display: "flex", justifyContent: "center",minHeight:"250px",alignItems:"center" }}>
             <CircularProgress size={30} />
           </Box>
         ) : (

@@ -36,7 +36,8 @@ function CourseCard({
   const navigate = useNavigate();
 
   const isOwner = owner?._id === user?._id;
-
+  console.log(isOwner);
+  
   return (
     <Box
       sx={{

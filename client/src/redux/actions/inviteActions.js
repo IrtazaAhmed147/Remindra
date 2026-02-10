@@ -12,7 +12,7 @@ import {
     createInviteFailure,
 } from "../slices/inviteSlice.js";
 
-export const sendInviteAction = (receiverId, courseId) => async (dispatch) => {
+export const sendInviteAction = (receiverIds, courseId) => async (dispatch) => {
 
     try {
         dispatch(createInvitetart());
@@ -20,8 +20,8 @@ export const sendInviteAction = (receiverId, courseId) => async (dispatch) => {
         const token = localStorage.getItem("token");
 
         const res = await api.post(
-            `/invite/send/${receiverId}/course/${courseId}`,
-            {},
+            `/invite/send/course/${courseId}`,
+            {receiverIds},
             {
                 headers: { Authorization: `Bearer ${token}` },
                 withCredentials: true,

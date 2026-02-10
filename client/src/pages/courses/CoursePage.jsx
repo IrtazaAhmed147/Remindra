@@ -12,11 +12,13 @@ import ShareCourseModal from '../../components/modal/ShareCourseModal';
 import { getAllUsersAction, suspendUserAction } from '../../redux/actions/userActions';
 import { sendInviteAction } from '../../redux/actions/inviteActions';
 import GradientBtn from '../../components/common/GradientBtn';
+import FullPageLoader from '../../components/loader/FullPageLoader';
 
 
 function CoursePage() {
     const { courseIsLoading, courses, error } = useSelector((state) => state.course)
     const { users, userIsLoading } = useSelector((state) => state.user)
+    const { invitationFetchLoading } = useSelector((state) => state.invite)
     const [searchName, setSearchName] = useState("");
     const [courseType, setCourseType] = useState("all");
     const [removeModalState, setRemoveModalState] = useState(false);
@@ -78,12 +80,12 @@ function CoursePage() {
         dispatch(getUserCoursesAction(params)).catch((msg) => notify("error", msg))
     };
     const handleShare = (userIds) => {
-        dispatch(sendInviteAction(userIds[0], selectedCourseId)).then((msg) => notify('success', msg)).catch((msg) => notify("error", msg))
+        dispatch(sendInviteAction(userIds, selectedCourseId)).then((msg) => notify('success', msg)).catch((msg) => notify("error", msg))
     };
 
     return (
         <>
-
+            {invitationFetchLoading && <FullPageLoader />}
             <Box sx={{ width: "100%", minHeight: "100vh", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" }, pt: "5px !important", }}>
 
                 <Box sx={{ width: "100%", display: "flex", mb: 2, justifyContent: "space-between", flexWrap: 'wrap' }}>

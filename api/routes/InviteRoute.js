@@ -4,7 +4,7 @@ import { getAllInvitations, getUserInvitations, sendInvite, updateInvite } from 
 
 const inviteRouter = express.Router()
 
-inviteRouter.post("/send/:id/course/:courseId", verifyToken, sendInvite);
+inviteRouter.post("/send/course/:courseId", verifyToken, sendInvite);
 inviteRouter.get("/all", verifyToken, getAllInvitations);
 inviteRouter.get("/", verifyToken, getUserInvitations);
 inviteRouter.put("/:id", verifyToken, updateInvite);

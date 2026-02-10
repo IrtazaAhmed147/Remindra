@@ -64,7 +64,7 @@ export const uploadResource = async (req, res) => {
                 
                 await sendPushNotification(sub.subscription, {
                     title: "New Course Material",
-                    message: `${files.length} new materials added to the course.`
+                    message: `${files.length} new materials added to the course ${course?.title}.`
                 });
             }
         }
