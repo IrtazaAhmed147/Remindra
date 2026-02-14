@@ -94,12 +94,8 @@ export const updateInviteAction = (inviteId, status) => async (dispatch) => {
             }
         );
         dispatch(updateInviteSuccess());
-        dispatch(getAllInvitesAction());
-
         return res.data.message;
-
     } catch (error) {
-
         handleApiError(error, dispatch, updateInviteFailure);
     }
 };

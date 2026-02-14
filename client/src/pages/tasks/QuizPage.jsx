@@ -208,7 +208,7 @@ function QuizPage() {
       <TaskTable
         assignments={quizs}
         type="quiz"
-        quizLoading={quizLoading}
+        isLoading={quizLoading}
         handleUpdate={handleUpdate}
         setSelectedItem={setSelectedItem}
         selectedItem={selectedItem}

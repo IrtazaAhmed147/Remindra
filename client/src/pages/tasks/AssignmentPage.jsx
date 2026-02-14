@@ -104,7 +104,7 @@ function AssignmentPage() {
       </Typography>
 
       {/* Filters */}
-      <Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", alignItems: "center", gap: 2, mb: 3 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", alignItems: "center", gap: 1, mb: 3 }}>
         <GradientBtn text={"Add Assigment"} icon={<AssignmentOutlinedIcon sx={{ fontSize: 18, color: "#4158D0" }} />} url={"/create/assignment"} />
         <Box
           sx={{
@@ -112,7 +112,7 @@ function AssignmentPage() {
             flexWrap: 'wrap',
             alignItems: "end",
             width: { md: "60%" },
-            gap: 2,
+            gap: 1,
           }}
         >
           {/* Task Type */}
@@ -217,7 +217,7 @@ function AssignmentPage() {
       {/* Task Table */}
 
       <TaskTable assignments={assignments}
-        assignmentLoading={assignmentLoading}
+        isLoading={assignmentLoading}
         handleUpdate={handleUpdate}
         setSelectedItem={setSelectedItem}
         selectedItem={selectedItem}

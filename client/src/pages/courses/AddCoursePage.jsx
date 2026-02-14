@@ -9,6 +9,7 @@ import { createCourseAction, getSingleCourseAction, updateCourseAction } from ".
 import { useDispatch, useSelector } from "react-redux";
 import { notify } from "../../utils/HelperFunctions";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import FullPageLoader from "../../components/loader/FullPageLoader";
 
 const categories = [
     "Select Category",
@@ -53,7 +54,7 @@ export default function AddCoursePage() {
         if (!form.current.title.trim()) return;
         // if( typeParam.get("type") && typeParam.get("id")) return;
         if (typeParam.get("type") === 'edit' && typeParam.get("id")) {
-            dispatch(updateCourseAction(typeParam.get("id") ,form.current))
+            dispatch(updateCourseAction(typeParam.get("id"), form.current))
                 .then((msg) => {
 
                     // formRef.current.reset();
@@ -69,9 +70,9 @@ export default function AddCoursePage() {
 
                     formRef.current.reset();
                     form.current = {
-                        
-                    title: "",
-                    description: ""
+
+                        title: "",
+                        description: ""
                     };
                     notify('success', msg)
                     navigate("/courses")
@@ -87,6 +88,8 @@ export default function AddCoursePage() {
 
     return (
         <Box sx={{ p: 2, width: "100%", minHeight: "100vh", mx: "auto" }}>
+
+            {courseIsLoading && <FullPageLoader />}
 
             {/* Heading */}
             <Typography
@@ -116,7 +119,7 @@ export default function AddCoursePage() {
                             onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }}
                             style={{
                                 outline: "none",
-                                color:"var(--text-color)",
+                                color: "var(--text-color)",
                                 background: "var(--input-bg-color)",
                                 border: "1px solid #cfd3d8",
                                 borderRadius: "6px",
@@ -162,7 +165,7 @@ export default function AddCoursePage() {
                             placeholder="Write something about your course..."
                             style={{
                                 outline: "none",
-                                color:"var(--text-color)",
+                                color: "var(--text-color)",
                                 background: "var(--input-bg-color)",
                                 border: "1px solid #cfd3d8",
                                 borderRadius: "6px",
@@ -197,7 +200,6 @@ export default function AddCoursePage() {
                             ":hover": { backgroundColor: "#1258ad" },
                         }}
                     >
-                        {courseIsLoading && <CircularProgress  sx={{color:"var(--text-color)"}} size="20px" />}
                         {typeParam.get("type") === 'edit' ? "Edit" : 'Create'} Course
                     </Button>
                 </Box>

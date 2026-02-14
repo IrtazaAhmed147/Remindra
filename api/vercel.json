@@ -18,7 +18,7 @@
       "schedule": "0 3 * * *"
     },
     {
-      "path": "/api/notification/notifyquiz",
+      "path": "/api/notification/notifyquiz/night",
       "schedule": "0 15 * * *"
     },
     {
@@ -26,7 +26,7 @@
       "schedule": "0 3 * * *"
     },
     {
-      "path": "/api/notification/notifyassignments",
+      "path": "/api/notification/notifyassignments/night",
       "schedule": "0 15 * * *"
     }
   ]

@@ -11,7 +11,7 @@ import { sendPushNotification } from "../utils/webPush.js";
 export const uploadResource = async (req, res) => {
     try {
         const files = req.files; // array of files
-        
+
         if (!files || files.length === 0) {
             return errorHandler(res, 404, "materials required");
         }
@@ -36,7 +36,7 @@ export const uploadResource = async (req, res) => {
         const savedResources = await Promise.all(
             uploadedUrls.map(async (url, i) => {
                 const file = files[i];
-                
+
                 const resource = new resourceModel({
                     fileName: file.originalname,
                     fileSize: file.size,
@@ -48,7 +48,7 @@ export const uploadResource = async (req, res) => {
 
                 });
                 const saved = await resource.save();
-              
+
                 return saved;
             })
         );
@@ -61,7 +61,7 @@ export const uploadResource = async (req, res) => {
             const sub = await SubscriptionModel.findOne({ userId: memberId });
             if (sub && sub?.subscription) {
                 console.log(sub);
-                
+
                 await sendPushNotification(sub.subscription, {
                     title: "New Course Material",
                     message: `${files.length} new materials added to the course ${course?.title}.`
@@ -73,7 +73,7 @@ export const uploadResource = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        
+
         errorHandler(res, 400, error.message);
     }
 };
@@ -111,9 +111,9 @@ export const getSingleResource = async (req, res) => {
 
 export const getCourseResources = async (req, res) => {
 
-    const { type } = req.query;
+    const { type, skip, limit } = req.query;
     console.log(req.query);
-    
+
     try {
         let filter = { courseId: req.params.id };
 
@@ -123,9 +123,12 @@ export const getCourseResources = async (req, res) => {
             filter.fileType = { $not: /^image\// };
         }
 
-        const resourcesData = await resourceModel.find(filter);
+        const resourcesData = await resourceModel.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit);
+
+
+        const total = await resourceModel.countDocuments({ courseId: req.params.id, fileType: type === "image" ? { $regex: "^image/" } : { $not: /^image\// } });
         if (!resourcesData) return errorHandler(res, 404, "resources not found")
-        successHandler(res, 200, "resources found successfully", resourcesData)
+        successHandler(res, 200, "resources found successfully", { resourcesData, total })
     }
     catch (err) {
         console.log(err);
@@ -133,18 +136,30 @@ export const getCourseResources = async (req, res) => {
     }
 }
 export const deleteResource = async (req, res) => {
-    const {type} = req.query
-    console.log(type);
-    
+
     try {
-        const resource = await resourceModel.findById(req.params.id);
-        if (!resource) return errorHandler(res, 404, "Resource not found");
+        const { resourcesIds } = req.query;
+        console.log(resourcesIds);
+        
+        const ids = JSON.parse(resourcesIds);
 
-        await deleteFromCloudinary(resource.publicId, type);
+        const resources = await resourceModel.find({
+            _id: { $in: ids }
+        });
 
-        await resourceModel.findByIdAndDelete(req.params.id);
+        if (!resources.length) {
+            return errorHandler(res, 404, "Resources not found");
+        }
 
-      
+        await Promise.all(
+            resources.map((resource) =>
+                deleteFromCloudinary(resource.publicId, "image")
+            )
+        );
+
+        await resourceModel.deleteMany({
+            _id: { $in: ids }
+        });
 
         successHandler(res, 200, "Resource deleted successfully");
     } catch (err) {
@@ -155,18 +170,11 @@ export const deleteResource = async (req, res) => {
 export const deleteAllResource = async (req, res) => {
     try {
         const resources = await resourceModel.find({ courseId: req.params.courseId });
-        console.log(resources);
-
         if (!resources) return errorHandler(res, 404, "Resource not found");
         for (const resource of resources) {
-
-
             await deleteFromCloudinary(resource.publicId, "image");
             await resourceModel.findByIdAndDelete(resource._id);
-           
-
         }
-
 
         successHandler(res, 200, "Resource deleted successfully");
 

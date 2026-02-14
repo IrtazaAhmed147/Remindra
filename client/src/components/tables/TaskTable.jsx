@@ -52,7 +52,7 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
         }}
       >
         <HeaderCell label="Task" />
-        <HeaderCell label="Course" />
+        {/* <HeaderCell label="Course" /> */}
         <HeaderCell label="Type" />
         <HeaderCell label="Due Date" />
         {/* <HeaderCell label="File" /> */}
@@ -83,8 +83,8 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
             "&:hover": { boxShadow: "0 3px 12px rgba(0,0,0,0.12)" },
           }}
         >
-          <RowCell >{item?.description?.slice(0, 35)}</RowCell>
-          <RowCell>{item?.courseId?.title}</RowCell>
+          <RowCell >{item?.title?.slice(0, 35)}</RowCell>
+          {/* <RowCell>{item?.courseId?.title}</RowCell> */}
           <RowCell sx={{ color: "red" }}>{item?.type}</RowCell>
           <RowCell>{item?.dueDate?.slice(0, 10)}</RowCell>
           {/* <RowCell>{item?.fileType}</RowCell> */}

@@ -8,6 +8,7 @@ import resourceSlice from './slices/resourceSlice'
 import inviteSlice from './slices/inviteSlice'
 import dashboardSlice from './slices/dashboardSlice'
 import settingSlice from './slices/settingSlice'
+import notificationSlice from './slices/notificationSlice'
 
 const store = configureStore({
     reducer: {
@@ -19,7 +20,9 @@ const store = configureStore({
         quizs: quizsSlice,
         invite: inviteSlice,
         dashboard: dashboardSlice,
-        setting: settingSlice
+        setting: settingSlice,
+        notification: notificationSlice,
+
     }
 })
 

@@ -14,7 +14,7 @@ function FileTabPage() {
     const dispatch = useDispatch()
     const [removeModalState, setRemoveModalState] = useState(false);
     const [selectedCourseId, setSelectedCourseId] = useState(null);
-    const { resources, isLoading: resourcesLoading } = useSelector((state) => state.resource)
+    const { resources,  resourceLoading } = useSelector((state) => state.resource)
     const { singleCourse, } = useSelector((state) => state.course)
     const { user } = useSelector((state) => state.auth)
     const { courseId } = useParams()
@@ -54,7 +54,7 @@ function FileTabPage() {
 
 
 
-            <Box sx={{ position: "sticky", top: 0, backgroundColor: "var(--bg-color)", display: "flex", mb: 2, justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: 1 }}>
+            <Box sx={{ position: "sticky", top: 0,p:1, backgroundColor: "var(--bg-color)", display: "flex", mb: 2, justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: 1 }}>
                 <Typography fontSize="24px" fontWeight="bold" sx={{ color: "#334155" }}>
                     Files  {`(${resources.length})`}
 
@@ -67,7 +67,7 @@ function FileTabPage() {
 
 
             </Box>
-            {resourcesLoading ? (
+            {resourceLoading ? (
                 <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "250px" }}>
                     <CircularProgress  sx={{color:"var(--text-color)"}} size="30px" />
                 </Box>
@@ -76,7 +76,7 @@ function FileTabPage() {
                 <Box width={'100%'}> {resources?.map((item, i) => (
 
 
-                    <FileCard key={item?._id} {...item} isDownloadBtn={true}
+                    <FileCard key={item?._id} {...item} isOwner={isOwner} isDownloadBtn={true}
                         handleDownload={handleDownload}
                         askDelete={(id) => {
                             setSelectedCourseId(id);

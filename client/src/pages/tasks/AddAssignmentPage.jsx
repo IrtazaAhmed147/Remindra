@@ -18,6 +18,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { notify } from "../../utils/HelperFunctions";
 import { createAssignmentAction, getSingleAssignmentAction, updateAssignmentAction } from "../../redux/actions/assignmentActions";
 import dayjs from "dayjs";
+import FullPageLoader from "../../components/loader/FullPageLoader";
 
 export default function AddAssignmentPage() {
     const [coverFiles, setCoverFiles] = useState([]);
@@ -33,11 +34,6 @@ export default function AddAssignmentPage() {
     const [params] = useSearchParams()
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (params.get("type") !== 'edit') {
-            dispatch(getUserCoursesAction({ courseType: 'mycourses' })).then((data) => setCourseList(data)).catch((msg) => notify("error",msg))
-        }
-    }, [])
     useEffect(() => {
 
         if (params.get("type") === 'edit' && params.get("id")) {
@@ -67,7 +63,7 @@ export default function AddAssignmentPage() {
         if(coverFiles.length > 5) {
             return notify("error", "files maximum length is 5");
         }
-        if ((!form.current.title || !form.current.task || !form.current.dueDate || !form.current.course) || (!form.current.title.trim() || !form.current.task.trim())) {
+        if ((!form.current.title || !form.current.task || !form.current.dueDate ) || (!form.current.title.trim() || !form.current.task.trim())) {
 
 
             notify("error", "Please fill in all required fields: Title, Task, Course, and Due Date. Uploading a file is optional.");
@@ -92,7 +88,7 @@ export default function AddAssignmentPage() {
                 navigate("/assignment")
             }).catch((msg) => notify("error", msg))
         } else {
-            dispatch(createAssignmentAction(form.current.course, formData)).then((msg) => {
+            dispatch(createAssignmentAction( formData)).then((msg) => {
                 
                 notify("success", msg)
                 navigate("/assignment")
@@ -127,6 +123,7 @@ export default function AddAssignmentPage() {
 
     return (
         <Box sx={{ p: 2, width: "100%", mx: "auto", minHeight: "100vh" }}>
+             {assignmentLoading && <FullPageLoader />}
             {/* Heading */}
             <Typography
                 sx={{
@@ -180,7 +177,7 @@ export default function AddAssignmentPage() {
                         }}
                     />
 
-                    {(params.get('type') !== 'edit') && <><Typography sx={{ mt: 2, mb: 1, fontSize: "12px", color: "#6b7280" }}>
+                    {/* {(params.get('type') !== 'edit') && <><Typography sx={{ mt: 2, mb: 1, fontSize: "12px", color: "#6b7280" }}>
                         Select Course
                     </Typography>
                         <Select
@@ -211,7 +208,7 @@ export default function AddAssignmentPage() {
                                     {cat.title}
                                 </MenuItem>
                             ))}
-                        </Select> </>}
+                        </Select> </>} */}
 
                     {/* Task Input */}
                     <Typography sx={{ mt: 1, mb: 1, fontSize: "12px", color: "#6b7280" }}>

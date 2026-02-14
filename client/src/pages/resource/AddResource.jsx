@@ -8,6 +8,7 @@ import { uploadResourceAction } from '../../redux/actions/resourceActions';
 import { useNavigate, useParams } from 'react-router-dom';
 import { notify } from '../../utils/HelperFunctions';
 import FileCard from '../../components/cards/FileCard';
+import FullPageLoader from '../../components/loader/FullPageLoader';
 function AddResource() {
 
     const form = useRef({})
@@ -18,7 +19,7 @@ function AddResource() {
     const { courseId } = useParams();
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { isLoading } = useSelector((state) => state.resource)
+    const { resourceLoading } = useSelector((state) => state.resource)
 
     const uploadFiles = async () => {
         const formData = new FormData();
@@ -68,6 +69,8 @@ function AddResource() {
     return (
         <>
             <Box sx={{ p: 2, width: "100%", mx: "auto", minHeight: "100vh" }}>
+                     {resourceLoading && <FullPageLoader />}
+           
                 <Typography
                     sx={{
                         mb: 3,
@@ -185,7 +188,7 @@ function AddResource() {
                 </Box>
                 <Box sx={{ mt: 4 }}>
                     <Button
-                        disabled={isLoading}
+                        disabled={resourceLoading}
                         onClick={() => uploadFiles()}
                         sx={{
                             padding: " 5px 10px",

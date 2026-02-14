@@ -40,7 +40,7 @@ export const createQuizs = async (req, res) => {
             dueDate,
             status,
             attachments,
-            courseId: req.params.id,
+            // courseId: req.params.id,
             type: "quiz"
         });
 

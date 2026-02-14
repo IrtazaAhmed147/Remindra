@@ -9,7 +9,7 @@ function OverviewTabPage() {
     const navigate = useNavigate()
     const { user } = useSelector((state) => state.auth)
     useEffect(() => {
-        
+
         if (singleCourse?.owner?._id && (singleCourse?.owner?._id !== user?._id)) {
 
             navigate('resources');
@@ -18,21 +18,24 @@ function OverviewTabPage() {
 
     return (
         <>
-            {courseIsLoading ? <CircularProgress  sx={{color:"var(--text-color)"}} size="30px" /> : <Box >
-                {/* <StatCard label="Assignments" value={singleCourse?.assignments?.length || 0} /> */}
-                {/* <StatCard label="Quizzes" value={singleCourse?.quizzes?.length || 0} />
-                <StatCard label="Materials" value={singleCourse?.resources?.length || 0} /> */}
-                <Typography fontWeight={'bold'} fontSize={'20px'}  >
+            {courseIsLoading ? <CircularProgress sx={{ color: "var(--text-color)" }} size="30px" /> : <Box >
+                {singleCourse?.description && <Typography fontWeight={'bold'} fontSize="18px" sx={{ color: "#64748b" }}>
+                  Description
+                </Typography>}
+                <Typography fontSize="13px" sx={{ mb: 2, color: "#64748b" }}>
+                   <span></span>  {singleCourse?.description || ""}
+                </Typography>
+                <Typography fontWeight={'bold'} fontSize={'18px'}  >
                     Members
                 </Typography>
                 <List>
-                {singleCourse?.members?.map((member)=> (
+                    {singleCourse?.members?.map((member) => (
 
 
-                        <ListItem key={member?._id}>
+                        <ListItem sx={{fontSize:"14px",pb:0}} key={member?._id}>
                             {member?.username}
                         </ListItem>
-                ))}
+                    ))}
                 </List>
             </Box>}
         </>

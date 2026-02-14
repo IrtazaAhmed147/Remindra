@@ -13,13 +13,13 @@ import {
 } from "../slices/assignmentsSlice.js";
 
 // CREATE ASSIGNMENT
-export const createAssignmentAction = (courseId, assignmentData) => async (dispatch) => {
+export const createAssignmentAction = ( assignmentData) => async (dispatch) => {
     try {
         dispatch(createAssignmentStart());
 
         const token = localStorage.getItem("token");
 
-        const res = await api.post(`/assignment/create/course/${courseId}`, assignmentData, {
+        const res = await api.post(`/assignment/create`, assignmentData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "multipart/form-data"

@@ -1,21 +1,30 @@
 import { Box, CircularProgress, Typography } from '@mui/material'
-import NotificationCard from '../../components/cards/NotificationCard'
+import InvitationCard from '../../components/cards/InvitationCard.jsx'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserInvitesAction, updateInviteAction } from '../../redux/actions/inviteActions'
 import FullPageLoader from '../../components/loader/FullPageLoader'
 import { notify } from '../../utils/HelperFunctions'
+import { getUserNotificationssAction } from '../../redux/actions/notificationActions'
+import NotificationCard from '../../components/cards/NotificationCard.jsx'
 
 function Notification() {
 
   const dispatch = useDispatch();
-  const { invitations, invitationLoading,invitationFetchLoading, invitationError } = useSelector((state) => state.invite)
+  
+  const { invitations, invitationLoading, invitationFetchLoading, invitationError } = useSelector((state) => state.invite)
+  const { notifications, notificationFetchLoading,notificationError } = useSelector((state) => state.notification)
   useEffect(() => {
-    dispatch(getUserInvitesAction()).then((data) => console.log(data)).catch((msg) => notify("error",msg))
+    dispatch(getUserInvitesAction()).catch((msg) => notify("error", msg))
+    dispatch(getUserNotificationssAction()).catch((msg) => notify("error", msg))
   }, [])
 
   const responseHandle = (id, data) => {
-    dispatch(updateInviteAction(id, { status: data })).then((msg) => notify('success', msg)).catch((msg) => notify("error",msg))
+    dispatch(updateInviteAction(id, { status: data })).then((msg) => {
+
+      dispatch(getUserInvitesAction()).catch((msg) => notify("error", msg))
+      notify('success', msg)
+    }).catch((msg) => notify("error", msg))
   }
 
   return (
@@ -26,10 +35,13 @@ function Notification() {
       </Typography>
       {invitationError && <Box>{invitationError}</Box>}
       {invitationFetchLoading && !invitationError && <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh", width: "100%" }} >
-        <CircularProgress  sx={{color:"var(--text-color)"}} size="30px" />
+        <CircularProgress sx={{ color: "var(--text-color)" }} size="30px" />
       </Box>}
       {!invitationFetchLoading && invitations?.map((invite) => (
-        <NotificationCard key={invite?._id} responseHandle={responseHandle} {...invite} msg={' has invited you to access the course '} />
+        <InvitationCard key={invite?._id} responseHandle={responseHandle} {...invite} msg={' has invited you to access the course '} />
+      ))}
+      {!notificationFetchLoading && notifications?.map((notification) => (
+        <NotificationCard key={notification?._id} {...notification} />
       ))}
       {invitationLoading && <FullPageLoader />}
     </Box>
