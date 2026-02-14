@@ -18,6 +18,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { notify } from "../../utils/HelperFunctions";
 import { createQuizAction, getSingleQuizAction, updateQuizAction } from "../../redux/actions/quizActions";
 import dayjs from "dayjs";
+import FullPageLoader from "../../components/loader/FullPageLoader";
 
 export default function AddQuizPage() {
     const [coverFiles, setCoverFiles] = useState([]);
@@ -32,13 +33,7 @@ export default function AddQuizPage() {
     const [courseList, setCourseList] = useState([]);
     const dispatch = useDispatch()
     const [params] = useSearchParams()
-    useEffect(() => {
 
-        if (params.get("type") !== 'edit') {
-
-            dispatch(getUserCoursesAction({ courseType: 'mycourses' })).then((data) => setCourseList(data)).catch((msg) => notify("error", msg))
-        }
-    }, [])
     useEffect(() => {
 
         if (params.get("type") === 'edit' && params.get("id")) {
@@ -47,7 +42,7 @@ export default function AddQuizPage() {
                     title: data.title,
                     task: data.description,
                     dueDate: data.dueDate,
-                    course: data.courseId.title
+                    // course: data.courseId.title
                 }
                 setDueDate(data.dueDate ? dayjs(data.dueDate) : null);
                 setCoverPreviews(
@@ -67,7 +62,7 @@ export default function AddQuizPage() {
         if (coverFiles.length > 5) {
             return notify("error", "files maximum length is 5");
         }
-        if ((!form.current.title || !form.current.task || !form.current.dueDate || !form.current.course) || (!form.current.title.trim() || !form.current.task.trim())) {
+        if ((!form.current.title || !form.current.task || !form.current.dueDate ) || (!form.current.title.trim() || !form.current.task.trim())) {
 
 
             notify("error", "Please fill in all required fields: Title, Task, Course, and Due Date. Uploading a file is optional.");
@@ -93,7 +88,7 @@ export default function AddQuizPage() {
                 navigate("/quiz")
             }).catch((msg) => notify("error", msg))
         } else {
-            dispatch(createQuizAction(form.current.course, formData)).then((msg) => {
+            dispatch(createQuizAction( formData)).then((msg) => {
                 
                 notify("success", msg)
                 navigate("/quiz")
@@ -128,6 +123,7 @@ export default function AddQuizPage() {
 
     return (
         <Box sx={{ p: 2, width: "100%", mx: "auto", minHeight: "100vh" }}>
+             {quizLoading && <FullPageLoader />}
             {/* Heading */}
             <Typography
                 sx={{
@@ -181,7 +177,7 @@ export default function AddQuizPage() {
                         }}
                     />
 
-                    {(params.get('type') !== 'edit') && <><Typography sx={{ mt: 2, mb: 1, fontSize: "12px", color: "#6b7280" }}>
+                    {/* {(params.get('type') !== 'edit') && <><Typography sx={{ mt: 2, mb: 1, fontSize: "12px", color: "#6b7280" }}>
                         Select Course
                     </Typography>
                         <Select
@@ -214,7 +210,7 @@ export default function AddQuizPage() {
                                     {cat.title}
                                 </MenuItem>
                             ))}
-                        </Select> </>}
+                        </Select> </>} */}
 
                     {/* Task Input */}
                     <Typography sx={{ mt: 1, mb: 1, fontSize: "12px", color: "#6b7280" }}>

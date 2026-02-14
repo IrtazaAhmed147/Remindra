@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteAllResourceAction, getCourseResourcesAction } from '../../redux/actions/resourceActions';
+import { deleteAllResourceAction, deleteSelectedResourceAction, getCourseResourcesAction } from '../../redux/actions/resourceActions';
 import { useParams } from 'react-router-dom';
 import { handleDownloadAll } from '../../redux/actions/courseActions';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
@@ -12,28 +12,36 @@ import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import GradientBtn from "../../components/common/GradientBtn";
 import "react-photo-view/dist/react-photo-view.css";
 import { notify } from '../../utils/HelperFunctions';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import FullPageLoader from '../../components/loader/FullPageLoader';
 
 function ImagesTabPage() {
 
     const dispatch = useDispatch()
     const [hoveredId, setHoveredId] = useState(null);
     const [selectedIds, setSelectedIds] = useState([]);
+    const [images, setImages] = useState([]);
+    const [skip, setSkip] = useState(0);
+    const [total, setTotal] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [pressTimer, setPressTimer] = useState(null);
+
+
 
     const [isModal, setIsModal] = useState(false)
     const [downloadLoading, setDownloadLoading] = useState(false)
-    const { resources, isLoading: resourcesLoading } = useSelector((state) => state.resource)
+    const { resources, resourceLoading, deleteResourceLoading } = useSelector((state) => state.resource)
     const { singleCourse, } = useSelector((state) => state.course)
     const { user } = useSelector((state) => state.auth)
     const { courseId } = useParams()
-
-
     useEffect(() => {
-        dispatch(getCourseResourcesAction(courseId, 'image')).then((msg) => console.log(msg)).catch((msg) => notify("error", msg))
-    }, [])
+        loadImages(0);
+    }, []);
+
     const handleDeleteResources = () => {
         dispatch(deleteAllResourceAction(courseId))
             .then((msg) => {
-                dispatch(getCourseResourcesAction(courseId, 'image')).catch((msg) => notify("error", msg))
+                dispatch(getCourseResourcesAction(courseId, 'image', 0, 20)).then(() => setImages(resources)).catch((msg) => notify("error", msg))
                 notify("success", msg);
             })
             .catch((err) => notify("error", err));
@@ -52,6 +60,16 @@ function ImagesTabPage() {
         );
     };
 
+    const handleTouchStart = (id) => {
+        const timer = setTimeout(() => {
+            setHoveredId(id)
+        }, 500);
+        setPressTimer(timer)
+    }
+    const handleTouchEnd = () => {
+        clearTimeout(pressTimer);
+    };
+
     const downloadSelected = async () => {
         setDownloadLoading(true);
         try {
@@ -66,58 +84,58 @@ function ImagesTabPage() {
 
     };
 
+    const loadImages = async (newSkip) => {
+        if (loading) return;
+        setLoading(true);
+        try {
+            const data = await dispatch(
+                getCourseResourcesAction(courseId, "image", newSkip, 20)
+            );
+            setImages((prev) => {
+                return newSkip === 0 ? data?.resourcesData : [...prev, ...data?.resourcesData]
+            });
 
-    // const fetchMoreData = () => {
-    //     const newSkip = skipNo + 20;
-    //     setSkipNo(newSkip);
+            setTotal(data?.total);
+            setSkip(newSkip + 20);
+        } catch (err) {
+            notify("error", err);
+        }
+        setLoading(false);
+    };
 
-    //     dispatch(getAllProducts(newSkip)).then((response) => {
-    //         if (response?.payload?.products) {
-    //             setAllProducts(prevProducts => [
-    //                 ...prevProducts,
-    //                 ...response.payload.products
-    //             ]);
-    //         }
-    //     }).then(() => setError("")).catch((error) => setError(error.message))
-    // };
+    const handleDeleteSelected = async () => {
+        try {
+            const msg = await dispatch(
+                deleteSelectedResourceAction(selectedIds)
+            );
+            notify("success", msg);
+
+            setImages((prev) =>
+                prev.filter((img) => !selectedIds.includes(img._id))
+            );
+            setSelectedIds([]);
+        } catch (err) {
+            notify("error", err);
+        }
+    };
 
     return (
 
         <>
             <Box>
-                <Box sx={{ position: "sticky", zIndex:99,top: 0, backgroundColor: "var(--bg-color)", display: "flex", mb: 2, justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: 1 }}>
-                    <Typography fontSize="24px" fontWeight="bold" sx={{ color: "#334155" }}>
-                        Images  {`(${resources.length})`}
+                {deleteResourceLoading && <FullPageLoader />}
+                <Box sx={{ position: "sticky", p: 1, zIndex: 99, top: 0, backgroundColor: "var(--bg-color)", display: "flex", mb: 2, justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: 1 }}>
+                    <Typography fontWeight="bold" sx={{ color: "#334155", fontSize: { xs: "18px", sm: "20px", md: "24px" } }}>
+                        Images  {`(${total})`}
                     </Typography>
 
-                    {isOwner && <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                    {<Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                         {resources?.length > 0 && (
                             <>
-                               {(selectedIds.length > 0) && <Button
-                                    disabled={selectedIds.length === 0}
-                                    onClick={downloadSelected}
-                                    sx={{
-                                        textTransform: "none",
-                                        px: 3,
-                                        py: 1,
-                                        borderRadius: "10px",
-                                        fontWeight: 600,
-                                        fontSize: "14px",
-                                        bgcolor: "var(--primary-color)",
-                                        color: "#fff",
-                                        boxShadow: "0 2px 6px rgba(42,125,225,0.35)",
-                                        "&:hover": {
-                                            bgcolor: "var(--primaryHover-color)",
-                                            boxShadow: "0 4px 12px rgba(42,125,225,0.45)"
-                                        },
-                                    }}
-                                >
-                                    Download Selected
-                                </Button>}
 
-                                <Button sx={{ minWidth: "auto", bgcolor: "red", borderRadius: "50%", color: "#fff" }} onClick={() => setIsModal(true)}>
+                                {isOwner && <Button sx={{ minWidth: "auto", bgcolor: "red", borderRadius: "50%", color: "#fff" }} onClick={() => setIsModal(true)} disabled={deleteResourceLoading}>
                                     <DeleteIcon />
-                                </Button>
+                                </Button>}
                                 <Button disabled={downloadLoading} onClick={async () => {
                                     setDownloadLoading(true);
                                     try {
@@ -131,59 +149,36 @@ function ImagesTabPage() {
                                 </Button>
                             </>
                         )}
-                        <GradientBtn icon={<AssignmentOutlinedIcon sx={{ fontSize: 18, color: "#4158D0" }} />} text="Add Images" url={`/add/resources/image/${courseId}`} />
+                        {isOwner && <GradientBtn icon={<AssignmentOutlinedIcon sx={{ fontSize: 18, color: "#4158D0" }} />} text="Add Images" url={`/add/resources/image/${courseId}`} />}
                     </Box>}
                 </Box>
 
-                {resourcesLoading ? (
-                    <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "250px" }}>
-                        <CircularProgress sx={{ color: "var(--text-color)" }} size="30px" />
-                    </Box>
-                ) : (
 
 
-                    //  <InfiniteScroll
-                    //                     dataLength={resources?.length}
-                    //                     next={fetchMoreData}
-                    //                     hasMore={resources?.length < total}
-                    //                     loader={<div className="loader-container"><CircularProgress  sx={{color:"var(--text-color)"}} /></div>}
-                    //                     endMessage={
-                    //                         <p style={{ textAlign: 'center' }}>
-                    //                             <b>Yay! You have seen it all</b>
-                    //                         </p>
-                    //                     }
-                    //                     scrollThreshold={0.9}
-                    //                 >
-                    //                     <div className='flex flex-wrap gap-[3px] md:gap-1 p-2'>
-                    //                         {resources?.map((item) => (
-                    //                          <PhotoView src={resource.fileUrl} key={index}>
-                    // <Box
-                    //     component="img"
-                    //     src={resource.fileUrl}
-                    //     sx={{
-                    //         width: { xs: "30%", sm: "23%", md: "23%" },
-                    //         maxHeight: 200,
-                    //         objectFit: "cover",
-                    //         borderRadius: "12px",
-                    //         cursor: "pointer",
-                    //         boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                    //         transition: "0.2s",
-                    //         "&:hover": { transform: "scale(1.03)", boxShadow: "0 4px 12px rgba(0,0,0,0.15)" },
-                    //     }}
-                    // />
-                    //         </PhotoView>
-                    //                         ))}
-                    //                     </div >
-                    //                 </InfiniteScroll>
+                <InfiniteScroll
+                    dataLength={images?.length}
+                    next={() => loadImages(skip)}
+                    hasMore={images?.length < total}
+                    loader={
+                        <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "70px" }}>
+                            <CircularProgress sx={{ color: "var(--text-color)" }} />
+                        </Box>
+                    }
+
+                    scrollThreshold={0.9}
+                >
 
                     <PhotoProvider>
                         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-                            {resources.map((resource) => (
+                            {images.map((resource) => (
                                 <Box
                                     key={resource._id}
                                     sx={{ position: "relative", width: { xs: "30%", sm: "23%", md: "23%" } }}
                                     onMouseEnter={() => setHoveredId(resource._id)}
                                     onMouseLeave={() => setHoveredId(null)}
+                                    onTouchStart={() => handleTouchStart(resource._id)}
+                                    onTouchEnd={handleTouchEnd}
+
                                 >
                                     {showCheckbox(resource._id) && (
                                         <input
@@ -221,9 +216,89 @@ function ImagesTabPage() {
                             ))}
                         </Box>
                     </PhotoProvider>
+                </InfiniteScroll>
 
-                )
-                }
+
+                {selectedIds.length > 0 && (
+                    <Box
+                        sx={{
+                            position: "fixed",
+                            bottom: 20,
+                            left: 0,
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            zIndex: 200,
+                            px: 1,
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                display: "flex",
+                                gap: 1,
+                                flexDirection: { xs: "column", sm: "row" },
+                                alignItems: "center",
+                                justifyContent: "center",
+                                width: { xs: "100%", sm: "auto" },
+                                backdropFilter: "blur(12px)",
+                                background: "rgba(255,255,255,0.9)",
+                                boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
+                                borderRadius: 4,
+                                p: {xs:1,sm:2,md:2},
+                            }}
+                        >
+                            {/* Selected Count */}
+                            <Typography
+                                sx={{
+                                    fontWeight: 600,
+                                    fontSize: 14,
+                                    color: "#555",
+                                }}
+                            >
+                                {selectedIds.length} Selected
+                            </Typography>
+
+                            {/* Delete Button */}
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={handleDeleteSelected}
+                                sx={{
+                                    fontSize:{xs:"12px",sm:"14px",md:"16px"},
+                                    textTransform: "none",
+                                    borderRadius: 3,
+                                    px: 3,
+                                    fontWeight: 600,
+                                    width: { xs: "100%", sm: "auto" },
+                                }}
+                            >
+                                Delete Selected
+                            </Button>
+
+                            {/* Download Button */}
+                            <Button
+                                variant="contained"
+                                onClick={downloadSelected}
+                                sx={{
+                                    fontSize:{xs:"12px",sm:"14px",md:"16px"},
+                                    textTransform: "none",
+                                    borderRadius: 3,
+                                    px: 3,
+                                    fontWeight: 600,
+                                    bgcolor: "var(--primary-color)",
+                                    "&:hover": {
+                                        bgcolor: "var(--primaryHover-color)",
+                                    },
+                                    width: { xs: "100%", sm: "auto" },
+                                }}
+                            >
+                                Download Selected
+                            </Button>
+                        </Box>
+                    </Box>
+                )}
+
+
             </Box >
 
 

@@ -11,7 +11,7 @@ const quizRouter = express.Router()
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage })
 
-quizRouter.post("/create/course/:id", verifyToken,createQuizLimiter,upload.array('attachments'), createQuizs);
+quizRouter.post("/create", verifyToken,createQuizLimiter,upload.array('attachments'), createQuizs);
 quizRouter.get("/all", verifyToken,getAllQuizs);
 quizRouter.get("/:id", verifyToken, getSingleQuiz);
 quizRouter.get("/", verifyToken, getUserQuizs);

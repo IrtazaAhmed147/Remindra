@@ -10,7 +10,7 @@ const assignmentsRouter = express.Router()
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage })
 
-assignmentsRouter.post("/create/course/:id", verifyToken,createAssignmentLimiter,upload.array('attachments'), createAssignment);
+assignmentsRouter.post("/create", verifyToken,createAssignmentLimiter,upload.array('attachments'), createAssignment);
 assignmentsRouter.get("/all", verifyToken,getAllAssignments);
 assignmentsRouter.get("/:id", verifyToken, getSingleAssignment);
 assignmentsRouter.get("/", verifyToken, getUserAssignments);

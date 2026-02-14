@@ -52,7 +52,7 @@ export const getAllResourcesAction = () => async (dispatch) => {
 };
 
 // GET RESOURCES OF A COURSE
-export const getCourseResourcesAction = (courseId, type) => async (dispatch) => {
+export const getCourseResourcesAction = (courseId, type,skip, limit) => async (dispatch) => {
     try {
         dispatch(fetchResourcesStart());
         const token = localStorage.getItem("token");
@@ -60,11 +60,13 @@ export const getCourseResourcesAction = (courseId, type) => async (dispatch) => 
         const res = await api.get(`/resource/courses/${courseId}/`, {
             headers: { Authorization: `Bearer ${token}` },
             withCredentials: true,
-            params: { type }
+            params: { type, skip, limit }
         });
 
-        dispatch(fetchResourcesSuccess(res.data.data));
-        return res.data.data;
+        dispatch(fetchResourcesSuccess(res.data.data?.resourcesData));
+    console.log(res.data.data?.resourcesData);
+    
+        return res.data?.data;
     } catch (error) {
         handleApiError(error, dispatch, fetchResourcesFailure);
     }
@@ -102,6 +104,25 @@ export const deleteResourceAction = (id, courseId, type) => async (dispatch) => 
         });
 
         dispatch(deleteResourceSuccess(id));
+        return res.data.message;
+    } catch (error) {
+        handleApiError(error, dispatch, deleteResourceFailure);
+    }
+};
+export const deleteSelectedResourceAction = (ids) => async (dispatch) => {
+    console.log(ids);
+    
+    try {
+        dispatch(deleteResourceStart());
+        const token = localStorage.getItem("token");
+
+        const res = await api.delete(`/resource/selected-delete`, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+            params: { resourcesIds: JSON.stringify(ids) }
+        });
+
+        dispatch(deleteResourceSuccess(ids));
         return res.data.message;
     } catch (error) {
         handleApiError(error, dispatch, deleteResourceFailure);

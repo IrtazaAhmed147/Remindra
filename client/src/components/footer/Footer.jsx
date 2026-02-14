@@ -19,7 +19,7 @@ function Footer() {
     >
       {/* Left Text */}
       <Typography sx={{ fontSize: "12px",color:"#fff !important" }} >
-        © {new Date().getFullYear()} MyIdea - All rights reserved.
+        © {new Date().getFullYear()} Remindra - All rights reserved.
       </Typography>
 
       {/* Right Links */}

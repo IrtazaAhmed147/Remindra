@@ -8,10 +8,11 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import DownloadIcon from "@mui/icons-material/Download";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useState } from "react";
+ 
+let menuOptions = ["Download"];
+const FileCard = ({isOwner, fileName, fileSize, fileUrl, fileType, _id, isDownloadBtn, askDelete, handleDownload, }) => {
 
-const menuOptions = ["Download", "Delete"];
-const FileCard = ({ fileName, fileSize, fileUrl, fileType, _id, isDownloadBtn, askDelete, handleDownload, }) => {
-
+    menuOptions = isOwner ? ["Download", "Delete"] : ["Download"];
 
   const isPdf = fileType?.includes("pdf") || false;
   const [anchorEl, setAnchorEl] = useState(null);

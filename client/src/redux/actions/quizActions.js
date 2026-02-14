@@ -13,14 +13,14 @@ import {
 } from "../slices/quizSlice.js";
 
 // CREATE Quiz
-export const createQuizAction = (courseId, QuizData) => async (dispatch) => {
+export const createQuizAction = ( QuizData) => async (dispatch) => {
 
     try {
         dispatch(createQuizStart());
 
         const token = localStorage.getItem("token");
 
-        const res = await api.post(`/quiz/create/course/${courseId}`, QuizData, {
+        const res = await api.post(`/quiz/create/`, QuizData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "multipart/form-data"

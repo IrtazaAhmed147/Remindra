@@ -2,7 +2,7 @@ import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { timeAgo } from "../../utils/HelperFunctions";
 
-function NotificationCard({ courseId, senderId, msg, updatedAt ,responseHandle, _id}) {
+function NotificationCard({ title, message, updatedAt }) {
     const time = timeAgo(updatedAt);
 
     return (
@@ -23,86 +23,30 @@ function NotificationCard({ courseId, senderId, msg, updatedAt ,responseHandle, 
             }}
         >
             {/* LEFT SECTION */}
-            <Box sx={{ display: "flex", gap: 1.5, alignItems: "center" }}>
-                <Box
-                    component="img"
-                    src={
-                        senderId?.profilePic ||
-                        "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
-                    }
-                    sx={{
-                        width: 42,
-                        height: 42,
-                        borderRadius: "50%",
-                        objectFit: "cover",
-                    }}
-                />
-
+            <Box >
+                    <Typography sx={{ fontSize: {xs:"16px",md:"18px"}, fontWeight: 'bold', color: "#000" }}>
+                        {title}
+                    </Typography>
                 <Box>
                     <Typography
-                        sx={{ fontSize: "14px", fontWeight: 600, color: "#1f1f1f" }}
+                        sx={{ fontSize: {xs:"13px",md:"14px"}, fontWeight: 600, color: "#1f1f1f" }}
                     >
-                        {senderId?.username}{" "}
-                        <span style={{ fontWeight: 400, color: "var(--noti-msg-color)" }}>
-                            {msg}
-                        </span>{" "}
-                        <span style={{ fontWeight: 600 }}>
-                            {courseId?.title}
-                        </span>
+                      
+                      {message}
                     </Typography>
 
                     <Typography
                         sx={{
-                            fontSize: "12px",
+                            fontSize: {xs:"11px",md:"12px"},
                             color: "#9e9e9e",
                             mt: 0.2,
                         }}
                     >
-                        {time} ago
+                        {time} {time !== 'just now' && 'ago'}
                     </Typography>
                 </Box>
             </Box>
-
-            {/* RIGHT SECTION */}
-            <Box sx={{ display: "flex", gap: 1 }}>
-                <Button
-                onClick={()=> responseHandle(_id, 'reject')}
-                    size="small"
-                    sx={{
-                        minWidth: "80px",
-                        height: "32px",
-                        borderRadius: "6px",
-                        backgroundColor: "#d32f2f",
-                        color: "#fff",
-                        fontSize: "12px",
-                        textTransform: "none",
-                        "&:hover": {
-                            backgroundColor: "#9a0007",
-                        },
-                    }}
-                >
-                    Reject
-                </Button>
-
-                <Button
-                onClick={()=> responseHandle(_id, 'accept')}
-                    size="small"
-                    sx={{
-                        minWidth: "80px",
-                        height: "32px",
-                        borderRadius: "6px",
-                        backgroundColor: "#2e7d32",
-                        color: "#fff",
-                        fontSize: "12px",
-                        textTransform: "none",
-                        "&:hover": {
-                            backgroundColor: "#1b5e20",
-                        },
-                    }}
-                >
-                    Accept
-                </Button>
-            </Box>
+            
         </Box>
     );
 }

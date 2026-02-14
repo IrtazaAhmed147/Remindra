@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     resources: [],          // all resources
     singleResource: {},     // single resource detail
-    isLoading: false,
+    resourceLoading: false,
+    deleteResourceLoading: false,
     error: null,
 };
 
@@ -14,57 +15,57 @@ const resourceSlice = createSlice({
 
         // FETCH ALL RESOURCES
         fetchResourcesStart: (state) => {
-            state.isLoading = true;
+            state.resourceLoading = true;
             state.error = null;
         },
         fetchResourcesSuccess: (state, { payload }) => {
-            state.isLoading = false;
+            state.resourceLoading = false;
             state.resources = payload;
         },
         fetchResourcesFailure: (state, action) => {
-            state.isLoading = false;
+            state.resourceLoading = false;
             state.error = action.payload;
         },
 
         // FETCH SINGLE RESOURCE
         fetchSingleResourceStart: (state) => {
-            state.isLoading = true;
+            state.resourceLoading = true;
             state.error = null;
         },
         fetchSingleResourceSuccess: (state, { payload }) => {
-            state.isLoading = false;
+            state.resourceLoading = false;
             state.singleResource = payload;
         },
         fetchSingleResourceFailure: (state, action) => {
-            state.isLoading = false;
+            state.resourceLoading = false;
             state.error = action.payload;
         },
 
         // CREATE RESOURCE
         createResourceStart: (state) => {
-            state.isLoading = true;
+            state.resourceLoading = true;
             state.error = null;
         },
         createResourceSuccess: (state, { payload }) => {
-            state.isLoading = false;
+            state.resourceLoading = false;
             state.resources.push(payload);
         },
         createResourceFailure: (state, action) => {
-            state.isLoading = false;
+            state.resourceLoading = false;
             state.error = action.payload;
         },
 
         // DELETE RESOURCE
         deleteResourceStart: (state) => {
-            state.isLoading = true;
+            state.deleteResourceLoading = true;
             state.error = null;
         },
         deleteResourceSuccess: (state, { payload }) => {
-            state.isLoading = false;
+            state.deleteResourceLoading = false;
             // state.resources = state.resources.filter(r => r._id !== payload);
         },
         deleteResourceFailure: (state, action) => {
-            state.isLoading = false;
+            state.deleteResourceLoading = false;
             state.error = action.payload;
         },
 

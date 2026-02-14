@@ -39,7 +39,7 @@ export const createAssignment = async (req, res) => {
             dueDate,
             status,
             attachments,
-            courseId: req.params.id,
+            // courseId: req.params.id,
             type: "assignment"
         });
 
@@ -48,7 +48,6 @@ export const createAssignment = async (req, res) => {
        
 
         successHandler(res, 200, "Assignment created successfully", saved);
-        // successHandler(res, 200, "Assignment created successfully");
 
     } catch (error) {
         errorHandler(res, 400, error.message);

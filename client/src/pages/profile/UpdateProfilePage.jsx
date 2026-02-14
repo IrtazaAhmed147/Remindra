@@ -4,13 +4,17 @@ import { Box, CircularProgress, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSingleUserAction, updateUserAction } from '../../redux/actions/userActions'
 import { notify } from '../../utils/HelperFunctions'
+import { useNavigate } from 'react-router-dom'
+import FullPageLoader from '../../components/loader/FullPageLoader'
 
 function UpdateProfilePage() {
 
     const { user, authError } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { singleUser, userIsLoading, userError } = useSelector((state) => state.user)
     const theme = localStorage.getItem('theme')
+
 
 
     useEffect(() => {
@@ -26,8 +30,14 @@ function UpdateProfilePage() {
             return
         }
         formData.append("fullname", data?.fullname)
-        formData.append("university", data?.university)
-        formData.append("field", data?.field)
+        if(data?.university) {
+
+            formData.append("university", data?.university)
+        }
+        if(data?.field) {
+
+            formData.append("field", data?.field)
+        }
         if (data?.gender) {
 
             formData.append("gender", data?.gender)
@@ -37,11 +47,14 @@ function UpdateProfilePage() {
 
             formData.append("profilePic", data?.profilePic)
         }
-        console.log("asdfsf");
         
 
         if (user) {
-            dispatch(updateUserAction(user._id, formData)).then((msg) => notify('success', msg)).catch((msg) => notify("error", msg))
+            dispatch(updateUserAction(user._id, formData)).then((msg) =>{
+                
+                notify('success', msg)
+                navigate(`/profile`)
+            }).catch((msg) => notify("error", msg))
         } else {
             notify("error", "something went wrong")
         }
@@ -51,13 +64,12 @@ function UpdateProfilePage() {
 
         <>
             <Box sx={{ width: "100%", minHeight: "100vh", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" }, pt: "5px !important", }}>
+                {userIsLoading && <FullPageLoader />}
                 <Typography variant="h4" fontWeight="bold" color="var(--text-color)" sx={{ mb: 2 }}>
                     Update Profile
                 </Typography>
                 {authError && <Typography>{authError}</Typography>}
-                {userIsLoading ? <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh", width: "100%" }} >
-                    <CircularProgress sx={{ color: "var(--text-color)" }} size="30px" />
-                </Box> : <UpdateProfileForm theme={theme} {...singleUser} handleUpdate={handleUpdate} isLoading={userIsLoading} error={authError} />}
+                {!userIsLoading && <UpdateProfileForm theme={theme} {...singleUser} handleUpdate={handleUpdate} isLoading={userIsLoading} error={authError} />}
             </Box>
 
         </>

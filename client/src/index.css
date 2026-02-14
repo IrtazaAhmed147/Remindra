@@ -93,3 +93,6 @@ a {
 html {
   scroll-behavior: smooth;
 }
+.infinite-scroll-component {
+  overflow: hidden !important;
+}
