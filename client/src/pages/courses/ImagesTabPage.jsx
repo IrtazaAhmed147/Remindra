@@ -259,7 +259,7 @@ function ImagesTabPage() {
                             </Typography>
 
                             {/* Delete Button */}
-                            <Button
+                          {isOwner &&  <Button
                                 variant="contained"
                                 color="error"
                                 onClick={handleDeleteSelected}
@@ -273,12 +273,13 @@ function ImagesTabPage() {
                                 }}
                             >
                                 Delete Selected
-                            </Button>
+                            </Button>}
 
                             {/* Download Button */}
                             <Button
                                 variant="contained"
                                 onClick={downloadSelected}
+                                disabled={downloadLoading}
                                 sx={{
                                     fontSize:{xs:"12px",sm:"14px",md:"16px"},
                                     textTransform: "none",
