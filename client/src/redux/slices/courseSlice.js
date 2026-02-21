@@ -6,6 +6,7 @@ const initialState = {
     downloadLoading: false,
     courseIsLoading: false,
     error: null,
+    removeMembersLoading: false
 };
 
 const courseSlice = createSlice({
@@ -57,6 +58,14 @@ const courseSlice = createSlice({
             state.courseIsLoading = false;
             state.error = action.payload;
         },
+        removeMembersStart: (state, ) => {
+            state.removeMembersLoading = true;
+            
+        },
+        removeMembersSucess: (state, {payload}) => {
+            state.removeMembersLoading = false;
+            state.singleCourse = payload
+        },
 
         // CLEAR COURSE STATE 
         clearCourseState: (state) => {
@@ -76,6 +85,8 @@ export const {
     createCourseStart,
     createCourseSuccess,
     createCourseFailure,
+    removeMembersSucess,
+    removeMembersStart,
     clearCourseState
 } = courseSlice.actions;
 

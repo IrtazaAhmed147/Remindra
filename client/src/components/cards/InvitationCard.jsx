@@ -14,9 +14,11 @@ function InvitationCard({ courseId, senderId, msg, updatedAt ,responseHandle, _i
                 borderRadius: "8px",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
                 display: "flex",
+                flexWrap:"wrap",
                 justifyContent: "space-between",
                 alignItems: "center",
                 transition: "0.2s",
+                gap:1,
                 "&:hover": {
                     boxShadow: "0 6px 16px rgba(0,0,0,0.12)",
                 },
@@ -40,7 +42,7 @@ function InvitationCard({ courseId, senderId, msg, updatedAt ,responseHandle, _i
 
                 <Box>
                     <Typography
-                        sx={{ fontSize: "14px", fontWeight: 600, color: "#1f1f1f" }}
+                        sx={{ fontSize: {xs:"14px",sm:"13px",md:"14px"},lineHeight:"1", fontWeight: 600, color: "#1f1f1f" }}
                     >
                         {senderId?.username}{" "}
                         <span style={{ fontWeight: 400, color: "var(--noti-msg-color)" }}>

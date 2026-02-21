@@ -2,13 +2,14 @@ import express from "express";
 import SubscriptionModel from "../models/SubscriptionModel.js";
 import { sendPushNotification } from "../utils/webPush.js";
 
-import { getNotifications, notifyAssignments, notifyAssignmentsOnNight, notifyQuiz, notifyQuizOnNight, subscribe } from "../controllers/notificationController.js";
+import { getNotifications, notifyAssignments, notifyAssignmentsOnNight, notifyQuiz, notifyQuizOnNight, subscribe, unSubscribe } from "../controllers/notificationController.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 
 const notificationRouter = express.Router();
 
 // Save user subscription
 notificationRouter.post("/subscribe", subscribe);
+notificationRouter.post("/un-subscribe", unSubscribe);
 notificationRouter.get("/notifyassignments", notifyAssignments);
 notificationRouter.get("/notifyassignments/night", notifyAssignmentsOnNight);
 notificationRouter.get("/notifyquiz", notifyQuiz);

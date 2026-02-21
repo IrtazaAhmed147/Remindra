@@ -42,7 +42,6 @@ export default function AddAssignmentPage() {
                     title: data.title,
                     task: data.description,
                     dueDate: data.dueDate,
-                    course: data.courseId.title
 
                 }
                 setDueDate(data.dueDate ? dayjs(data.dueDate) : null);
@@ -133,16 +132,9 @@ export default function AddAssignmentPage() {
                     color: "var(--text-color)"
                 }}
             >
-                Create Assignment
+                {params.get('type') === 'edit'? "Edit": "Create"} Assignment
             </Typography>
-            {(params.get('type') === 'edit') && <Typography sx={{ mt: 2, mb: 1, fontSize: "15px", color: "#6b7280" }}>
-                Course:   <Box
-                    component="span"
-                    sx={{ color: "var(--text-color)", fontWeight: 500, ml: 0.5 }}
-                >
-                    {form?.current?.course}
-                </Box>
-            </Typography>}
+           
             <Box
                 sx={{
                     display: "flex",
@@ -381,11 +373,11 @@ export default function AddAssignmentPage() {
                         textTransform: "capitalize",
                         fontSize: "13px",
                         ":hover": {
-                            backgroundColor: "#1258ad",
+                            bgcolor: "#1258ad",
                         }
                     }}
                 >
-                    Save Assignment
+                    {params.get('type') === 'edit' ? "Update":"Create"} 
                 </Button>
             </Box>
         </Box>

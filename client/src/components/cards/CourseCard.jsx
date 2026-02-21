@@ -40,6 +40,9 @@ function CourseCard({
   
   return (
     <Box
+    
+    onClick={()=> navigate(isOwner ? `/course/${_id}/` : `/course/${_id}/resources`)}
+    
       sx={{
         position: "relative",
         width: { xs: "100%", sm: "48%", md: "32%" },
@@ -49,6 +52,7 @@ function CourseCard({
         boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
         transition: "0.3s",
         overflow: "hidden",
+        cursor:"pointer",
         "&:hover": {
           transform: "translateY(-6px)",
           boxShadow: "0 12px 28px rgba(0,0,0,0.18)",
@@ -99,7 +103,7 @@ function CourseCard({
           </Box>
 
           {(isOwner && isShow) && (
-            <Box sx={{ display: "flex", justifyContent: "flex-end", }}>
+            <Box sx={{ display: "flex", justifyContent: "flex-end",position:"relative",zIndex:200 }}>
               <IconButton
                 // sx={{ p:  }}
                 size="small"
@@ -116,12 +120,15 @@ function CourseCard({
               <Menu
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
-                onClose={() => setAnchorEl(null)}
+                onClose={(e) => {
+                  e.stopPropagation();
+                  setAnchorEl(null)}}
               >
                 {menuOptions.map((option) => (
                   <MenuItem
                     key={option}
                     onClick={(e) => {
+                      e.stopPropagation()
                       if (option === "Delete") askDelete(_id);
                       if (option === "Edit Course")
                         navigate(`/add/course?id=${_id}&type=edit`);
@@ -136,9 +143,8 @@ function CourseCard({
             </Box>
           )}
         </Box>
-        <Link
-          to={isOwner ? `/course/${_id}/` : `/course/${_id}/resources`}
-          style={{ textDecoration: "none", height: '100%', display: "flex", flexDirection: "column", justifyContent: 'space-between' }}
+        <Box
+          sx={{  height: '100%', display: "flex", flexDirection: "column", justifyContent: 'space-between' }}
         >
           {/* OWNER INFO */}
           {!isOwner && (
@@ -180,12 +186,12 @@ function CourseCard({
               </Typography>
             </Box> */}
 
-            <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
+            {isOwner && <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
               <GroupOutlinedIcon sx={{ fontSize: 16, color: "#64748B" }} />
               <Typography fontSize="12px" color="var(--text-color)">
                 {members?.length || 0} {members?.length > 1 ? "Members" : "Member"}
               </Typography>
-            </Box>
+            </Box>}
 
             <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
               <UpdateOutlinedIcon sx={{ fontSize: 16, color: "#64748B" }} />
@@ -194,7 +200,7 @@ function CourseCard({
               </Typography>
             </Box>
           </Box>
-        </Link>
+        </Box>
       </Box>
 
       {/* ACTIONS */}

@@ -10,6 +10,8 @@ import {
     createCourseStart,
     createCourseSuccess,
     createCourseFailure,
+    removeMembersSucess,
+    removeMembersStart,
 } from "../slices/courseSlice";
 
 
@@ -142,6 +144,26 @@ export const disableCourseAction = (id) => async (dispatch) => {
         });
 
         dispatch(fetchCoursesSuccess()); // you may remove from list in UI manually
+        return res.data.message;
+
+    } catch (error) {
+        handleApiError(error, dispatch, fetchCoursesFailure);
+
+    }
+};
+
+export const removeMembersCourse = (id,selectedMembers) => async (dispatch) => {
+    try {
+        dispatch(removeMembersStart());
+
+        const token = localStorage.getItem("token");
+
+        const res = await api.put(`/course/members/${id}`, {selectedMembers:selectedMembers}, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+        });
+
+        dispatch(removeMembersSucess(res?.data?.data)); // you may remove from list in UI manually
         return res.data.message;
 
     } catch (error) {

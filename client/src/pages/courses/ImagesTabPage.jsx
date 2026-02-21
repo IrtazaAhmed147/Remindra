@@ -14,6 +14,7 @@ import "react-photo-view/dist/react-photo-view.css";
 import { notify } from '../../utils/HelperFunctions';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import FullPageLoader from '../../components/loader/FullPageLoader';
+import CustomizeLoader from '../../components/loader/CustomizeLoader';
 
 function ImagesTabPage() {
 
@@ -105,14 +106,18 @@ function ImagesTabPage() {
 
     const handleDeleteSelected = async () => {
         try {
-            const msg = await dispatch(
+            dispatch(
                 deleteSelectedResourceAction(selectedIds)
-            );
-            notify("success", msg);
+            ).then((msg) => {
+                notify("success", msg)
+                dispatch(getCourseResourcesAction(courseId, "image", 0, 20)).then((data) => {
+                    setTotal(data?.total);
+                    setImages(data?.resourcesData);
+                })
+            });
 
-            setImages((prev) =>
-                prev.filter((img) => !selectedIds.includes(img._id))
-            );
+
+
             setSelectedIds([]);
         } catch (err) {
             notify("error", err);
@@ -124,7 +129,7 @@ function ImagesTabPage() {
         <>
             <Box>
                 {deleteResourceLoading && <FullPageLoader />}
-                <Box sx={{ position: "sticky", p: 1, zIndex: 99, top: 0, backgroundColor: "var(--bg-color)", display: "flex", mb: 2, justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: 1 }}>
+                <Box sx={{ position: "sticky", p: 1, zIndex: 99, top: 0, backgroundColor: "var(--bg-color)", display: "flex", mb: 2, justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: 1,alignItems:"center" }}>
                     <Typography fontWeight="bold" sx={{ color: "#334155", fontSize: { xs: "18px", sm: "20px", md: "24px" } }}>
                         Images  {`(${total})`}
                     </Typography>
@@ -161,7 +166,7 @@ function ImagesTabPage() {
                     hasMore={images?.length < total}
                     loader={
                         <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "70px" }}>
-                            <CircularProgress sx={{ color: "var(--text-color)" }} />
+                            <CustomizeLoader />
                         </Box>
                     }
 
@@ -170,7 +175,7 @@ function ImagesTabPage() {
 
                     <PhotoProvider>
                         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-                            {images.map((resource) => (
+                            {images?.map((resource) => (
                                 <Box
                                     key={resource._id}
                                     sx={{ position: "relative", width: { xs: "30%", sm: "23%", md: "23%" } }}
@@ -244,7 +249,7 @@ function ImagesTabPage() {
                                 background: "rgba(255,255,255,0.9)",
                                 boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
                                 borderRadius: 4,
-                                p: {xs:1,sm:2,md:2},
+                                p: { xs: 1, sm: 2, md: 2 },
                             }}
                         >
                             {/* Selected Count */}
@@ -259,12 +264,12 @@ function ImagesTabPage() {
                             </Typography>
 
                             {/* Delete Button */}
-                          {isOwner &&  <Button
+                            {isOwner && <Button
                                 variant="contained"
                                 color="error"
                                 onClick={handleDeleteSelected}
                                 sx={{
-                                    fontSize:{xs:"12px",sm:"14px",md:"16px"},
+                                    fontSize: { xs: "12px", sm: "14px", md: "16px" },
                                     textTransform: "none",
                                     borderRadius: 3,
                                     px: 3,
@@ -281,7 +286,7 @@ function ImagesTabPage() {
                                 onClick={downloadSelected}
                                 disabled={downloadLoading}
                                 sx={{
-                                    fontSize:{xs:"12px",sm:"14px",md:"16px"},
+                                    fontSize: { xs: "12px", sm: "14px", md: "16px" },
                                     textTransform: "none",
                                     borderRadius: 3,
                                     px: 3,

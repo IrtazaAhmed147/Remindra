@@ -9,19 +9,19 @@ export default function RemoveModal({ open, onClose, onConfirm, title, descripti
       onClose={onClose}
       PaperProps={{
         sx: {
-          borderRadius: "16px", p: 2, minWidth: "360px",
+          borderRadius: "16px", p: {xs:1,sm:2,md:2}, width: {xs:"95%",sm:"400px",md:"420px"},m:0,
           background: "var(--card-bg-color) !important",
         },
       }}
     >
-      <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+      <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1,p:{xs:1,sm:2,md:"16px 24px"} }}>
         <WarningAmberIcon sx={{ color: "#d32f2f" }} />
         <Typography fontSize={18} fontWeight={600}>
           {title}
         </Typography>
       </DialogTitle>
 
-      <DialogContent>
+      <DialogContent sx={{p:{xs:1,sm:2,md:"16px 24px"}}}>
         <Typography fontSize={14} color="text.secondary">
           {description}
         </Typography>

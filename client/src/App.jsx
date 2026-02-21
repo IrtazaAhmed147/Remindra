@@ -11,8 +11,7 @@ import Setting from './pages/settings/Setting.jsx';
 import CoursePage from './pages/courses/CoursePage.jsx';
 import AddCoursePage from './pages/courses/AddCoursePage.jsx';
 import ProfilePage from './pages/profile/ProfilePage.jsx';
-import Notification from './pages/Notification.jsx/Notification.jsx';
-import FriendsPage from './pages/friends/FriendsPage.jsx';
+import Notification from './pages/Notification/Notification.jsx';
 import AddAssignmentPage from './pages/tasks/AddAssignmentPage.jsx';
 import AddQuizPage from './pages/tasks/AddQuizPage.jsx';
 import UpdateProfilePage from './pages/profile/UpdateProfilePage.jsx';
@@ -29,19 +28,17 @@ import ProtectedRoute from './components/protectedRoute/protectedRoute.jsx';
 import AssignmentPage from './pages/tasks/AssignmentPage.jsx';
 import QuizPage from './pages/tasks/QuizPage.jsx';
 import SingleCourseLayout from './pages/courses/SingleCourse.jsx';
-// import AssignmentTabPage from './pages/courses/AssignmentTabPage.jsx';
 import ImagesTabPage from './pages/courses/ImagesTabPage.jsx';
 import OverviewTabPage from './pages/courses/OverviewTabPage.jsx';
 import FileTabPage from './pages/courses/FileTabPage.jsx';
-import { notify } from './utils/HelperFunctions.js';
 import OneSignal from 'react-onesignal';
-import { subscribe } from './redux/actions/settingActions.js';
-// import QuizzesTabPage from './pages/courses/QuizzesTabPage.jsx';
+import FullPageLoader from './components/loader/FullPageLoader.jsx';
+
 
 function App() {
 
   const dispatch = useDispatch()
-  const {user} = useSelector((state)=> state.auth)
+  const {user,authLoading} = useSelector((state)=> state.auth)
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -69,6 +66,10 @@ function App() {
     }
 
   }, []);
+
+    if (authLoading) {
+    return <FullPageLoader />;
+  }
 
   return (
     <>

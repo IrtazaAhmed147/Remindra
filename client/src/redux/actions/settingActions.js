@@ -28,3 +28,28 @@ export const subscribe = (userId,data) => async (dispatch) => {
 
     }
 }
+export const unSubscribe = (userId) => async (dispatch) => {
+    
+    
+    try {
+        dispatch(fetchPermissionStart());
+
+        const token = localStorage.getItem("token");
+
+        const res = await api.post(
+            `/notification/un-subscribe`,
+            { userId},
+            {
+                headers: { Authorization: `Bearer ${token}` },
+                withCredentials: true,
+            }
+        );
+
+
+        dispatch(fetchPermissionSuccess(res?.data?.data));
+        return res.data.message;
+    } catch (error) {
+        handleApiError(error, dispatch, fetchPermissionFailure);
+
+    }
+}

@@ -8,6 +8,7 @@ import FileCard from '../../components/cards/FileCard';
 import {  deleteResourceAction, getCourseResourcesAction } from '../../redux/actions/resourceActions';
 import RemoveModal from '../../components/modal/RemoveModal';
 import { notify } from '../../utils/HelperFunctions';
+import CustomizeLoader from '../../components/loader/CustomizeLoader';
 
 function FileTabPage() {
 
@@ -54,7 +55,7 @@ function FileTabPage() {
 
 
 
-            <Box sx={{ position: "sticky", top: 0,p:1, backgroundColor: "var(--bg-color)", display: "flex", mb: 2, justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: 1 }}>
+            <Box sx={{ position: "sticky", top: 0,p:1, backgroundColor: "var(--bg-color)", display: "flex", mb: 2, justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: 1,alignItems:"center" }}>
                 <Typography fontSize="24px" fontWeight="bold" sx={{ color: "#334155" }}>
                     Files  {`(${resources.length})`}
 
@@ -69,7 +70,7 @@ function FileTabPage() {
             </Box>
             {resourceLoading ? (
                 <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "250px" }}>
-                    <CircularProgress  sx={{color:"var(--text-color)"}} size="30px" />
+                    <CustomizeLoader />
                 </Box>
             ) : (<>
 

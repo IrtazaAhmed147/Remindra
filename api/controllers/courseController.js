@@ -4,7 +4,7 @@ import course from "../models/courseModel.js"
 import quizModel from "../models/quizModel.js";
 import resourceModel from "../models/resourceModel.js";
 import userModel from "../models/userModel.js";
-import { deleteFromCloudinary,  } from "../utils/cloudinary.js";
+import { deleteFromCloudinary, } from "../utils/cloudinary.js";
 import { errorHandler, successHandler } from "../utils/responseHandler.js";
 import archiver from "archiver";
 import axios from "axios";
@@ -57,11 +57,11 @@ export const getSinglecourse = async (req, res) => {
             path: "owner",
             select: "username",
             model: "User",
-        },{
-        path: "members",
-        select: "username",
-        model: "User",
-    }])
+        }, {
+            path: "members",
+            select: "username",
+            model: "User",
+        }])
 
         if (!courseData) return errorHandler(res, 404, "course not found")
         successHandler(res, 200, "course found successfully", courseData)
@@ -151,6 +151,26 @@ export const disableCourse = async (req, res) => {
     }
 }
 
+export const deletecourseMembers = async (req, res) => {
+    const { selectedMembers } = req.body
+
+    try {
+        const courseData = await course.findByIdAndUpdate(req.params.id, {
+            $pull: { members: { $in: selectedMembers } }
+        }, { new: true }
+        ).populate([{ path: "owner", select: "username", model: "User", }, {
+            path: "members",
+            select: "username",
+            model: "User",
+        }])
+        successHandler(res, 200, "Selected members removed successfully", courseData)
+    }
+    catch (err) {
+        console.log(err);
+        errorHandler(res, 400, err.message)
+    }
+}
+
 export const suspendCourse = async (req, res) => {
     console.log('req.params');
 
@@ -170,7 +190,7 @@ export const updatecourse = async (req, res) => {
 
     try {
         const { title, description } = req.body;
-        if (!title.trim() ) {
+        if (!title.trim()) {
             return errorHandler(res, 404, "Title is required")
         }
 
@@ -189,12 +209,12 @@ export const updatecourse = async (req, res) => {
 
 
 export const downloadCourseImages = async (req, res) => {
-    const filter = { courseId: req.params.id,   fileType: { $regex: "^image/" } };
+    const filter = { courseId: req.params.id, fileType: { $regex: "^image/" } };
 
     const { ids, title } = req.body;
 
     if (ids) {
-        filter._id = { $in: ids};
+        filter._id = { $in: ids };
     }
     try {
         const resources = await resourceModel.find(filter);
@@ -206,7 +226,7 @@ export const downloadCourseImages = async (req, res) => {
 
         res.setHeader("Content-Type", "application/zip");
         res.setHeader(
-            "Content-Disposition",  
+            "Content-Disposition",
             `attachment; filename=${title}.zip`
         );
 

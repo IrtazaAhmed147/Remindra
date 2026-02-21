@@ -64,9 +64,10 @@ const userSlice = createSlice({
       state.userError = payload;
     },
 
-    // ===== CLEAR STATE =====
+      
     clearUserState: (state) => {
       state.singleUser = null;
+      state.users= []
       state.userError = null;
     }
   },
