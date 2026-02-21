@@ -15,7 +15,7 @@ resourceRouter.post("/course/:id/", verifyToken,uploadResourceLimiter,upload.arr
 resourceRouter.get("/all", verifyToken,verifyAdmin, getAllResources);
 resourceRouter.get("/courses/:id/", verifyToken, getCourseResources);
 resourceRouter.get("/:id", getSingleResource);
-resourceRouter.delete("/selected-delete", verifyToken,deleteResourceLimiter, deleteResource);
+resourceRouter.delete("/selected-delete", verifyToken, deleteResource);
 resourceRouter.delete("/course/:courseId", verifyToken,deleteAllResourceLimiter, deleteAllResource);
 // resourceRouter.put("/:id", verifyToken, updateResource);
 

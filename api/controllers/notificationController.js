@@ -312,6 +312,23 @@ export const subscribe = async (req, res) => {
   }
 }
 
+export const unSubscribe = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    
+    const data = await SubscriptionModel.findOneAndDelete(
+      { userId: userId },
+    );
+
+    return successHandler(res, 200, data);
+
+  } catch (err) {
+    console.log(err);
+
+    return errorHandler(res, 500, "Something went wrong", err);
+  }
+}
+
 export const getNotifications = async (req, res) => {
   try {
 

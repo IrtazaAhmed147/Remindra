@@ -4,7 +4,10 @@ import { errorHandler, successHandler } from '../utils/responseHandler.js'
 import bcrypt, { compare } from "bcryptjs";
 import { generateEmail, generateForgotPassEmail, GenerateToken, VerifyEmailToken } from '../utils/commonFunctions.js';
 import { nanoid } from 'nanoid'
+import dotenv from "dotenv"
 
+
+dotenv.config();
 export const register = async (req, res, next) => {
 
     const { username, email, password, fullname } = req.body
@@ -14,13 +17,14 @@ export const register = async (req, res, next) => {
     try {
 
         const user = await User.findOne({ $or: [{ email: email }, { userName: username }] })
-        if (user) {
-
-            return errorHandler(res, 400, "UserName or Email Address already exists, please change and retry")
+        if (user?.username === username) {
+            return errorHandler(res, 400, "Username is already taken")
+        }
+        if (user?.email === email) {
+            return errorHandler(res, 400, "Email is already registered")
         }
         if (password.length < 8) {
             return errorHandler(res, 400, "Password length should be minimum 8 characters long")
-
         }
 
 
@@ -103,7 +107,7 @@ export const login = async (req, res) => {
             user.otp = otp;
             user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 min
 
-          let savedUser=  await user.save();
+            let savedUser = await user.save();
 
             // Send email
             const token = GenerateToken({ data: savedUser, expiresIn: '10m' });
@@ -113,7 +117,7 @@ export const login = async (req, res) => {
                 res,
                 200,
                 "Account exists but not verified. OTP sent for verification.",
-                {tempToken:token}
+                { tempToken: token }
             );
         }
 
@@ -215,8 +219,8 @@ export const forgotPassword = async (req, res) => {
         user.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
         await user.save();
 
-        const link = `http://localhost:5173/reset-password?token=${token}`;
-        
+        const link = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+
         // Send email
         await generateForgotPassEmail(user.email, link);
 
@@ -229,7 +233,7 @@ export const forgotPassword = async (req, res) => {
 export const resetPass = async (req, res) => {
     try {
         const { token, newPassword } = req.body;
-        
+
         if (!token) return errorHandler(res, 400, "Token is required");
 
         // Verify JWT token

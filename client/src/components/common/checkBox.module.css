@@ -1,0 +1,30 @@
+.input[type="checkbox"] {
+  display: none;
+}
+
+
+.customCheckbox {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  border: 2px solid #333;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+.customCheckbox::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background-color: #12ade1;
+  border-radius: 2px;
+  opacity: 0;
+}
+.input[type="checkbox"]:checked + .customCheckbox::after {
+  opacity: 1;
+}

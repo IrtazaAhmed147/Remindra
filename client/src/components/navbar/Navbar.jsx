@@ -14,20 +14,30 @@ import { notify } from '../../utils/HelperFunctions';
 import Sidebar from '../sidebar/Sidebar.jsx';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Tooltip from '@mui/material/Tooltip';
+// import OneSignal from 'react-onesignal';
+// import { unSubscribe } from '../../redux/actions/settingActions.js';
 
-function Navbar() {
+function Navbar({unsubscribe}) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const { notificationLoading } = useSelector((state) => state.setting);
+  
 
   const [mobileSidebar, setMobileSidebar] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    dispatch(userReset());
-    navigate('/login');
-    notify('success', 'User logged out successfully');
+  const handleLogout = async () => {
+    // localStorage.removeItem('token');
+    unsubscribe()
+    // await OneSignal.User.PushSubscription.optOut();
+
+    // dispatch(unSubscribe(user._id)).then(() => {
+
+    //   dispatch(userReset());
+    //   navigate('/login');
+    //   notify('success', 'User logged out successfully');
+    // }).catch((msg) => notify("error", msg));
   };
 
   return (
@@ -76,10 +86,10 @@ function Navbar() {
               <Link to="/" style={{ color: '#fff' }}>Remindra</Link>
             </Typography>
 
-          
+
 
             <Tooltip title="Logout">
-              <IconButton sx={{
+              <IconButton disabled={notificationLoading} sx={{
                 height: "100%", backgroundColor: "#2A7DE1", borderRadius: "50%", display: "flex", justifyContent: "center", alignItems: "center", padding: "5px", cursor: "pointer", transition: "0.3s all ease-in-out",
                 ":hover": {
                   backgroundColor: "#19aae9",
@@ -89,7 +99,7 @@ function Navbar() {
 
                 onClick={handleLogout}
               >
-                <LogoutIcon sx={{color:"#fff"}} fontSize='small' />
+                <LogoutIcon sx={{ color: "#fff" }} fontSize='small' />
               </IconButton>
             </Tooltip>
 

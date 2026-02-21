@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { getSingleUserAction } from '../../redux/actions/userActions';
 import { notify } from '../../utils/HelperFunctions';
+import CustomizeLoader from '../../components/loader/CustomizeLoader';
 function ProfilePage() {
 
   const navigate = useNavigate()
@@ -22,7 +23,7 @@ function ProfilePage() {
   return (
     <>
 
-      {isLoading && <> <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>  <CircularProgress sx={{ color: "var(--text-color)" }} size="30px" /> </Box></>}
+      {isLoading && <> <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>  <CustomizeLoader /> </Box></>}
       {!isLoading && <Box
 
         sx={{ width: "100%", minHeight: "91vh", display: "flex", justifyContent: "space-between", backgroundColor: "var(--bg-color)", padding: { xs: "10px", sm: "20px", md: "20px" }, pt: "0px !important", }}

@@ -4,6 +4,7 @@ import { Outlet, useParams, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleCourseAction } from "../../redux/actions/courseActions";
 import { notify } from "../../utils/HelperFunctions";
+import CustomizeLoader from "../../components/loader/CustomizeLoader";
 
 
 const ownerTabs = ["overview", "resources", "files"];
@@ -69,7 +70,7 @@ const SingleCourseLayout = () => {
   if (courseIsLoading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
-        <CircularProgress  sx={{color:"var(--text-color)"}} size="30px" />
+        <CustomizeLoader />
       </Box>
     );
   }

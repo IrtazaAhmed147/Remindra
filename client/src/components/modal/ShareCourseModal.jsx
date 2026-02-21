@@ -14,9 +14,13 @@ import {
   Avatar,
   FormControlLabel,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
 import { useSelector } from "react-redux";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import SearchIcon from "@mui/icons-material/Search";
+import { Form } from "react-router-dom";
 
 export default function ShareCourseModal({
   open,
@@ -33,16 +37,16 @@ export default function ShareCourseModal({
 
   const { user } = useSelector((state) => state.auth);
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (!open) return;
-    const timer = setTimeout(async () => {
-      const result = await searchUser(searchTerm, members);
-      setUsers(result || []);
-    }, 400);
+  //   if (!open) return;
+  //   const timer = setTimeout(async () => {
+  //     const result = await searchUser(searchTerm, members);
+  //     setUsers(result || []);
+  //   }, 400);
 
-    return () => clearTimeout(timer);
-  }, [searchTerm, open]);
+  //   return () => clearTimeout(timer);
+  // }, [searchTerm, open]);
 
   useEffect(() => {
     if (!loading && userList && open) {
@@ -53,7 +57,8 @@ export default function ShareCourseModal({
     }
   }, [loading, userList, open]);
 
-  /*  Reset on modal close */
+
+
   useEffect(() => {
     if (!open) {
       setSearchTerm("");
@@ -78,47 +83,72 @@ export default function ShareCourseModal({
   return (
     <Dialog
       open={open}
-       disableRestoreFocus
+      disableRestoreFocus
       onClose={onClose}
       PaperProps={{
         sx: {
           background: "var(--card-bg-color)",
           borderRadius: 3,
-          width: 400,
+          width: {xs:"90%",sm:400,md:400},
+          minHeight: "400px",
+          margin:0,
         },
       }}
     >
       <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1 }}>
         <ShareIcon sx={{ color: "#2a7de1" }} />
-        <Typography fontWeight={600} fontSize={16}>
+        <Typography fontWeight={600} fontSize={16} >
           Share Course Access
         </Typography>
       </DialogTitle>
 
       <DialogContent sx={{ p: 2 }}>
         <Typography fontSize={13} color="text.secondary" sx={{ mb: 2 }}>
-          Select users to give access to this course.
+          Search by username and select users to grant course access.
         </Typography>
 
-        <TextField
-          size="small"
-          fullWidth
-          placeholder="Search users..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{
-            background: "var(--input-bg-color)",
-            borderRadius: "8px",
-            mb: 2,
-            "& fieldset": { border: "none" },
-          }}
-          inputProps={{
-            style: { fontSize: "12px", color: "var(--text-color)" },
-          }}
-        />
+        <form sx={{ display: "flex", mb: 2 }}
+          onSubmit={(e) => {
+            e.preventDefault()
+            searchUser(searchTerm, members)
+          }} >
+
+          <TextField
+            size="small"
+            fullWidth
+            placeholder="Search users..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            sx={{
+              background: "var(--input-bg-color)",
+              borderRadius: "8px",
+              width:"85%",
+              "& fieldset": { border: "none" },
+            }}
+            inputProps={{
+              style: { fontSize: "12px", color: "var(--text-color)" },
+            }}
+          />
+          <IconButton
+            type="submit"
+            sx={{
+              backgroundColor: "var(--primary-color)",
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "var(--primary-color)",
+                opacity: 0.9,
+              },
+              borderRadius: "8px",
+              height: "30px",
+              width: "35px",
+            }}
+          >
+            <SearchIcon sx={{fontSize:"18px"}}/>
+          </IconButton>
+        </form>
 
         {loading ? (
-          <Box sx={{ display: "flex", justifyContent: "center",minHeight:"250px",alignItems:"center" }}>
+          <Box sx={{ display: "flex", justifyContent: "center", minHeight: "150px", alignItems: "center" }}>
             <CircularProgress size={30} />
           </Box>
         ) : (
@@ -146,14 +176,14 @@ export default function ShareCourseModal({
                     </Typography>
                   </Box>
 
-                  <Checkbox
+                  {u?.inviteStatus === "pending" ? <AccessTimeIcon sx={{ fontSize: "25px" }} /> : <Checkbox
                     disabled={members.includes(u._id)}
                     checked={
                       members.includes(u._id) ||
                       selectedUsers.includes(u._id)
                     }
                     onChange={() => handleToggle(u._id)}
-                  />
+                  />}
                 </CardContent>
               </Card>
             ))}

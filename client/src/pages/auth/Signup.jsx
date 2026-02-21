@@ -15,8 +15,11 @@ function Signup() {
     const form = useRef({})
     const navigate = useNavigate()
     const [showPass, setShowPass] = useState(false)
+    const [usernameErr, setUsernameErr] = useState(false)
+    const [passErr, setPassErr] = useState(false)
     const [showConPass, setShowConPass] = useState(false)
     const { authLoading, authError, user } = useSelector((state) => state.auth)
+
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -27,10 +30,37 @@ function Signup() {
 
     const handleForm = async (e) => {
         e.preventDefault()
-        
+        const username = form.current.username.trim();
+        const usernameRegex = /^[a-z0-9_]+$/;
         if (!form.current.username.trim() || !form.current.fullname.trim() || !form.current.email.trim() || !form.current.password.trim() || !form.current.conPassword.trim()) return;
+        if (username !== username.toLowerCase()) {
+            return setUsernameErr("Username must be in lowercase");
+        }
+
+        else if (username.length < 3 || username.length > 20) {
+            return setUsernameErr("Username must be between 3 and 20 characters");
+        }
+        else if (!usernameRegex.test(username)) {
+            return setUsernameErr(
+                "Username can only contain lowercase letters, numbers, and underscore"
+            );
+        } else {
+            setUsernameErr("")
+        }
         if (form.current.password !== form.current.conPassword) {
-            return notify("error", "Password and Confirm Password should be same")
+
+            return setPassErr(
+                "Password and Confirm Password should be same"
+            );
+
+        } else if (form.current.password.length < 8) {
+            return setPassErr(
+                "Password must be at least 8 characters long."
+            );
+
+        } else {
+            setPassErr("");
+
         }
         await dispatch(registerUser(form.current))
             .then((msg) => {
@@ -65,6 +95,7 @@ function Signup() {
                                     {/* <PersonOutlineOutlinedIcon /> */}
                                     <input onChange={(e) => form.current = { ...form.current, [e.target.name]: e.target.value }} name='username' placeholder="Enter Username" className="input" type="text" required />
                                 </div>
+                                {usernameErr && <Typography sx={{ fontSize: "12px", color: "#e90000 !important" }}>{usernameErr}</Typography>}
 
                                 <div className="flex-column">
                                     <label>FullName* </label></div>
@@ -123,6 +154,8 @@ function Signup() {
                                         {showConPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                     </div>
                                 </div>
+                                {passErr && <Typography sx={{ fontSize: "12px", color: "#e90000 !important" }}>{passErr}</Typography>}
+
 
                                 <button className="btn">
                                     {authLoading && <CircularProgress sx={{ color: "var(--text-color)" }} size="20px" />}

@@ -1,6 +1,7 @@
 import courseInviteModel from "../models/courseInviteModel.js";
 import courseModel from "../models/courseModel.js";
 import SubscriptionModel from "../models/SubscriptionModel.js";
+import userModel from "../models/userModel.js";
 import { errorHandler, successHandler } from "../utils/responseHandler.js";
 import { sendPushNotification } from "../utils/webPush.js";
 
@@ -34,6 +35,69 @@ export const sendInvite = async (req, res) => {
         errorHandler(res, 400, error.message)
     }
 }
+
+export const getUsersToInvite = async (req, res) => {
+    const { username, members, limit, courseId } = req.query;
+
+    try {
+
+        const filter = {
+            isAdmin: false,
+            isSuspend: false,
+            isDeactivate: false
+        };
+
+        if (username?.trim()) {
+            filter.username = {
+                $regex: username.trim(),
+                $options: "i"
+            };
+        }
+
+        let membersArray = [];
+
+        if (members) {
+            membersArray = JSON.parse(members);
+            if (Array.isArray(membersArray) && membersArray.length > 0) {
+                filter._id = { $nin: membersArray };   // remove existing members
+            }
+        }
+
+        // 🔥 Get users first
+        let usersQuery = userModel.find(filter).select("username profilePic fullname university ");
+
+        if (limit) {
+            usersQuery = usersQuery.limit(Number(limit));
+        }
+
+        const users = await usersQuery;
+
+        // 🔥 Get pending invites for this course
+        const pendingInvites = await courseInviteModel.find({
+            courseId,
+            status: "pending"
+        });
+
+        const pendingUserIds = pendingInvites.map(inv => inv.receiverId.toString());
+
+        // 🔥 Attach inviteStatus to each user
+        const finalUsers = users.map(user => {
+            return {
+                ...user.toObject(),
+                inviteStatus: pendingUserIds.includes(user._id.toString())
+                    ? "pending"
+                    : "none"
+            };
+        });
+
+        successHandler(res, 200, "Users fetched", finalUsers);
+
+    } catch (err) {
+        console.log(err);
+        errorHandler(res, 400, err.message);
+    }
+};
+
 export const updateInvite = async (req, res) => {
     try {
         const { status } = req.body;

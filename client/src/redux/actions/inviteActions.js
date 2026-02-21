@@ -21,7 +21,7 @@ export const sendInviteAction = (receiverIds, courseId) => async (dispatch) => {
 
         const res = await api.post(
             `/invite/send/course/${courseId}`,
-            {receiverIds},
+            { receiverIds },
             {
                 headers: { Authorization: `Bearer ${token}` },
                 withCredentials: true,

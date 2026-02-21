@@ -9,10 +9,12 @@ import { disableCourseAction, getUserCoursesAction } from '../../redux/actions/c
 import { notify } from '../../utils/HelperFunctions';
 import RemoveModal from '../../components/modal/RemoveModal';
 import ShareCourseModal from '../../components/modal/ShareCourseModal';
-import { getAllUsersAction, suspendUserAction } from '../../redux/actions/userActions';
+import { getAllUsersAction, getUsersToInvite, suspendUserAction } from '../../redux/actions/userActions';
 import { sendInviteAction } from '../../redux/actions/inviteActions';
 import GradientBtn from '../../components/common/GradientBtn';
 import FullPageLoader from '../../components/loader/FullPageLoader';
+import { clearUserState } from '../../redux/slices/userSlice';
+import CustomizeLoader from '../../components/loader/CustomizeLoader';
 
 
 function CoursePage() {
@@ -138,7 +140,7 @@ function CoursePage() {
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: '10px', marginTop: "20px" }}>
                     {error && (<Typography fontSize={"14px"} margin={'auto'} mt={2}>{error}</Typography>)}
                     {courseIsLoading && !error && <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh", width: "100%" }} >
-                        <CircularProgress sx={{ color: "var(--text-color)" }} size="30px" />
+                        <CustomizeLoader />
                     </Box>}
                     {!courseIsLoading && !error && (
                         courses?.length === 0 ?
@@ -177,7 +179,7 @@ function CoursePage() {
                     />}
                     {<ShareCourseModal
                         searchUser={(username, members) => {
-                            dispatch(getAllUsersAction({ username: username, isSuspend: true, isDeactivate: true, members: JSON.stringify(members), limit: 8 })).then(() => {
+                            dispatch(getUsersToInvite({ username: username,  members: JSON.stringify(members), limit: 8, courseId:selectedCourseId })).then(() => {
                                 setCourseMembers(members)
 
                             }).catch((msg) => notify("error",msg))
@@ -187,9 +189,11 @@ function CoursePage() {
                         members={courseMembers}
                         userList={users}
                         open={shareModalOpen}
-                        onClose={() => setShareModalOpen(false)}
+                        onClose={() => {
+                            dispatch(clearUserState())
+                            setShareModalOpen(false)}}
                         onShare={handleShare}
-                    />}
+                    />} 
                 </Box>
 
             </Box>

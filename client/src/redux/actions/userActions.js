@@ -34,6 +34,31 @@ export const getAllUsersAction = (query = {}) => async (dispatch) => {
 };
 
 
+export const getUsersToInvite = (query) => async (dispatch) => {
+
+    try {
+        dispatch(fetchUsersStart());
+
+        const token = localStorage.getItem("token");
+
+        const res = await api.get(
+            `/invite/users/course/`,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+                params: query,
+                withCredentials: true,
+            }
+        );
+
+        dispatch(fetchUsersSuccess(res.data.data));
+        return res.data.message;
+
+    } catch (error) {
+
+        handleApiError(error, dispatch, fetchUsersFailure);
+    }
+};
+
 export const getSingleUserAction = (id) => async (dispatch) => {
   try {
     dispatch(fetchSingleUserStart());

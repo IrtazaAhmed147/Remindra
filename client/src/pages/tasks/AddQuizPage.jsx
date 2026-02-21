@@ -42,7 +42,6 @@ export default function AddQuizPage() {
                     title: data.title,
                     task: data.description,
                     dueDate: data.dueDate,
-                    // course: data.courseId.title
                 }
                 setDueDate(data.dueDate ? dayjs(data.dueDate) : null);
                 setCoverPreviews(
@@ -133,16 +132,9 @@ export default function AddQuizPage() {
                     color: "var(--text-color)"
                 }}
             >
-                Add Quiz
+                {params.get('type') === 'edit'? "Edit" : "Create"} Quiz
             </Typography>
-            {(params.get('type') === 'edit') && <Typography sx={{ mt: 2, mb: 1, fontSize: "15px", color: "#6b7280" }}>
-                Course:   <Box
-                    component="span"
-                    sx={{ color: "var(--text-color)", fontWeight: 500, ml: 0.5 }}
-                >
-                    {form?.current?.course}
-                </Box>
-            </Typography>}
+           
             <Box
                 sx={{
                     display: "flex",
@@ -386,7 +378,7 @@ export default function AddQuizPage() {
                         }
                     }}
                 >
-                    Add Quiz
+                    {params.get('type') === 'edit'?"Update":"Create"}
                 </Button>
             </Box>
         </Box>

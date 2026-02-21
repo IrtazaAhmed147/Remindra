@@ -14,6 +14,7 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import CustomizeLoader from "../loader/CustomizeLoader";
 
 // Menu Options
 const options = ["Change Status", "Delete", "Edit"];
@@ -62,7 +63,7 @@ export default function TaskTable({ assignments, viewModal, askDelete, handleUpd
       </Box>
 
       {/* Rows */}
-      {isLoading && <> <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "250px" }}>  <CircularProgress color="inherit" size="30px" /> </Box></>}
+      {isLoading && <> <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "250px" }}>  <CustomizeLoader  /> </Box></>}
       {!isLoading && (assignments?.length === 0 ? (<Typography fontSize={"14px"} margin={'auto'} mt={2}>No {type === 'quiz' ? 'quiz' : 'assignments'} found.</Typography>) : assignments?.map((item, i) => (
         <Box
           key={i}

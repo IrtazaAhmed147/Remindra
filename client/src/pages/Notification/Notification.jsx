@@ -2,11 +2,12 @@ import { Box, CircularProgress, Typography } from '@mui/material'
 import InvitationCard from '../../components/cards/InvitationCard.jsx'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserInvitesAction, updateInviteAction } from '../../redux/actions/inviteActions'
-import FullPageLoader from '../../components/loader/FullPageLoader'
-import { notify } from '../../utils/HelperFunctions'
-import { getUserNotificationssAction } from '../../redux/actions/notificationActions'
+import { getUserInvitesAction, updateInviteAction } from '../../redux/actions/inviteActions.js'
+import FullPageLoader from '../../components/loader/FullPageLoader.jsx'
+import { notify } from '../../utils/HelperFunctions.js'
+import { getUserNotificationssAction } from '../../redux/actions/notificationActions.js'
 import NotificationCard from '../../components/cards/NotificationCard.jsx'
+import CustomizeLoader from '../../components/loader/CustomizeLoader.jsx'
 
 function Notification() {
 
@@ -34,8 +35,9 @@ function Notification() {
         Notifications
       </Typography>
       {invitationError && <Box>{invitationError}</Box>}
+      {invitationLoading && <FullPageLoader />}
       {invitationFetchLoading && !invitationError && <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh", width: "100%" }} >
-        <CircularProgress sx={{ color: "var(--text-color)" }} size="30px" />
+        <CustomizeLoader  />
       </Box>}
       {!invitationFetchLoading && invitations?.map((invite) => (
         <InvitationCard key={invite?._id} responseHandle={responseHandle} {...invite} msg={' has invited you to access the course '} />
@@ -43,7 +45,6 @@ function Notification() {
       {!notificationFetchLoading && notifications?.map((notification) => (
         <NotificationCard key={notification?._id} {...notification} />
       ))}
-      {invitationLoading && <FullPageLoader />}
     </Box>
   )
 }
